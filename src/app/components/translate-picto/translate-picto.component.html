@@ -1,0 +1,9 @@
+<body>
+  <h2> Entrez un mot à rechercher </h2>
+  <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
+    <div>
+      <input type="text" class="form-control" placeholder="type a word" id="text" name="text" ngModel required>
+    </div>
+    <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> submit </button>
+  </form>
+</body>
