@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
+declare var onBodyLoad:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -11,6 +12,7 @@ export class TranslatePictoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    onBodyLoad();
   }
 
   onSubmit(formText: NgForm) {
