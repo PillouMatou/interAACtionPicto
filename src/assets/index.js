@@ -170,9 +170,10 @@ function highlightToken(e) {
 // called every 500ms
 // this function sends the text field's content to the API
 // for tokenization, as a first step of the translation process
-function monitorInput(textinput) {
+function monitorInput(textInput) {
+  lang = 'fra';
   if (!textUpdated) return;
-  let currentText = textinput;
+  let currentText = textInput;
   /*
   let selStart = sentenceInput.selectionStart;
   let selEnd = sentenceInput.selectionEnd;
@@ -181,22 +182,22 @@ function monitorInput(textinput) {
   /*
   sentenceInput.selectionStart = selStart;
   sentenceInput.selectionEnd = selEnd;
+  */
   if (currentText == text) {
     textUpdated = false;
-   */
-    if (text.length > 0) {
+    if (currentText.length > 0) {
+      console.log('currentext :', currentText);
       // setVisibility(loadingIndicator, true);
       this.tokenize(currentText, lang, tokenized);
     } else {
       tokenized({tokens:[]});
     }
-    /*
   } else text = currentText;
-     */
 }
 
 // called on api response with tokenization results
 function tokenized(result) {
+  console.log("on passe dans tokenized le resultat est :", result);
   // setVisibility(loadingIndicator, false);
   if (result === undefined) return networkError();
   tokens = result.tokens;
@@ -298,17 +299,16 @@ function refreshPictograms() {
     let s = selectedMeanings[t];
     return token.synsets[s];
   });
-  /*
-  pictoGroups.textContent = '';
+  /* pictoGroups.textContent = '';
   let exprList = document.createElement('div');
   exprList.classList.add('b-right');
   exprList.classList.add('mb-bottom');
   pictoGroups.appendChild(exprList);
+   */
   if (synsets.length > 0) {
-    setVisibility(loadingIndicator, true);
+    // setVisibility(loadingIndicator, true);
     this.pictograms(synsets, pictogramsReceived);
   }
-   */
 }
 
 // used by pictogramsReceived to sort pictograms by relevance,
@@ -521,6 +521,7 @@ function translationUploaded(e) {
 }
 
 function _phoneHome(path, callback, error) {
+  console.log("on passe dans _phoneHome, le path :", path);
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
