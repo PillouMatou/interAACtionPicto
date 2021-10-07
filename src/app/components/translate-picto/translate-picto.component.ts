@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
-declare var onBodyLoad:any;
+declare var monitorInput:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -12,10 +12,11 @@ export class TranslatePictoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    onBodyLoad();
+
   }
 
   onSubmit(formText: NgForm) {
     console.log(formText.form.value.text);
+    monitorInput(formText.form.value.text);
   }
 }

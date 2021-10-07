@@ -31,8 +31,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/index.js",
-              "src/assets/picto-api.js"
+              "src/assets/index.js"
             ]
           },
           "configurations": {
@@ -102,8 +101,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/index.js",
-              "src/assets/picto-api.js"
+              "src/assets/index.js"
             ]
           }
         }
