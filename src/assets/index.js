@@ -223,7 +223,7 @@ function addSentencePart(text, tokenIndex) {
   } else {
     partElement = document.createTextNode(text);
   }
-  textHighlights.appendChild(partElement);
+  // textHighlights.appendChild(partElement);
 }
 
 // adds a new meaning to the meanings list, containing the relevant token
@@ -259,7 +259,7 @@ function addTokenMeanings(tokenText, tokenIndex, definitions) {
   let open = openTokens[details.id];
   details.open = open ? open : false;
   summary.addEventListener('click', onToggleMeaning);
-  meaningsList.appendChild(details);
+  // meaningsList.appendChild(details);
 }
 
 // saving UI state (open meanings)
@@ -282,10 +282,13 @@ function onMeaningSelection(e) {
 // either on user input or when meanings were received.
 function refreshPictograms() {
   // let checkedMeanings = document.querySelectorAll('.token-input:checked');
+  console.log('refreshPictograms tokens : ', tokens);
   let synsets = tokens.map((token, t) => {
     let s = selectedMeanings[t];
-    return token.synsets[s];
+    console.log('refreshPictograms selectedmeaning',selectedMeanings[t]);
+    return token.synsets[0];
   });
+  console.log('refreshPictograms synsets', synsets);
   /* pictoGroups.textContent = '';
   let exprList = document.createElement('div');
   exprList.classList.add('b-right');
@@ -308,7 +311,7 @@ function relevanceComparator(a, b) {
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
 function pictogramsReceived(pictograms) {
-  setVisibility(loadingIndicator, false);
+  // setVisibility(loadingIndicator, false);
   if (pictograms === undefined) return networkError();
   let expressions = {};
   for (let p in pictograms) {
@@ -322,7 +325,7 @@ function pictogramsReceived(pictograms) {
     if (key in expressions) expressions[key].push([relevance, p]);
     else expressions[key] = [[relevance, p]];
   }
-  let exprList = pictoGroups.children[0];
+  // let exprList = pictoGroups.children[0];
   if (selectedLibrary === undefined || expressions[selectedLibrary] === undefined) {
     selectedLibrary = Object.keys(expressions)[0];
   }
@@ -340,7 +343,7 @@ function pictogramsReceived(pictograms) {
     for (let i in indexes) {
       button.classList.add('token-' + indexes[i]);
     }
-    exprList.appendChild(button);
+    // exprList.appendChild(button);
 
     let library = document.createElement('div');
     library.id = 'library-' + key;
@@ -350,14 +353,15 @@ function pictogramsReceived(pictograms) {
       button.classList.add('selected-group');
     }
     library.addEventListener('wheel', scrollHorizontally);
-    pictoGroups.appendChild(library);
+    // pictoGroups.appendChild(library);
     for (let p in pictograms) {
-      let url = pictograms[p][1];
+      let url = 'http://localhost:4201/' + pictograms[p][1];
       let picto = document.createElement('img');
       picto.src = url;
       picto.draggable = true;
       picto.dataset.key = key;
       picto.dataset.url = url;
+      console.log('fin d"url picto :',url);
       picto.addEventListener('dragstart', pictoDragStart);
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
@@ -508,7 +512,6 @@ function translationUploaded(e) {
 }
 
 function _phoneHome(path, callback, error) {
-  console.log("on passe dans _phoneHome, le path :", path);
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
@@ -518,7 +521,7 @@ function _phoneHome(path, callback, error) {
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
-  console.log('url :', '/' +path.join('/'));
+  console.log('url :', 'http://localhost:4201/' +path.join('/'));
   xhr.open('GET', 'http://localhost:4201/' + path.join('/'));
   xhr.send();
 }
@@ -535,6 +538,7 @@ function tokenize(sentence, language, callback, error) {
 }
 
 function pictograms(synsets, callback, error) {
+  console.log('pictograms synsets :',synsets);
   let path = ['s2p', synsets.map(encodeURIComponent).join('+')];
   this._phoneHome(path, callback, error);
 }
