@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 declare var monitorInput:any;
+declare var currentSessionId:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -14,7 +15,7 @@ export class TranslatePictoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
+    // currentSessionId();
   }
 
   onSubmit(formText: NgForm) {

@@ -174,25 +174,12 @@ function monitorInput(textInput) {
   lang = 'fra';
   if (!textUpdated) return;
   let currentText = textInput;
-  /*
-  let selStart = sentenceInput.selectionStart;
-  let selEnd = sentenceInput.selectionEnd;
-   */
+
   sentenceInput = currentText;
-  /*
-  sentenceInput.selectionStart = selStart;
-  sentenceInput.selectionEnd = selEnd;
-  */
-  if (currentText == text) {
-    textUpdated = false;
-    if (currentText.length > 0) {
-      console.log('currentext :', currentText);
-      // setVisibility(loadingIndicator, true);
-      this.tokenize(currentText, lang, tokenized);
-    } else {
-      tokenized({tokens:[]});
-    }
-  } else text = currentText;
+
+  console.log('currentext :', currentText);
+  // setVisibility(loadingIndicator, true);
+  this.tokenize(currentText, lang, tokenized);
 }
 
 // called on api response with tokenization results
@@ -527,9 +514,11 @@ function _phoneHome(path, callback, error) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', (e) => {
     let xhr = e.target;
+    console.log('status : ', xhr.status);
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
+  console.log('url :', '/' +path.join('/'));
   xhr.open('GET', '/' + path.join('/'));
   xhr.send();
 }
@@ -540,6 +529,7 @@ function _encode(text) {
 
 // PUBLIC ENDPOINTS
 function tokenize(sentence, language, callback, error) {
+  console.log('on passe dans tokenize le truc de l"api');
   let path = ['t2s', language, this._encode(sentence)];
   this._phoneHome(path, callback, error);
 }
