@@ -3,7 +3,7 @@ var natural = require('natural');
 var fs = require('fs');
 var Dichotomous = require('./dicho').Dichotomous;
 var app = express();
-var port = 4200;
+var port = 4201;
 
 // utility functions
 var read = fileName => fs.readFileSync(fileName, 'utf8');

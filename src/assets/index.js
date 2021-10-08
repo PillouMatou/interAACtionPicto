@@ -519,7 +519,7 @@ function _phoneHome(path, callback, error) {
     else error(undefined, xhr.response);
   });
   console.log('url :', '/' +path.join('/'));
-  xhr.open('GET', '/' + path.join('/'));
+  xhr.open('GET', 'http://localhost:4201/' + path.join('/'));
   xhr.send();
 }
 
