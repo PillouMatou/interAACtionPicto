@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import { TranslatePictoComponent } from './components/translate-picto/translate-picto.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {IvyCarouselModule} from "angular-responsive-carousel";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         BrowserAnimationsModule,
         MatButtonModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        IvyCarouselModule
     ],
   providers: [],
   bootstrap: [AppComponent]

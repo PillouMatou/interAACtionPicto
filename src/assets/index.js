@@ -358,7 +358,6 @@ function pictogramsReceived(pictograms) {
       picto.dataset.key = key;
       picto.dataset.url = url;
       urlImage.push(url);
-      console.log('fin d"url picto :',url);
       picto.addEventListener('dragstart', pictoDragStart);
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
@@ -521,7 +520,6 @@ function _phoneHome(path, callback, error) {
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
-  console.log('url :', 'http://localhost:4201/' +path.join('/'));
   xhr.open('GET', 'http://localhost:4201/' + path.join('/'));
   xhr.send();
 }

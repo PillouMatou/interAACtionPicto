@@ -11,11 +11,13 @@ declare var getUrlPicto:any;
 export class TranslatePictoComponent implements OnInit {
 
   result:any;
+  cellsToScroll:number = 4;
 
   constructor() { }
 
   ngOnInit(): void {
     this.result = [];
+    console.log(this.result);
   }
 
   onSubmit(formText: NgForm) {
