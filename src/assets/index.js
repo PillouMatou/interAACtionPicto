@@ -20,6 +20,7 @@ var selectedLibrary;
 var dragged;
 var lang;
 var mobile = false;
+var urlImage = [];
 
 var internationalization = {
   'fra': {
@@ -177,14 +178,12 @@ function monitorInput(textInput) {
 
   sentenceInput = currentText;
 
-  console.log('currentext :', currentText);
   // setVisibility(loadingIndicator, true);
   this.tokenize(currentText, lang, tokenized);
 }
 
 // called on api response with tokenization results
 function tokenized(result) {
-  console.log("on passe dans tokenized le resultat est :", result);
   // setVisibility(loadingIndicator, false);
   if (result === undefined) return networkError();
   tokens = result.tokens;
@@ -282,13 +281,10 @@ function onMeaningSelection(e) {
 // either on user input or when meanings were received.
 function refreshPictograms() {
   // let checkedMeanings = document.querySelectorAll('.token-input:checked');
-  console.log('refreshPictograms tokens : ', tokens);
   let synsets = tokens.map((token, t) => {
     let s = selectedMeanings[t];
-    console.log('refreshPictograms selectedmeaning',selectedMeanings[t]);
     return token.synsets[0];
   });
-  console.log('refreshPictograms synsets', synsets);
   /* pictoGroups.textContent = '';
   let exprList = document.createElement('div');
   exprList.classList.add('b-right');
@@ -361,12 +357,17 @@ function pictogramsReceived(pictograms) {
       picto.draggable = true;
       picto.dataset.key = key;
       picto.dataset.url = url;
+      urlImage.push(url);
       console.log('fin d"url picto :',url);
       picto.addEventListener('dragstart', pictoDragStart);
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
     }
   }
+}
+
+function getUrlPicto(){
+  return urlImage;
 }
 
 // on library pictogram click, add the pictogram to the
@@ -517,7 +518,6 @@ function _phoneHome(path, callback, error) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', (e) => {
     let xhr = e.target;
-    console.log('status : ', xhr.status);
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
@@ -532,13 +532,11 @@ function _encode(text) {
 
 // PUBLIC ENDPOINTS
 function tokenize(sentence, language, callback, error) {
-  console.log('on passe dans tokenize le truc de l"api');
   let path = ['t2s', language, this._encode(sentence)];
   this._phoneHome(path, callback, error);
 }
 
 function pictograms(synsets, callback, error) {
-  console.log('pictograms synsets :',synsets);
   let path = ['s2p', synsets.map(encodeURIComponent).join('+')];
   this._phoneHome(path, callback, error);
 }

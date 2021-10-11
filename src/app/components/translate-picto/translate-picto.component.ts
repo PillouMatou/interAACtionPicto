@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 declare var monitorInput:any;
+declare var getUrlPicto:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -14,10 +15,12 @@ export class TranslatePictoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.result = [];
   }
 
   onSubmit(formText: NgForm) {
-    console.log('formText.form.value.text : ',formText.form.value.text);
     monitorInput(formText.form.value.text);
+    this.result = getUrlPicto();
+    console.log('le resultat en TS',this.result);
   }
 }
