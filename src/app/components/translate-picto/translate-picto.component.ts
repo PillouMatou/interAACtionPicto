@@ -17,12 +17,16 @@ export class TranslatePictoComponent implements OnInit {
 
   ngOnInit(): void {
     this.result = [];
-    console.log(this.result);
   }
 
   onSubmit(formText: NgForm) {
+    this.resetResult();
     monitorInput(formText.form.value.text);
     this.result = getUrlPicto();
     console.log('le resultat en TS',this.result);
+  }
+
+  resetResult(){
+    this.result.length = 0;
   }
 }

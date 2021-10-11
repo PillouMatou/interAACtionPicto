@@ -1,6 +1,7 @@
 body{
   background-color: bisque;
 }
-carousel-cells{
-  width: 50%;
+carousel{
+  width : 50%;
+  margin: auto;
 }
