@@ -22,6 +22,20 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
+# Using with ARASAAC / Mulberry
+This repository includes a script which you can use to use this API with ARASAAC or Mulberry
+## ARASAAC
+ARASAAC has around 13000 pictograms in PNG format, weighting around 630MB.
+```sh
+git clone https://github.com/InteraactionGroup/olpapi-arasaac/ pictograms/arasaac
+```
+
+## Mulberry
+Mulberry has around 3500 pictograms in SVG format, weighting around 15MB.
+```sh
+git clone https://github.com/InteraactionGroup/olpapi-mulberry/ pictograms/mulberry
+```
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
