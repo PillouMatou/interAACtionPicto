@@ -13,6 +13,8 @@ export class TranslatePictoComponent implements OnInit {
   result:any;
   cellsToScroll:number = 4;
 
+
+
   constructor() { }
 
   ngOnInit(): void {
@@ -28,5 +30,8 @@ export class TranslatePictoComponent implements OnInit {
 
   resetResult(){
     this.result.length = 0;
+  }
+  download(url: string){
+    console.log('image',url);
   }
 }
