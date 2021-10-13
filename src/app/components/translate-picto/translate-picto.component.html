@@ -1,17 +1,20 @@
 <body>
   <h2> Entrez un mot à rechercher </h2>
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
-    <div>
-      <input type="text" class="form-control" placeholder="type a word" id="sentence-input" name="text" ngModel required>
-      <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> submit </button>
-      <br>
-      <span *ngIf="result.length !== 0"> Résultat de la recherche </span>
-      <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" *ngIf="result.length !== 0" arrowsTheme="dark">
-        <div class="carousel-cell" *ngFor="let image of result">
-          <!--<a href="{{image}}" download ></a>-->
-          <img src="{{image}}" width="100%" height="100%" alt="image" (click)="Download(image,this.wordSearch+'.png')">
-        </div>
-      </carousel>
-    </div>
+      <div>
+        <mat-form-field appearance="fill">
+        <input matInput type="text" class="form-control" placeholder="type a word" id="sentence-input" name="text" ngModel required>
+        </mat-form-field>
+        <br>
+        <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> submit </button>
+        <br>
+        <h2 class="middle" *ngIf="result.length !== 0"> Résultat de la recherche </h2>
+        <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" *ngIf="result.length !== 0" arrowsTheme="dark">
+          <div class="carousel-cell" *ngFor="let image of result">
+            <!--<a href="{{image}}" download ></a>-->
+            <img src="{{image}}" width="100%" height="100%" alt="image" (click)="Download(image,this.wordSearch+'.png')">
+          </div>
+        </carousel>
+      </div>
   </form>
 </body>

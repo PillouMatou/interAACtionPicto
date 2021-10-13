@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import { TranslatePictoComponent } from './components/translate-picto/translate-picto.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IvyCarouselModule} from "angular-responsive-carousel";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {IvyCarouselModule} from "angular-responsive-carousel";
         MatButtonModule,
         ReactiveFormsModule,
         FormsModule,
-        IvyCarouselModule
+        IvyCarouselModule,
+        MatInputModule
     ],
   providers: [],
   bootstrap: [AppComponent]
