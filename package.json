@@ -22,6 +22,8 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@types/requirejs": "^2.1.33",
     "angular-responsive-carousel": "^2.1.2",
     "bootstrap": "^5.1.1",

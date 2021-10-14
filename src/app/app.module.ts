@@ -9,6 +9,12 @@ import { TranslatePictoComponent } from './components/translate-picto/translate-
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IvyCarouselModule} from "angular-responsive-carousel";
 import {MatInputModule} from "@angular/material/input";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -17,13 +23,21 @@ import {MatInputModule} from "@angular/material/input";
     TranslatePictoComponent
   ],
     imports: [
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient],
+        }
+      }),
         BrowserModule,
         BrowserAnimationsModule,
         MatButtonModule,
         ReactiveFormsModule,
         FormsModule,
         IvyCarouselModule,
-        MatInputModule
+        MatInputModule,
+        HttpClientModule
     ],
   providers: [],
   bootstrap: [AppComponent]

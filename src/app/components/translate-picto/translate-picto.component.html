@@ -1,14 +1,14 @@
 <body>
-  <h2> Entrez un mot à rechercher </h2>
+  <h2> {{'translatePicto.enterAWordToSearchFor' | translate}}</h2>
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
       <div>
         <mat-form-field appearance="fill">
-        <input matInput type="text" class="form-control" placeholder="type a word" id="sentence-input" name="text" ngModel required>
+        <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}" id="sentence-input" name="text" ngModel required>
         </mat-form-field>
         <br>
-        <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> submit </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
         <br>
-        <h2 class="middle" *ngIf="result.length !== 0"> Résultat de la recherche </h2>
+        <h2 class="middle" *ngIf="result.length !== 0"> {{'translatePicto.SearchResult' | translate}} </h2>
         <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" *ngIf="result.length !== 0" arrowsTheme="dark">
           <div class="carousel-cell" *ngFor="let image of result">
             <!--<a href="{{image}}" download ></a>-->
