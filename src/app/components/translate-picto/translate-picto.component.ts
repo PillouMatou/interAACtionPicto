@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
+import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 
@@ -15,7 +16,7 @@ export class TranslatePictoComponent implements OnInit {
   wordSearch:string = '';
 
 
-  constructor() { }
+  constructor(public languageService: LanguageService) { }
 
   ngOnInit(): void {
     this.result = [];
@@ -24,7 +25,7 @@ export class TranslatePictoComponent implements OnInit {
   onSubmit(formText: NgForm) {
     this.resetResult();
     this.wordSearch = formText.form.value.text;
-    monitorInput(formText.form.value.text);
+    monitorInput(formText.form.value.text, this.languageService.languageSearch);
     this.result = getUrlPicto();
     console.log('le resultat en TS',this.result);
   }

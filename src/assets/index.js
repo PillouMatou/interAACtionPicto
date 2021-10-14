@@ -171,8 +171,8 @@ function highlightToken(e) {
 // called every 500ms
 // this function sends the text field's content to the API
 // for tokenization, as a first step of the translation process
-function monitorInput(textInput) {
-  lang = 'fra';
+function monitorInput(textInput, lang) {
+  // lang = 'fra';
   if (!textUpdated) return;
   let currentText = textInput;
 

@@ -28,9 +28,11 @@ export class NavbarComponent implements OnInit {
   switchLanguage() {
     if(this.language === "FR"){
       this.language = "EN";
+      this.languageService.languageSearch = "eng";
     }
     else{
       this.language = "FR";
+      this.languageService.languageSearch = "fra";
     }
     this.languageService.switchLanguage(this.language);
   }
