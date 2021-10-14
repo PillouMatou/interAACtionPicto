@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
+declare var reloadPictograms:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -14,6 +15,7 @@ export class TranslatePictoComponent implements OnInit {
   result:any;
   cellsToScroll:number = 4;
   wordSearch:string = '';
+  banksChecked:string[] = [];
 
 
   constructor(public languageService: LanguageService) { }
@@ -28,6 +30,19 @@ export class TranslatePictoComponent implements OnInit {
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     this.result = getUrlPicto();
     console.log('le resultat en TS',this.result);
+  }
+
+  chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
+    console.log('arasaac.value',arasaac.checked);
+    console.log('mulberry.value',mulberry.checked);
+    this.banksChecked = [];
+    if(arasaac.checked){
+      this.banksChecked.push(arasaac.value);
+    }
+    if(mulberry.checked){
+      this.banksChecked.push(mulberry.value);
+    }
+    reloadPictograms(this.banksChecked);
   }
 
   resetResult(){
