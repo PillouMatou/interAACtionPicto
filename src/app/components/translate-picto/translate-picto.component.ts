@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
-declare var getUrlPicto:any;
-declare var reloadPictograms:any;
+declare var getUrlPicto2:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -13,8 +12,7 @@ declare var reloadPictograms:any;
 export class TranslatePictoComponent implements OnInit {
 
   result:string[] = [];
-  resultArasaac:string[] = [];
-  resultMulberry:string[] = [];
+  displayResult:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
   banksChecked:string[] = [];
@@ -26,19 +24,21 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   onSubmit(formText: NgForm) {
-    this.resetResult();
+    this.resetRequest();
     this.wordSearch = formText.form.value.text;
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
-    this.result = getUrlPicto();
-    console.log('le resultat en TS',this.result);
-    console.log('this result test', this.result[0]);
-    this.result.forEach(value => {console.log('putain d"url de merde', value)});
-    // console.log('arasaac link :', this.resultArasaac);
+    setTimeout(()=> {
+      this.result = getUrlPicto2();
+      this.result.forEach(value => {
+        const tabValue = value.split('/');
+        if(this.banksChecked.includes(tabValue[4])){
+          this.displayResult.push(value);
+        }
+      });
+    },50);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
-    console.log('arasaac.value',arasaac.checked);
-    console.log('mulberry.value',mulberry.checked);
     this.banksChecked = [];
     if(arasaac.checked){
       this.banksChecked.push(arasaac.value);
@@ -48,8 +48,9 @@ export class TranslatePictoComponent implements OnInit {
     }
   }
 
-  resetResult(){
+  resetRequest(){
     this.result.length = 0;
+    this.displayResult.length = 0;
   }
   Download( url: any, filename: any ) {
     let setFetching = false;

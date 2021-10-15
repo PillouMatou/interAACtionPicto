@@ -20,7 +20,7 @@ var selectedLibrary;
 var dragged;
 var lang;
 var mobile = false;
-var urlImage = [];
+var urlImageJS = [];
 
 var internationalization = {
   'fra': {
@@ -350,6 +350,7 @@ function pictogramsReceived(pictograms) {
     }
     library.addEventListener('wheel', scrollHorizontally);
     // pictoGroups.appendChild(library);
+    let urlImage = [];
     for (let p in pictograms) {
       let url = 'http://localhost:4201/' + pictograms[p][1];
       let picto = document.createElement('img');
@@ -362,12 +363,16 @@ function pictogramsReceived(pictograms) {
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
     }
+    getUrlPicto(urlImage);
   }
 }
 
-function getUrlPicto(){
-  console.log('le tableau JS', urlImage);
-  return urlImage;
+function getUrlPicto(urlImage){
+  urlImageJS = urlImage;
+}
+
+function getUrlPicto2(){
+  return urlImageJS;
 }
 
 // on library pictogram click, add the pictogram to the
