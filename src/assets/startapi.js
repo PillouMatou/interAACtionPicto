@@ -475,24 +475,4 @@ function issuesOpened(err, fd) {
 	}
 }
 
-// reload Pictogram banks
-function reloadPictograms(banksChecked){
-  console.log('on recharge les picto avec les banks select')
-    let pictograms = {};
-    let banks = banksChecked;
-    console.log('vérification de banks', banks);
-    for (let b in banks) {
-      let bank = banks[b];
-      let dir = 'pictograms/' + '/' + bank;
-      // if (!fs.lstatSync(dir).isDirectory()) continue;
-      pictograms[bank] = {
-        manifest: json(dir + '/manifest.json'),
-        synsets: json(dir + '/synsets.json'),
-        counts: json(dir + '/counts.json'),
-        names: json(dir + '/names.json'),
-      };
-    }
-    return pictograms;
-}
-
 app.listen(port, () => console.log(`picto-api listening at http://localhost:${port}`));

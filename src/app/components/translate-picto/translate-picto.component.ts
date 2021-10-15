@@ -12,7 +12,9 @@ declare var reloadPictograms:any;
 })
 export class TranslatePictoComponent implements OnInit {
 
-  result:any;
+  result:string[] = [];
+  resultArasaac:string[] = [];
+  resultMulberry:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
   banksChecked:string[] = [];
@@ -21,7 +23,6 @@ export class TranslatePictoComponent implements OnInit {
   constructor(public languageService: LanguageService) { }
 
   ngOnInit(): void {
-    this.result = [];
   }
 
   onSubmit(formText: NgForm) {
@@ -30,6 +31,9 @@ export class TranslatePictoComponent implements OnInit {
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     this.result = getUrlPicto();
     console.log('le resultat en TS',this.result);
+    console.log('this result test', this.result[0]);
+    this.result.forEach(value => {console.log('putain d"url de merde', value)});
+    // console.log('arasaac link :', this.resultArasaac);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
@@ -42,7 +46,6 @@ export class TranslatePictoComponent implements OnInit {
     if(mulberry.checked){
       this.banksChecked.push(mulberry.value);
     }
-    reloadPictograms(this.banksChecked);
   }
 
   resetResult(){

@@ -366,6 +366,7 @@ function pictogramsReceived(pictograms) {
 }
 
 function getUrlPicto(){
+  console.log('le tableau JS', urlImage);
   return urlImage;
 }
 
