@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslatePictoComponent } from './translate-picto.component';
+import {TranslateModule} from "@ngx-translate/core";
+import {FormsModule} from "@angular/forms";
 
 describe('TranslatePictoComponent', () => {
   let component: TranslatePictoComponent;
@@ -8,7 +10,8 @@ describe('TranslatePictoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TranslatePictoComponent ]
+      declarations: [ TranslatePictoComponent ],
+      imports: [FormsModule, TranslateModule.forRoot()]
     })
     .compileComponents();
   });

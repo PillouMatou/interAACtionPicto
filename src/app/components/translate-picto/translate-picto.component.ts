@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
-declare var getUrlPicto2:any;
+declare var getUrlPicto:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -28,7 +28,7 @@ export class TranslatePictoComponent implements OnInit {
     this.wordSearch = formText.form.value.text;
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     setTimeout(()=> {
-      this.result = getUrlPicto2();
+      this.result = getUrlPicto();
       this.result.forEach(value => {
         const tabValue = value.split('/');
         if(this.banksChecked.includes(tabValue[4])){

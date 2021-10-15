@@ -363,15 +363,15 @@ function pictogramsReceived(pictograms) {
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
     }
-    getUrlPicto(urlImage);
+    saveUrlPicto(urlImage);
   }
 }
 
-function getUrlPicto(urlImage){
+function saveUrlPicto(urlImage){
   urlImageJS = urlImage;
 }
 
-function getUrlPicto2(){
+function getUrlPicto(){
   return urlImageJS;
 }
 
