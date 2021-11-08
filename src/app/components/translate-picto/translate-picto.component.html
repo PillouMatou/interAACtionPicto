@@ -1,10 +1,18 @@
 <body>
-  <h2> choisisser la banque d'image </h2>
+  <h2> {{'translatePicto.bankImage' | translate}} </h2>
   <form (change)="chooseBank(arasaac, mulberry)">
-    <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac">
-    <label for="arasaac">arasaac</label>
-    <input #mulberry type="checkbox" id="mulberry" name="mulberry" value="mulberry">
-    <label for="mulberry">mulberry</label>
+    <div class="tile">
+      <mat-grid-list cols="2" rowHeight="2:1" class="tile">
+        <mat-grid-tile>
+          <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac" >
+          <label for="arasaac">Arasaac</label>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <input #mulberry type="checkbox" id="mulberry" name="mulberry" value="mulberry">
+          <label for="mulberry">Mulberry</label>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
   </form>
   <h2> {{'translatePicto.enterAWordToSearchFor' | translate}}</h2>
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">

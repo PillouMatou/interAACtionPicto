@@ -12,6 +12,7 @@ import {MatInputModule} from "@angular/material/input";
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {MatGridListModule} from "@angular/material/grid-list";
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -23,13 +24,13 @@ export function createTranslateLoader(http: HttpClient) {
     TranslatePictoComponent
   ],
     imports: [
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [HttpClient],
-        }
-      }),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient],
+            }
+        }),
         BrowserModule,
         BrowserAnimationsModule,
         MatButtonModule,
@@ -37,7 +38,8 @@ export function createTranslateLoader(http: HttpClient) {
         FormsModule,
         IvyCarouselModule,
         MatInputModule,
-        HttpClientModule
+        HttpClientModule,
+        MatGridListModule
     ],
   providers: [],
   bootstrap: [AppComponent]
