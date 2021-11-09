@@ -24,11 +24,14 @@
         <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
         <br>
         <h2 class="middle" *ngIf="result.length !== 0"> {{'translatePicto.SearchResult' | translate}} </h2>
-        <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" *ngIf="displayResult.length !== 0" arrowsTheme="dark">
-          <div class="carousel-cell" *ngFor="let image of displayResult">
-            <img src="{{image}}" width="100%" height="100%" alt="image" (click)="Download(image,this.wordSearch+'.png')">
-          </div>
-        </carousel>
+        <div *ngFor="let carousel of result;let index = index">
+          <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" arrowsTheme="dark">
+            <div class="carousel-cell" *ngFor="let image of displayResult[index]">
+              <img src="{{image}}" width="100%" height="100%" alt="image" (click)="Download(image,this.wordSearch+'.png')">
+            </div>
+          </carousel>
+          <br>
+        </div>
       </div>
   </form>
 </body>

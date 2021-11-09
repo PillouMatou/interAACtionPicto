@@ -174,7 +174,7 @@ function highlightToken(e) {
 function monitorInput(textInput, lang) {
   // lang = 'fra';
   if (!textUpdated) return;
-  let currentText = textInput;
+  let currentText = textInput.replace(/\n|\s{2,}/g, ' ').replace(/^\s/, '');
 
   sentenceInput = currentText;
 
@@ -368,7 +368,7 @@ function pictogramsReceived(pictograms) {
 }
 
 function saveUrlPicto(urlImage){
-  urlImageJS = urlImage;
+  urlImageJS.push(urlImage);
 }
 
 function getUrlPicto(){

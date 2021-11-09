@@ -11,8 +11,9 @@ declare var getUrlPicto:any;
 })
 export class TranslatePictoComponent implements OnInit {
 
-  result:string[] = [];
-  displayResult:string[] = [];
+  result:string[][] = [];
+  displayResult:string[][] = [];
+  resultTab:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
   banksChecked:string[] = [];
@@ -29,13 +30,18 @@ export class TranslatePictoComponent implements OnInit {
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
-      this.result.forEach(value => {
-        const tabValue = value.split('/');
-        if(this.banksChecked.includes(tabValue[4])){
-          this.displayResult.push(value);
-        }
-      });
+      for (let i=0; i<this.result.length; i = i+1){
+        this.result[i].forEach(value => {
+          const tabValue = value.split('/');
+          if(this.banksChecked.includes(tabValue[4])){
+            this.resultTab.push(value);
+          }
+        });
+        this.displayResult.push(this.resultTab);
+        this.resultTab = [];
+      }
     },50);
+
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
