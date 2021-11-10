@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
+declare var getTokensForTS:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -17,6 +18,7 @@ export class TranslatePictoComponent implements OnInit {
   cellsToScroll:number = 4;
   wordSearch:string = '';
   banksChecked:string[] = [];
+  wordsText:any;
 
 
   constructor(public languageService: LanguageService) { }
@@ -41,7 +43,10 @@ export class TranslatePictoComponent implements OnInit {
         this.resultTab = [];
       }
     },50);
-
+    setTimeout(()=>{
+      this.wordsText = getTokensForTS();
+      console.log('wordsText', this.wordsText);
+    },50);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {

@@ -21,6 +21,7 @@ var dragged;
 var lang;
 var mobile = false;
 var urlImageJS = [];
+var tokensJS = [];
 
 var internationalization = {
   'fra': {
@@ -168,6 +169,14 @@ function highlightToken(e) {
   }
 }
 
+function getTokens(tokens){
+  tokensJS = tokens;
+}
+
+function getTokensForTS(){
+  return tokensJS;
+}
+
 // called every 500ms
 // this function sends the text field's content to the API
 // for tokenization, as a first step of the translation process
@@ -177,6 +186,7 @@ function monitorInput(textInput, lang) {
   let currentText = textInput.replace(/\n|\s{2,}/g, ' ').replace(/^\s/, '');
 
   sentenceInput = currentText;
+  text = currentText;
 
   // setVisibility(loadingIndicator, true);
   this.tokenize(currentText, lang, tokenized);
@@ -198,6 +208,7 @@ function tokenized(result) {
     let before = text.slice(lastStop, meaning.start);
     let token = text.slice(meaning.start, meaning.stop);
     tokens[t].text = token;
+
     lastStop = meaning.stop;
     addSentencePart(before, -1);
     addSentencePart(token, t);
@@ -206,6 +217,7 @@ function tokenized(result) {
     }
     addTokenMeanings(token, t, result.definitions);
     // don't care about the last part because it would be invisible.
+    getTokens(tokens);
   }
   refreshPictograms();
 }
