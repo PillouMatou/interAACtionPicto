@@ -17,7 +17,7 @@
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
       <div>
         <mat-form-field appearance="fill">
-        <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}" id="sentence-input" name="text" ngModel required>
+        <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}" id="sentence-input" name="text" ngModel required maxlength="100">
         </mat-form-field>
         <br>
         <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
