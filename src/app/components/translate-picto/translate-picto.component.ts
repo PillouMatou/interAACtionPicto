@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
@@ -23,13 +25,20 @@ export class TranslatePictoComponent implements OnInit {
   keyPicto:string[][] = [];
 
 
-  constructor(public languageService: LanguageService) { }
+  constructor(public languageService: LanguageService,
+              public dialog: MatDialog) { }
 
   ngOnInit(): void {}
 
   onSubmit(formText: NgForm) {
     this.resetRequest();
     this.wordSearch = formText.form.value.text;
+    const numberOfWord = this.wordSearch.split(' ');
+    console.log('number', numberOfWord);
+    if(numberOfWord.length > 5){
+      this.openDialog();
+      return;
+    }
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
@@ -111,5 +120,11 @@ export class TranslatePictoComponent implements OnInit {
         }
       });
     }
+  }
+  openDialog(){
+    this.dialog.open(DialogMaxWordsComponent, {
+      height: '20%',
+      width: '30%',
+    });
   }
 }

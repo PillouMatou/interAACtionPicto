@@ -13,6 +13,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { DialogMaxWordsComponent } from './components/dialog-max-words/dialog-max-words.component';
+import {MatDialogModule} from "@angular/material/dialog";
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -21,7 +23,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     NavbarComponent,
-    TranslatePictoComponent
+    TranslatePictoComponent,
+    DialogMaxWordsComponent
   ],
     imports: [
         TranslateModule.forRoot({
@@ -39,7 +42,8 @@ export function createTranslateLoader(http: HttpClient) {
         IvyCarouselModule,
         MatInputModule,
         HttpClientModule,
-        MatGridListModule
+        MatGridListModule,
+      MatDialogModule
     ],
   providers: [],
   bootstrap: [AppComponent]
