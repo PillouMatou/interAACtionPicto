@@ -4,6 +4,7 @@ import {LanguageService} from "../../services/language-service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
+declare var getKeyPicto:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -18,13 +19,13 @@ export class TranslatePictoComponent implements OnInit {
   cellsToScroll:number = 4;
   wordSearch:string = '';
   banksChecked:string[] = [];
-  wordsText:any;
+  wordsText: any;
+  keyPicto:string[][] = [];
 
 
   constructor(public languageService: LanguageService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit(formText: NgForm) {
     this.resetRequest();
@@ -32,6 +33,8 @@ export class TranslatePictoComponent implements OnInit {
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
+      this.keyPicto = getKeyPicto();
+      console.log('keyPicto : ',this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
@@ -45,7 +48,9 @@ export class TranslatePictoComponent implements OnInit {
     },50);
     setTimeout(()=>{
       this.wordsText = getTokensForTS();
-      console.log('wordsText', this.wordsText);
+      this.addWordsIfNeeded();
+      console.log('result : ', this.result);
+      console.log('wordsText : ', this.wordsText);
     },50);
   }
 
@@ -62,6 +67,7 @@ export class TranslatePictoComponent implements OnInit {
   resetRequest(){
     this.result.length = 0;
     this.displayResult.length = 0;
+    this.keyPicto.length = 0;
   }
   Download( url: any, filename: any ) {
     let setFetching = false;
@@ -90,5 +96,20 @@ export class TranslatePictoComponent implements OnInit {
     };
 
     download(url,filename);
+  }
+
+  private addWordsIfNeeded() {
+    for(let i = 0; i < this.keyPicto.length; i++){
+      this.keyPicto[i].forEach(key => {
+        if(key.includes('-')){
+          const placement = key.split('-');
+          let textKey = '';
+          for(let j = 0; j < placement.length; j++){
+            textKey = textKey + this.wordsText[placement[j]].text + ' ';
+          }
+          this.wordsText.splice(i,0,{text: textKey});
+        }
+      });
+    }
   }
 }

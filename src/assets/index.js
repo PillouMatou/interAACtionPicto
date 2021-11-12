@@ -21,6 +21,7 @@ var dragged;
 var lang;
 var mobile = false;
 var urlImageJS = [];
+var keyImageJS = [];
 var tokensJS = [];
 
 var internationalization = {
@@ -363,6 +364,7 @@ function pictogramsReceived(pictograms) {
     library.addEventListener('wheel', scrollHorizontally);
     // pictoGroups.appendChild(library);
     let urlImage = [];
+    let keyImage = [];
     for (let p in pictograms) {
       let url = 'http://localhost:4201/' + pictograms[p][1];
       let picto = document.createElement('img');
@@ -371,12 +373,21 @@ function pictogramsReceived(pictograms) {
       picto.dataset.key = key;
       picto.dataset.url = url;
       urlImage.push(url);
+      keyImage.push(key);
       picto.addEventListener('dragstart', pictoDragStart);
       picto.addEventListener('click', pictoClick);
       library.appendChild(picto);
     }
+    saveKeyPicto(keyImage);
     saveUrlPicto(urlImage);
   }
+}
+function saveKeyPicto(keyImage){
+  keyImageJS.push(keyImage);
+}
+
+function getKeyPicto(){
+  return keyImageJS;
 }
 
 function saveUrlPicto(urlImage){
