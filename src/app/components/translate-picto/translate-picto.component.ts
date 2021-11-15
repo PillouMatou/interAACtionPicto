@@ -34,7 +34,6 @@ export class TranslatePictoComponent implements OnInit {
     this.resetRequest();
     this.wordSearch = formText.form.value.text;
     const numberOfWord = this.wordSearch.split(' ');
-    console.log('number', numberOfWord);
     if(numberOfWord.length > 5){
       this.openDialog();
       return;
@@ -43,7 +42,6 @@ export class TranslatePictoComponent implements OnInit {
     setTimeout(()=> {
       this.result = getUrlPicto();
       this.keyPicto = getKeyPicto();
-      console.log('keyPicto : ',this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
@@ -58,8 +56,6 @@ export class TranslatePictoComponent implements OnInit {
     setTimeout(()=>{
       this.wordsText = getTokensForTS();
       this.addWordsIfNeeded();
-      console.log('result : ', this.result);
-      console.log('wordsText : ', this.wordsText);
     },50);
   }
 

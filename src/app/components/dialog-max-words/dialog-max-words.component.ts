@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LanguageService} from "../../services/language-service";
 
 @Component({
   selector: 'app-dialog-max-words',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialogMaxWordsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public languageService: LanguageService) { }
 
   ngOnInit(): void {
   }

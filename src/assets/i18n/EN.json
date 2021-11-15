@@ -3,7 +3,7 @@
     "enterAWordToSearchFor": "Enter a word to search for",
     "typeAWord": "Type a word",
     "submit": "Submit",
-    "SearchResult": "Search result",
+    "SearchResult": "Result for the word",
     "bankImage": "Select image bank(s)"
   }
 }
