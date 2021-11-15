@@ -1,5 +1,11 @@
 body{
   background-color: bisque;
+  --main-yes: 'yes';
+  --main-no: 'no';
+}
+.margin{
+  margin-left: 5%;
+  margin-right: 5%;
 }
 carousel{
   width : 50%;
@@ -74,11 +80,11 @@ carousel{
   transition: all .2s;
 }
 [type="checkbox"]:not(:checked) + label .ui:before {
-  content: "no";
+  content: var(--main-no);
   left: 32px
 }
 [type="checkbox"]:checked + label .ui:after {
-  content: "yes";
+  content: var(--main-yes);
   color: #39D2B4;
 }
 [type="checkbox"]:focus + label:before {

@@ -1,9 +1,10 @@
 <body>
+<div class="margin">
   <h2> {{'translatePicto.bankImage' | translate}} </h2>
   <form (change)="chooseBank(arasaac, mulberry)">
     <div>
       <p>
-        <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac" >
+        <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac">
         <label for="arasaac"><span class="ui"></span>Arasaac</label>
       </p>
       <p>
@@ -15,22 +16,26 @@
   </form>
   <h2> {{'translatePicto.enterAWordToSearchFor' | translate}}</h2>
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
-      <div>
-        <mat-form-field appearance="fill">
-          <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}" id="sentence-input" name="text" ngModel required height="10%" size="30%">
-        </mat-form-field>
-        <br>
-        <button type="submit" mat-raised-button color="primary" [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
-      </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}"
+               id="sentence-input" name="text" ngModel required height="10%" size="30%">
+      </mat-form-field>
       <br>
-      <div *ngFor="let carousel of result;let index = index">
-        <h2 class="middle">{{'translatePicto.SearchResult' | translate}} : "{{this.wordsText[index].text}}"</h2>
-        <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" arrowsTheme="dark">
-          <div class="carousel-cell" *ngFor="let image of displayResult[index]">
-            <img src="{{image}}" width="100%" height="100%" alt="image" (click)="Download(image,this.wordsText[index].text+'.png')">
-          </div>
-        </carousel>
-        <br>
-      </div>
+      <button type="submit" mat-raised-button color="primary"
+              [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
+    </div>
+    <br>
+    <div *ngFor="let carousel of result;let index = index">
+      <h2 class="middle">{{'translatePicto.SearchResult' | translate}} : "{{this.wordsText[index].text}}"</h2>
+      <carousel [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" arrowsTheme="dark">
+        <div class="carousel-cell" *ngFor="let image of displayResult[index]">
+          <img src="{{image}}" width="100%" height="100%" alt="image"
+               (click)="Download(image,this.wordsText[index].text+'.png')">
+        </div>
+      </carousel>
+      <br>
+    </div>
   </form>
+</div>
 </body>
