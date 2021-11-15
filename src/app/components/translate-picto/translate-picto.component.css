@@ -7,6 +7,9 @@ body{
   margin-left: 5%;
   margin-right: 5%;
 }
+.widthTextarea{
+  width: 40%;
+}
 carousel{
   width : 50%;
   margin: auto;

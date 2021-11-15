@@ -17,9 +17,9 @@
   <h2> {{'translatePicto.enterAWordToSearchFor' | translate}}</h2>
   <form (ngSubmit)="onSubmit(formText)" #formText="ngForm">
     <div>
-      <mat-form-field appearance="fill">
-        <input matInput type="text" class="form-control" placeholder="{{'translatePicto.typeAWord' | translate}}"
-               id="sentence-input" name="text" ngModel required height="10%" size="30%">
+      <mat-form-field class="widthTextarea" appearance="fill">
+        <textarea matInput type="text" placeholder="{{'translatePicto.typeAWord' | translate}}"
+                  id="sentence-input" name="text" ngModel required rows="10"></textarea>
       </mat-form-field>
       <br>
       <button type="submit" mat-raised-button color="primary"
