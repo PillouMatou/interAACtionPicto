@@ -15,6 +15,9 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { DialogMaxWordsComponent } from './components/dialog-max-words/dialog-max-words.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { LayoutComponent } from './components/layout/layout.component';
+import {MatListModule} from "@angular/material/list";
+import {MatRadioModule} from "@angular/material/radio";
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -24,27 +27,30 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     NavbarComponent,
     TranslatePictoComponent,
-    DialogMaxWordsComponent
+    DialogMaxWordsComponent,
+    LayoutComponent
   ],
-    imports: [
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
-                deps: [HttpClient],
-            }
-        }),
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        IvyCarouselModule,
-        MatInputModule,
-        HttpClientModule,
-        MatGridListModule,
-      MatDialogModule
-    ],
+  imports: [
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient],
+      }
+    }),
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    IvyCarouselModule,
+    MatInputModule,
+    HttpClientModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatListModule,
+    MatRadioModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
