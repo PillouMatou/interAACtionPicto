@@ -10,7 +10,7 @@ export class EditionService {
   /**
    * current element color (#d3d3d3 = grey by default)
    */
-  curentColor = '#d3d3d3';
+  policeColor = '#d3d3d3';
 
   curentBorderColor = 'black';
 

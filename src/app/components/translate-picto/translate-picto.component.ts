@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {LanguageService} from "../../services/language-service";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
+import {EditionService} from "../../services/edition-service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
@@ -26,6 +27,7 @@ export class TranslatePictoComponent implements OnInit {
 
 
   constructor(public languageService: LanguageService,
+              public editionService: EditionService,
               public dialog: MatDialog) { }
 
   ngOnInit(): void {}
@@ -57,6 +59,7 @@ export class TranslatePictoComponent implements OnInit {
       this.wordsText = getTokensForTS();
       this.addWordsIfNeeded();
     },50);
+    this.editionService.isSearch = true;
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
