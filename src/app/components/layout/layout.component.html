@@ -1,0 +1,64 @@
+<!-- *ngIf="this.editionService.isSearch" -->
+<div class="margin">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2> Police </h2>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <h3> Taille de police <input #policeSizeInput type="number" max="50" min="1" value="{{defaultPoliceSize}}" (change)="policeSize= policeSizeInput.value"></h3>
+    <h3> Type de police</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>type de police</mat-label>
+      <mat-select [(value)]="police">
+        <mat-option value="Arial">Arial</mat-option>
+        <mat-option value="Karumbi">Karumbi</mat-option>
+        <mat-option value="Chilanka">Chilanka</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h3> Couleur de police </h3>
+    <input [(colorPicker)]="this.editionService.curentColor" [style.background]="this.editionService.curentColor" cpHeight="230px" cpPosition="top-right"/>
+    <h3> Transformation </h3>
+    <mat-radio-group>
+      <mat-radio-button class="margin-right" value="aucun" [checked]="true">Aucun</mat-radio-button>
+      <mat-radio-button value="minuscule" [checked]="false">Minuscule</mat-radio-button>
+      <mat-radio-button class="margin-right" value="majuscule" [checked]="false">Majuscule</mat-radio-button>
+      <mat-radio-button value="capitale" [checked]="false">Capitale</mat-radio-button>
+    </mat-radio-group>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2> Bordure </h2>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <h3> Type de bordure </h3>
+    <mat-form-field appearance="fill">
+      <mat-label>type de bordure</mat-label>
+      <mat-select [(value)]="typeOfBorder">
+        <mat-option value="continue">continue</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h3> Taille de bordure <input #borderSizeInput type="number" max="50" min="1" value="{{defaultBorderSize}}" (change)="borderSize= borderSizeInput.value"></h3>
+    <h3> Couleur de bordure </h3>
+    <input [(colorPicker)]="this.editionService.curentBorderColor" [style.background]="this.editionService.curentBorderColor" cpHeight="230px" cpPosition="top-right"/>
+    <h3> écriture dans le pictogramme </h3>
+    <mat-radio-group name="labelPosition">
+      <mat-radio-button class="margin-right" value="dans" [checked]="true">Mots dans les pictogrammes</mat-radio-button>
+      <mat-radio-button value="dehors" [checked]="false">Mots en dehors des pictogrammes</mat-radio-button>
+    </mat-radio-group>
+  </mat-expansion-panel>
+  <br>
+  <br>
+  <h2>Résultat de la sélection</h2>
+  <h2>Création du PDF</h2>
+  <mat-radio-group name="pictoPerLine" [selected]="numberOfLines">
+    <mat-radio-button class="margin-right" value="2" [checked]="true">2 par lignes </mat-radio-button>
+    <mat-radio-button class="margin-right" value="3" [checked]="false">3 par lignes </mat-radio-button>
+    <mat-radio-button class="margin-right" value="4" [checked]="false">4 par lignes </mat-radio-button>
+    <mat-radio-button value="8" [checked]="false">8 par lignes </mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <br>
+  <button mat-button (click)="generatePDF()">Génération de PDF</button>
+</div>

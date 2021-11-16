@@ -18,6 +18,9 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { LayoutComponent } from './components/layout/layout.component';
 import {MatListModule} from "@angular/material/list";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {ColorPickerModule} from "ngx-color-picker";
+import {MatSelectModule} from "@angular/material/select";
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -49,7 +52,10 @@ export function createTranslateLoader(http: HttpClient) {
     MatGridListModule,
     MatDialogModule,
     MatListModule,
-    MatRadioModule
+    MatRadioModule,
+    MatExpansionModule,
+    ColorPickerModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
