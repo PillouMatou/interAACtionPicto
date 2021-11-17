@@ -15,4 +15,10 @@ export class EditionService {
   curentBorderColor = 'black';
 
   isSearch:boolean = false;
+
+  result:string[][] = [];
+
+  wordsText: any;
+
+  imageSelected:string[] = [];
 }

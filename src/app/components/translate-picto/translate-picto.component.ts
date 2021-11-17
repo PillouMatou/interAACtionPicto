@@ -43,6 +43,7 @@ export class TranslatePictoComponent implements OnInit {
     monitorInput(formText.form.value.text, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
+      this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
@@ -57,9 +58,12 @@ export class TranslatePictoComponent implements OnInit {
     },50);
     setTimeout(()=>{
       this.wordsText = getTokensForTS();
+      this.editionService.wordsText = this.wordsText;
       this.addWordsIfNeeded();
     },50);
     this.editionService.isSearch = true;
+
+
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
@@ -129,5 +133,10 @@ export class TranslatePictoComponent implements OnInit {
 
   erase() {
     (<HTMLInputElement>document.getElementById("sentence-input")).value = "";
+  }
+
+  select(image: string,index: number) {
+    this.editionService.imageSelected[index] = image;
+    console.log('image selected : ', this.editionService.imageSelected);
   }
 }

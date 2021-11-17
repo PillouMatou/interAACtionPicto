@@ -55,6 +55,14 @@
   <br>
   <br>
   <h2>Résultat de la sélection</h2>
+  <div *ngFor="let carousel of this.editionService.result;let index = index">
+    <div class="picto">
+      <img src="{{this.editionService.imageSelected[index]}}" alt="">
+    </div>
+    <div class="labelPicto">
+      {{this.editionService.wordsText[index].text}}
+    </div>
+  </div>
   <h2>Création du PDF</h2>
   <mat-radio-group name="pictoPerLine">
     <mat-radio-button #twoPicto (change)="numberOfPictoPerLines(twoPicto)" class="margin-right" value="2" [checked]="true">2 pictogrammes par lignes </mat-radio-button>
