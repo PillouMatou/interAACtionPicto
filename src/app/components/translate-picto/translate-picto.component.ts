@@ -126,4 +126,8 @@ export class TranslatePictoComponent implements OnInit {
       width: '30%',
     });
   }
+
+  erase() {
+    (<HTMLInputElement>document.getElementById("sentence-input")).value = "";
+  }
 }
