@@ -62,8 +62,6 @@ export class TranslatePictoComponent implements OnInit {
       this.addWordsIfNeeded();
     },50);
     this.editionService.isSearch = true;
-
-
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {

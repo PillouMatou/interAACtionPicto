@@ -23,23 +23,19 @@ export class LayoutComponent implements OnInit {
               public router: Router) { }
 
   ngOnInit(): void {
+    this.reset();
   }
 
   generatePDF() {
     // recuperation de toutes les valeurs que j'aurai besoin pour la génération de PDF ou création du picto
-    console.log('taille police :', Number(this.policeSize));
     this.editionService.policeSize = Number(this.policeSize);
-    console.log('police :', this.police);
     this.editionService.police = this.police;
     console.log('policeColor : ', this.editionService.policeColor);
     console.log('transformation : ', this.transformationValue);
-    console.log('typeOfBorder : ', this.typeOfBorder);
     this.editionService.typeOfBorder = this.typeOfBorder;
-    console.log('taille bordure :', Number(this.borderSize));
     this.editionService.borderSize = Number(this.borderSize);
     console.log('borderColor : ', this.editionService.curentBorderColor);
     console.log('location : ', this.location);
-    console.log('numberOfCols', this.numberOfCols);
     this.router.navigate(['/print']);
   }
 
@@ -54,5 +50,17 @@ export class LayoutComponent implements OnInit {
 
   wordLocation(buton: MatRadioButton) {
     this.location = buton.value;
+  }
+
+  reset(){
+    this.editionService.result = [];
+    this.editionService.imageSelected = [];
+    this.numberOfCols = 2;
+    this.police = 'Arial';
+    this.typeOfBorder = 'solid';
+    this.policeSize = "16";
+    this.borderSize = "5";
+    this.transformationValue = "aucun";
+    this.location = "dans";
   }
 }
