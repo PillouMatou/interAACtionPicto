@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {EditionService} from "../../services/edition-service";
 import {MatRadioButton} from "@angular/material/radio";
-import {PrintService} from "../../services/print.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -14,14 +13,13 @@ export class LayoutComponent implements OnInit {
   police: string = 'Arial';
   defaultPoliceSize: number = 16;
   defaultBorderSize: number = 5;
-  typeOfBorder: string = 'continue';
+  typeOfBorder: string = 'solid';
   policeSize: string = "16";
   borderSize: string = "5";
   transformationValue: string = "aucun";
   location: string = "dans";
 
   constructor(public editionService: EditionService,
-              public printService: PrintService,
               public router: Router) { }
 
   ngOnInit(): void {
@@ -30,11 +28,15 @@ export class LayoutComponent implements OnInit {
   generatePDF() {
     // recuperation de toutes les valeurs que j'aurai besoin pour la génération de PDF ou création du picto
     console.log('taille police :', Number(this.policeSize));
+    this.editionService.policeSize = Number(this.policeSize);
     console.log('police :', this.police);
+    this.editionService.police = this.police;
     console.log('policeColor : ', this.editionService.policeColor);
     console.log('transformation : ', this.transformationValue);
     console.log('typeOfBorder : ', this.typeOfBorder);
+    this.editionService.typeOfBorder = this.typeOfBorder;
     console.log('taille bordure :', Number(this.borderSize));
+    this.editionService.borderSize = Number(this.borderSize);
     console.log('borderColor : ', this.editionService.curentBorderColor);
     console.log('location : ', this.location);
     console.log('numberOfCols', this.numberOfCols);

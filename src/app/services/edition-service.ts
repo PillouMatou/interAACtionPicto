@@ -10,10 +10,6 @@ export class EditionService {
   /**
    * current element color (#d3d3d3 = grey by default)
    */
-  policeColor = '#d3d3d3';
-
-  curentBorderColor = 'black';
-
   isSearch:boolean = false;
 
   result:string[][] = [];
@@ -23,4 +19,17 @@ export class EditionService {
   imageSelected:string[] = [];
 
   numberOfCols:number = 2;
+
+  police:string = 'Arial';
+
+  policeColor:string = '#d3d3d3';
+
+  policeSize:number = 16;
+
+  curentBorderColor:string = 'black';
+
+  typeOfBorder:string = 'solid';
+
+  borderSize:number = 5;
+
 }

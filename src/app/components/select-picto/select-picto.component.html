@@ -1,11 +1,11 @@
 <button (click)="print()">imprimer</button>
 <mat-grid-list cols="{{this.editionService.numberOfCols}}" rowHeight="2:1">
-  <mat-grid-tile class="picto" *ngFor="let carousel of this.editionService.result;let index = index">
-    <div class="picto">
-      <div class="ImgPicto margin-right">
+  <mat-grid-tile class="pictoPDF" *ngFor="let carousel of this.editionService.result;let index = index">
+    <div class="pictoPDF" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
+      <div class="ImgPictoPDF">
         <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
       </div>
-      <div class="labelPicto">
+      <div class="labelPictoPDF" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
         {{this.editionService.wordsText[index].text}}
       </div>
     </div>
