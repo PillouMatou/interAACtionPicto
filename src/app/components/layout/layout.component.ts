@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {EditionService} from "../../services/edition-service";
-import {NgForm} from "@angular/forms";
 import {MatRadioButton} from "@angular/material/radio";
+import {PrintService} from "../../services/print.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-layout',
@@ -9,7 +10,7 @@ import {MatRadioButton} from "@angular/material/radio";
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-  numberOfLines: number = 2;
+  numberOfCols: number = 2;
   police: string = 'Arial';
   defaultPoliceSize: number = 16;
   defaultBorderSize: number = 5;
@@ -19,7 +20,9 @@ export class LayoutComponent implements OnInit {
   transformationValue: string = "aucun";
   location: string = "dans";
 
-  constructor(public editionService: EditionService) { }
+  constructor(public editionService: EditionService,
+              public printService: PrintService,
+              public router: Router) { }
 
   ngOnInit(): void {
   }
@@ -34,7 +37,8 @@ export class LayoutComponent implements OnInit {
     console.log('taille bordure :', Number(this.borderSize));
     console.log('borderColor : ', this.editionService.curentBorderColor);
     console.log('location : ', this.location);
-    console.log('numberOfLines', this.numberOfLines);
+    console.log('numberOfCols', this.numberOfCols);
+    this.router.navigate(['/print']);
   }
 
   transformation(buton: MatRadioButton) {
@@ -42,7 +46,8 @@ export class LayoutComponent implements OnInit {
   }
 
   numberOfPictoPerLines(buton: MatRadioButton) {
-    this.numberOfLines = Number(buton.value);
+    this.numberOfCols = Number(buton.value);
+    this.editionService.numberOfCols = this.numberOfCols;
   }
 
   wordLocation(buton: MatRadioButton) {

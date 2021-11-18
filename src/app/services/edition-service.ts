@@ -21,4 +21,6 @@ export class EditionService {
   wordsText: any;
 
   imageSelected:string[] = [];
+
+  numberOfCols:number = 2;
 }

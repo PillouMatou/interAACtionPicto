@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="margin">
   <h2> {{'translatePicto.bankImage' | translate}} </h2>
   <form (change)="chooseBank(arasaac, mulberry)">
@@ -23,7 +24,7 @@
       <br>
       <button type="submit" mat-raised-button color="primary"
               [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
-      <button mat-raised-button color="warn" (click)="erase()"> erase </button>
+      <button mat-raised-button color="warn" (click)="erase()"> Effacer </button>
       <input type="checkbox" id="data" name="data" value="data">
       <label for="data"><span class="ui">je veux aider la recherche et j'accepte que mes données soient traitées, utilisées voire diffusées de manière anonymes</span></label>
     </div>
@@ -40,3 +41,4 @@
     </div>
   </form>
 </div>
+<app-layout></app-layout>

@@ -1,0 +1,14 @@
+<button (click)="print()">imprimer</button>
+<mat-grid-list cols="{{this.editionService.numberOfCols}}" rowHeight="2:1">
+  <mat-grid-tile class="picto" *ngFor="let carousel of this.editionService.result;let index = index">
+    <div class="picto">
+      <div class="ImgPicto margin-right">
+        <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
+      </div>
+      <div class="labelPicto">
+        {{this.editionService.wordsText[index].text}}
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+

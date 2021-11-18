@@ -55,9 +55,9 @@
   <br>
   <br>
   <h2>Résultat de la sélection</h2>
-  <div *ngFor="let carousel of this.editionService.result;let index = index">
-    <div class="picto">
-      <img src="{{this.editionService.imageSelected[index]}}" alt="">
+  <div class="picto" *ngFor="let carousel of this.editionService.result;let index = index">
+    <div class="ImgPicto margin-right">
+      <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
     </div>
     <div class="labelPicto">
       {{this.editionService.wordsText[index].text}}
@@ -72,5 +72,5 @@
   </mat-radio-group>
   <br>
   <br>
-  <button mat-button (click)="generatePDF()">Génération de PDF</button>
+  <button mat-raised-button color="primary" (click)="generatePDF()">Génération de PDF</button>
 </div>

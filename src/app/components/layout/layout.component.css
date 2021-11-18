@@ -21,4 +21,10 @@
   border-radius: 5px;
   background-color: white;
 }
+.picto{
+  display: table-cell;
+}
+.labelPicto{
+  text-align: center;
+}
 

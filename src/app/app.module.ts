@@ -21,6 +21,9 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {ColorPickerModule} from "ngx-color-picker";
 import {MatSelectModule} from "@angular/material/select";
+import { SelectPictoComponent } from './components/select-picto/select-picto.component';
+import {AppRoutingModule} from "./app-routing.module";
+import {RouterModule} from "@angular/router";
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -31,7 +34,8 @@ export function createTranslateLoader(http: HttpClient) {
     NavbarComponent,
     TranslatePictoComponent,
     DialogMaxWordsComponent,
-    LayoutComponent
+    LayoutComponent,
+    SelectPictoComponent
   ],
   imports: [
     TranslateModule.forRoot({
@@ -55,7 +59,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatRadioModule,
     MatExpansionModule,
     ColorPickerModule,
-    MatSelectModule
+    MatSelectModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
