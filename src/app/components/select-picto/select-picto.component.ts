@@ -17,11 +17,7 @@ export class SelectPictoComponent implements OnInit {
     window.print();
   }
 
-  heightImage():string{
-    console.log('heightImage', 280 / this.editionService.numberOfCols + 'px');
-    return 280 / this.editionService.numberOfCols + 'px';
-  }
-  widthImage():string{
-    return 280 / this.editionService.numberOfCols + 'px';
+  heightWidthPicto(){
+    return 280 / this.editionService.numberOfCols;
   }
 }
