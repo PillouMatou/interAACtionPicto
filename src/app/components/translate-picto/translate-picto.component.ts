@@ -59,6 +59,7 @@ export class TranslatePictoComponent implements OnInit {
     setTimeout(()=>{
       this.wordsText = getTokensForTS();
       this.editionService.wordsText = this.wordsText;
+      this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
       this.addWordsIfNeeded();
     },100);
     this.editionService.isSearch = true;

@@ -45,13 +45,17 @@ export class LayoutComponent implements OnInit {
     this.editionService.transformationValue = this.transformationValue;
     switch (this.transformationValue){
       case 'aucun':
-        //TODO
+        this.editionService.wordsText = JSON.parse(JSON.stringify(this.editionService.wordsTextSave));
         break;
       case 'minuscule':
         this.editionService.wordsText.forEach(list => {list.text = list.text.toLowerCase()});
         break;
       case 'majuscule':
         this.editionService.wordsText.forEach(list => {list.text = list.text.toUpperCase()});
+        break;
+      case 'capitale':
+        break;
+      default:
         break;
     }
   }

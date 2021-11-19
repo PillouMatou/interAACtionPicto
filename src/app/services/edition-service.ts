@@ -18,6 +18,7 @@ export class EditionService {
   result:string[][] = [];
 
   wordsText: any[] = [];
+  wordsTextSave: any[] = [];
 
   imageSelected:string[] = [];
 
