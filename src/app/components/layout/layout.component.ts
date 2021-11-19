@@ -36,11 +36,24 @@ export class LayoutComponent implements OnInit {
     this.editionService.borderSize = Number(this.borderSize);
     console.log('borderColor : ', this.editionService.curentBorderColor);
     console.log('location : ', this.location);
+    this.editionService.location = this.location;
     this.router.navigate(['/print']);
   }
 
   transformation(buton: MatRadioButton) {
     this.transformationValue = buton.value;
+    this.editionService.transformationValue = this.transformationValue;
+    switch (this.transformationValue){
+      case 'aucun':
+        //TODO
+        break;
+      case 'minuscule':
+        this.editionService.wordsText.forEach(list => {list.text = list.text.toLowerCase()});
+        break;
+      case 'majuscule':
+        this.editionService.wordsText.forEach(list => {list.text = list.text.toUpperCase()});
+        break;
+    }
   }
 
   numberOfPictoPerLines(buton: MatRadioButton) {
@@ -50,11 +63,10 @@ export class LayoutComponent implements OnInit {
 
   wordLocation(buton: MatRadioButton) {
     this.location = buton.value;
+    this.editionService.location = this.location;
   }
 
   reset(){
-    this.editionService.result = [];
-    this.editionService.imageSelected = [];
     this.numberOfCols = 2;
     this.police = 'Arial';
     this.typeOfBorder = 'solid';

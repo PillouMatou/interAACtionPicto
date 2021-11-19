@@ -5,16 +5,19 @@ import { Injectable } from '@angular/core';
 })
 export class EditionService {
 
+
+
   constructor() { }
 
-  /**
-   * current element color (#d3d3d3 = grey by default)
-   */
+  location: string = "dans";
+
   isSearch:boolean = false;
+
+  transformationValue: string = 'aucun';
 
   result:string[][] = [];
 
-  wordsText: any;
+  wordsText: any[] = [];
 
   imageSelected:string[] = [];
 

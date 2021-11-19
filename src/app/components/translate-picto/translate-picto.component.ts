@@ -55,12 +55,12 @@ export class TranslatePictoComponent implements OnInit {
         this.displayResult.push(this.resultTab);
         this.resultTab = [];
       }
-    },50);
+    },100);
     setTimeout(()=>{
       this.wordsText = getTokensForTS();
       this.editionService.wordsText = this.wordsText;
       this.addWordsIfNeeded();
-    },50);
+    },100);
     this.editionService.isSearch = true;
   }
 
@@ -75,6 +75,8 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   resetRequest(){
+    this.editionService.result = [];
+    this.editionService.imageSelected = [];
     this.result.length = 0;
     this.displayResult.length = 0;
     this.keyPicto.length = 0;

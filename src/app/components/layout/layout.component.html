@@ -59,8 +59,11 @@
     <div class="ImgPicto margin-right">
       <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
     </div>
-    <div class="labelPicto">
+    <div class="labelPicto" *ngIf="transformationValue !== 'capitale' ">
       {{this.editionService.wordsText[index].text}}
+    </div>
+    <div class="labelPicto" *ngIf="transformationValue === 'capitale' ">
+      {{this.editionService.wordsText[index].text | titlecase}}
     </div>
   </div>
   <h2>Création du PDF</h2>
