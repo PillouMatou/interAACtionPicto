@@ -25,8 +25,8 @@
       <button class="margin-right" type="submit" mat-raised-button color="primary"
               [disabled]="formText.invalid"> {{'translatePicto.submit' | translate}} </button>
       <button type="button" class="margin-right" mat-raised-button color="warn" (click)="erase()"> Effacer </button>
-      <input type="checkbox" id="data" name="data" value="data">
-      <label for="data"><span class="ui"></span></label><span>Je veux aider la recherche et j'accepte que mes données soient traitées, utilisées voire diffusées de manière anonymes</span>
+      <input #data (change)="dataRegister(data)" type="checkbox" id="data" name="data" value="data">
+      <label for="data"><span class="ui"></span>Je veux aider la recherche et j'accepte que mes données soient traitées, utilisées voire diffusées de manière anonymes</label>
     </div>
     <br>
     <div *ngFor="let carousel of result;let index = index">

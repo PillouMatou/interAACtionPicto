@@ -4,6 +4,7 @@ import {LanguageService} from "../../services/language-service";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
 import {EditionService} from "../../services/edition-service";
+import {SaveDataService} from "../../services/save-data.service";
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
@@ -24,10 +25,12 @@ export class TranslatePictoComponent implements OnInit {
   banksChecked:string[] = [];
   wordsText: any;
   keyPicto:string[][] = [];
+  dataRegisterChecked: boolean = false;
 
 
   constructor(public languageService: LanguageService,
               public editionService: EditionService,
+              public saveData: SaveDataService,
               public dialog: MatDialog) { }
 
   ngOnInit(): void {}
@@ -55,14 +58,15 @@ export class TranslatePictoComponent implements OnInit {
         this.displayResult.push(this.resultTab);
         this.resultTab = [];
       }
-    },100);
-    setTimeout(()=>{
       this.wordsText = getTokensForTS();
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
       this.addWordsIfNeeded();
+      this.editionService.isSearch = true;
+      if(this.dataRegisterChecked){
+        this.saveData.addDataSearched(this.editionService.wordsText);
+      }
     },100);
-    this.editionService.isSearch = true;
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
@@ -139,5 +143,9 @@ export class TranslatePictoComponent implements OnInit {
   select(image: string,index: number) {
     this.editionService.imageSelected[index] = image;
     console.log('image selected : ', this.editionService.imageSelected);
+  }
+
+  dataRegister(data: HTMLInputElement) {
+    this.dataRegisterChecked = data.checked;
   }
 }
