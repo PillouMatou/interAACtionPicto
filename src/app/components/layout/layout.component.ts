@@ -18,6 +18,7 @@ export class LayoutComponent implements OnInit {
   borderSize: string = "5";
   transformationValue: string = "aucun";
   location: string = "dans";
+  bottomTop:string = "bottom"
 
   constructor(public editionService: EditionService,
               public router: Router) { }
@@ -68,6 +69,10 @@ export class LayoutComponent implements OnInit {
   wordLocation(buton: MatRadioButton) {
     this.location = buton.value;
     this.editionService.location = this.location;
+  }
+  wordBottomTop(buton: MatRadioButton) {
+    this.bottomTop = buton.value;
+    this.editionService.bottomTop = this.bottomTop;
   }
 
   reset(){

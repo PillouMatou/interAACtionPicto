@@ -18,6 +18,8 @@
     </mat-form-field>
     <h3> Couleur de police </h3>
     <input [(colorPicker)]="this.editionService.policeColor" [style.background]="this.editionService.policeColor" cpHeight="230px" cpPosition="top-right"/>
+    <br>
+    <br>
     <h3> Transformation </h3>
     <mat-radio-group>
       <mat-radio-button #aucun (change)="transformation(aucun)" class="margin-right" value="aucun" [checked]="true">Aucun</mat-radio-button>
@@ -35,9 +37,9 @@
     <h3> Type de bordure </h3>
     <mat-form-field appearance="fill">
       <mat-label>type de bordure</mat-label>
-      <mat-select [(value)]="typeOfBorder">
+      <mat-select [(value)]="typeOfBorder" style="border-bottom-style: {{typeOfBorder}}">
         <mat-option value="none">aucun</mat-option>
-        <mat-option value="solid"><div style="border-top-style: solid;"></div></mat-option>
+        <mat-option value="solid"><div class="mat-row" style="border-top-style: solid;"></div></mat-option>
         <mat-option value="dotted"><div style="border-top-style: dotted;"></div></mat-option>
         <mat-option value="dashed"><div style="border-top-style: dashed;"></div></mat-option>
         <mat-option value="double"><div style="border-top-style: double;"></div></mat-option>
@@ -46,10 +48,18 @@
     <h3> Taille de bordure <input #borderSizeInput type="number" max="50" min="1" value="{{defaultBorderSize}}" (change)="borderSize= borderSizeInput.value"></h3>
     <h3> Couleur de bordure </h3>
     <input [(colorPicker)]="this.editionService.curentBorderColor" [style.background]="this.editionService.curentBorderColor" cpHeight="230px" cpPosition="top-right"/>
-    <h3> écriture dans le pictogramme </h3>
+    <br>
+    <br>
+    <h3> Ecriture dans le pictogramme </h3>
     <mat-radio-group name="labelPosition">
       <mat-radio-button #dans (change)="wordLocation(dans)" class="margin-right" value="dans" [checked]="true">Mots dans les pictogrammes</mat-radio-button>
       <mat-radio-button #dehors (change)="wordLocation(dehors)" value="dehors" [checked]="false">Mots en dehors des pictogrammes</mat-radio-button>
+    </mat-radio-group>
+    <br>
+    <br>
+    <mat-radio-group name="labelBottomTop">
+      <mat-radio-button #bottom (change)="wordBottomTop(bottom)" class="margin-right" value="bottom" [checked]="true">Mots en bas du pictogramme</mat-radio-button>
+      <mat-radio-button #top (change)="wordBottomTop(top)" value="top" [checked]="false">Mots en haut du pictogramme</mat-radio-button>
     </mat-radio-group>
   </mat-expansion-panel>
   <br>

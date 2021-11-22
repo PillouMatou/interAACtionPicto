@@ -4,7 +4,7 @@
 <mat-grid-list cols="{{this.editionService.numberOfCols}}" rowHeight="2:1">
   <mat-grid-tile *ngFor="let carousel of this.editionService.result;let index = index">
     <div class="pictoPDF">
-      <div *ngIf="editionService.location === 'dans'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
+      <div *ngIf="editionService.location === 'dans' && editionService.bottomTop === 'bottom'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
         <div class="ImgPictoPDF">
           <img src="{{this.editionService.imageSelected[index]}}" alt="" height="{{heightWidthPicto()}}" width="{{heightWidthPicto()}}">
         </div>
@@ -15,17 +15,44 @@
           {{this.editionService.wordsText[index].text}}
         </div>
       </div>
-      <div *ngIf="editionService.location === 'dehors'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
+
+      <div *ngIf="editionService.location === 'dehors' && editionService.bottomTop === 'bottom'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
         <div class="ImgPictoPDF">
           <img src="{{this.editionService.imageSelected[index]}}" alt="" height="{{heightWidthPicto()}}" width="{{heightWidthPicto()}}">
         </div>
       </div>
-      <div class="labelPictoPDF" *ngIf="editionService.transformationValue === 'capitale' && editionService.location === 'dehors'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+      <div class="labelPictoPDF" *ngIf="editionService.transformationValue === 'capitale' && editionService.location === 'dehors' && editionService.bottomTop === 'bottom'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
         {{this.editionService.wordsText[index].text | titlecase}}
       </div>
-      <div class="labelPictoPDF" *ngIf="editionService.transformationValue !== 'capitale' && editionService.location === 'dehors'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+      <div class="labelPictoPDF" *ngIf="editionService.transformationValue !== 'capitale' && editionService.location === 'dehors' && editionService.bottomTop === 'bottom'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
         {{this.editionService.wordsText[index].text}}
       </div>
+
+      <div *ngIf="editionService.location === 'dans' && editionService.bottomTop === 'top'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
+        <div class="labelPictoPDF" *ngIf="editionService.transformationValue === 'capitale' " [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+          {{this.editionService.wordsText[index].text | titlecase}}
+        </div>
+        <div class="labelPictoPDF" *ngIf="editionService.transformationValue !== 'capitale' " [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+          {{this.editionService.wordsText[index].text}}
+        </div>
+        <div class="ImgPictoPDF">
+          <img src="{{this.editionService.imageSelected[index]}}" alt="" height="{{heightWidthPicto()}}" width="{{heightWidthPicto()}}">
+        </div>
+      </div>
+
+      <div class="labelPictoPDF" *ngIf="editionService.transformationValue === 'capitale' && editionService.location === 'dehors' && editionService.bottomTop === 'top'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+        {{this.editionService.wordsText[index].text | titlecase}}
+      </div>
+      <div class="labelPictoPDF" *ngIf="editionService.transformationValue !== 'capitale' && editionService.location === 'dehors' && editionService.bottomTop === 'top'" [ngStyle]="{'font-family': this.editionService.police,'font-size':this.editionService.policeSize + 'px','color':this.editionService.policeColor}">
+        {{this.editionService.wordsText[index].text}}
+      </div>
+      <div *ngIf="editionService.location === 'dehors' && editionService.bottomTop === 'top'" [ngStyle]="{'border': this.editionService.borderSize+ 'px ' + this.editionService.typeOfBorder + ' ' + this.editionService.curentBorderColor}">
+        <div class="ImgPictoPDF">
+          <img src="{{this.editionService.imageSelected[index]}}" alt="" height="{{heightWidthPicto()}}" width="{{heightWidthPicto()}}">
+        </div>
+      </div>
+
+
     </div>
   </mat-grid-tile>
 </mat-grid-list>

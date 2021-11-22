@@ -5,10 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class EditionService {
 
-
-
   constructor() { }
 
+  bottomTop: string = "bottom";
   location: string = "dans";
 
   isSearch:boolean = false;

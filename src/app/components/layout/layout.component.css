@@ -27,4 +27,6 @@
 .labelPicto{
   text-align: center;
 }
-
+.mat-row {
+  border-bottom-width: 10px;
+}
