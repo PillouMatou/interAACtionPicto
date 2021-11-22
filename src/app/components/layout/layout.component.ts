@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {EditionService} from "../../services/edition-service";
 import {MatRadioButton} from "@angular/material/radio";
 import {Router} from "@angular/router";
+import {MatExpansionPanel} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-layout',
@@ -83,5 +84,11 @@ export class LayoutComponent implements OnInit {
     this.borderSize = "5";
     this.transformationValue = "aucun";
     this.location = "dans";
+  }
+
+  scrollToBottom(expansionPanel: MatExpansionPanel){
+    let goTo = document.getElementById(expansionPanel.id);
+    // @ts-ignore
+    goTo.scrollIntoView(true);
   }
 }

@@ -1,6 +1,6 @@
 <!-- *ngIf="this.editionService.isSearch" -->
 <div class="margin" *ngIf="this.editionService.isSearch">
-  <mat-expansion-panel>
+  <mat-expansion-panel #expansionPanel (click)="scrollToBottom(expansionPanel)">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2> Police </h2>
@@ -28,7 +28,7 @@
       <mat-radio-button #capitale (change)="transformation(capitale)" value="capitale" [checked]="false">Capitale</mat-radio-button>
     </mat-radio-group>
   </mat-expansion-panel>
-  <mat-expansion-panel>
+  <mat-expansion-panel #expansionPanel2 (click)="scrollToBottom(expansionPanel2)">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2> Bordure </h2>
