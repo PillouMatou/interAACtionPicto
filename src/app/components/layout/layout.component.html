@@ -65,17 +65,21 @@
   <br>
   <br>
   <h2>Résultat de la sélection</h2>
-  <div class="picto" *ngFor="let carousel of this.editionService.result;let index = index">
-    <div class="ImgPicto margin-right">
-      <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
-    </div>
-    <div class="labelPicto" *ngIf="transformationValue !== 'capitale' ">
-      {{this.editionService.wordsText[index].text}}
-    </div>
-    <div class="labelPicto" *ngIf="transformationValue === 'capitale' ">
-      {{this.editionService.wordsText[index].text | titlecase}}
-    </div>
-  </div>
+  <mat-grid-list cols="7" rowHeight="250px">
+    <mat-grid-tile *ngFor="let carousel of this.editionService.result;let index = index">
+      <div class="picto">
+        <div class="margin-right">
+          <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
+        </div>
+        <div class="labelPicto" *ngIf="transformationValue !== 'capitale' ">
+          {{this.editionService.wordsText[index].text}}
+        </div>
+        <div class="labelPicto" *ngIf="transformationValue === 'capitale' ">
+          {{this.editionService.wordsText[index].text | titlecase}}
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
   <h2>Création du PDF</h2>
   <mat-radio-group name="pictoPerLine">
     <mat-radio-button #twoPicto (change)="numberOfPictoPerLines(twoPicto)" class="margin-right" value="2" [checked]="true">2 pictogrammes par lignes </mat-radio-button>
