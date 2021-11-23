@@ -9,7 +9,6 @@ export class SaveDataService {
   constructor() { }
 
   addDataSearched(wordsText: any[]) {
-    console.log('wordsText',wordsText);
     wordsText.forEach(list => {
       const indexData = this.dataSearch.findIndex((listData) => listData.label === list.text);
       if(indexData !== -1){
@@ -19,6 +18,5 @@ export class SaveDataService {
         this.dataSearch.push({nombre: 1, label: list.text});
       }
     });
-    console.log('datasearch : ',this.dataSearch);
   }
 }

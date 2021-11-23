@@ -215,6 +215,7 @@ function sentenceToSynsets(toolbox, text) {
 	let definitions = {};
 	let stop = 0;
 	for (let t in tokenized) {
+	  console.log('nouveau mot');
 		let token = tokenized[t];
 		let i = text.slice(stop).indexOf(token);
 		if (i == -1) console.error('A token was not found in original input:', text, token);
@@ -226,15 +227,19 @@ function sentenceToSynsets(toolbox, text) {
 			token = toolbox.variations.get(token);
 			if (token === undefined) continue;
 			synsets = toolbox.synsets.get(token);
-			if (synsets === undefined) continue;
+			if (synsets === undefined){
+			  synsets = [''];
+      }
 		}
-		if (toolbox.stopList.indexOf(token) != -1) continue;
+		// console.log('avant le push : ', toolbox.stopList.indexOf(token) != -1);
+		// if (toolbox.stopList.indexOf(token) != -1) continue;
 		tokens.push({ start, stop, synsets });
 		for (let s in synsets) {
 			let synset = synsets[s];
 			definitions[synset] = define(toolbox.definitions, synset);
 		}
 	}
+	console.log('tokens',tokens);
 	return JSON.stringify({ tokens, definitions });
 }
 

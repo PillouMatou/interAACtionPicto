@@ -185,7 +185,6 @@ function monitorInput(textInput, lang) {
   // lang = 'fra';
   if (!textUpdated) return;
   let currentText = textInput.replace(/\n|\s{2,}/g, ' ').replace(/^\s/, '');
-
   sentenceInput = currentText;
   text = currentText;
 

@@ -66,6 +66,7 @@ export class TranslatePictoComponent implements OnInit {
       if(this.dataRegisterChecked){
         this.saveData.addDataSearched(this.editionService.wordsText);
       }
+      this.debug();
     },100);
   }
 
@@ -142,10 +143,13 @@ export class TranslatePictoComponent implements OnInit {
 
   select(image: string,index: number) {
     this.editionService.imageSelected[index] = image;
-    console.log('image selected : ', this.editionService.imageSelected);
   }
 
   dataRegister(data: HTMLInputElement) {
     this.dataRegisterChecked = data.checked;
+  }
+
+  private debug() {
+    console.log('result', this.editionService.result);
   }
 }
