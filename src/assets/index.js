@@ -194,14 +194,12 @@ function monitorInput(textInput, lang) {
 
 // called on api response with tokenization results
 function tokenized(result) {
-  // setVisibility(loadingIndicator, false);
   if (result === undefined) return networkError();
   tokens = result.tokens;
-  // textHighlights.textContent = "";
   // meaningsList.textContent = "";
-  // let len = selectedMeanings.length;
-  // selectedMeanings.length = tokens.length;
-  // selectedMeanings.fill(0, len);
+  let len = selectedMeanings.length;
+  selectedMeanings.length = tokens.length;
+  selectedMeanings.fill(0, len);
   let lastStop = 0;
   for (let t in tokens) {
     let meaning = tokens[t];

@@ -223,16 +223,20 @@ function sentenceToSynsets(toolbox, text) {
 		stop = start + token.length;
 		token = token.toLowerCase();
 		let synsets = toolbox.synsets.get(token);
-		if (synsets === undefined) {
-			token = toolbox.variations.get(token);
-			if (token === undefined) continue;
-			synsets = toolbox.synsets.get(token);
-			if (synsets === undefined){
-			  synsets = [''];
+    if(synsets === undefined){
+      for(let i = 0; i < 3; i++){
+        token = toolbox.variations.get(token);
+        if (token !== undefined){
+          synsets = toolbox.synsets.get(token);
+        }
+        if(synsets !== undefined) {
+          break;
+        }
       }
-		}
-		// console.log('avant le push : ', toolbox.stopList.indexOf(token) != -1);
-		// if (toolbox.stopList.indexOf(token) != -1) continue;
+    }
+    if(synsets === undefined){
+      synsets = ['herb.n.01'];
+    }
 		tokens.push({ start, stop, synsets });
 		for (let s in synsets) {
 			let synset = synsets[s];

@@ -59,6 +59,7 @@ export class TranslatePictoComponent implements OnInit {
         this.resultTab = [];
       }
       this.wordsText = getTokensForTS();
+      console.log('wordstext', this.wordsText);
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
       this.addWordsIfNeeded();
