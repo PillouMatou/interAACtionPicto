@@ -188,7 +188,6 @@ function monitorInput(textInput, lang) {
   sentenceInput = currentText;
   text = currentText;
 
-  // setVisibility(loadingIndicator, true);
   this.tokenize(currentText, lang, tokenized);
 }
 
@@ -229,10 +228,7 @@ function addSentencePart(text, tokenIndex) {
     partElement.classList.add('token');
     partElement.classList.add('token-' + tokenIndex.toString());
     partElement.innerText = text;
-  } else {
-    partElement = document.createTextNode(text);
   }
-  // textHighlights.appendChild(partElement);
 }
 
 // adds a new meaning to the meanings list, containing the relevant token
@@ -290,20 +286,12 @@ function onMeaningSelection(e) {
 // called when the pictogram list needs to be refreshed,
 // either on user input or when meanings were received.
 function refreshPictograms() {
-  // let checkedMeanings = document.querySelectorAll('.token-input:checked');
   let synsets = tokens.map((token, t) => {
     let s = selectedMeanings[t];
     return token.synsets[0];
   });
-  /* pictoGroups.textContent = '';
-  let exprList = document.createElement('div');
-  exprList.classList.add('b-right');
-  exprList.classList.add('mb-bottom');
-  pictoGroups.appendChild(exprList);
-   */
   if (synsets.length > 0) {
-    // setVisibility(loadingIndicator, true);
-    this.pictograms(synsets, pictogramsReceived);
+    this.pictograms(synsets,pictogramsReceived);
   }
 }
 
@@ -317,8 +305,8 @@ function relevanceComparator(a, b) {
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
 function pictogramsReceived(pictograms) {
-  // setVisibility(loadingIndicator, false);
   if (pictograms === undefined) return networkError();
+  console.log('pictograms : ', pictograms);
   let expressions = {};
   for (let p in pictograms) {
     let pictoData = pictograms[p];
@@ -331,35 +319,12 @@ function pictogramsReceived(pictograms) {
     if (key in expressions) expressions[key].push([relevance, p]);
     else expressions[key] = [[relevance, p]];
   }
-  // let exprList = pictoGroups.children[0];
   if (selectedLibrary === undefined || expressions[selectedLibrary] === undefined) {
     selectedLibrary = Object.keys(expressions)[0];
   }
   for (key in expressions) {
     let pictograms = expressions[key];
     pictograms.sort(relevanceComparator);
-    let indexes = key.split('-');
-    let text = indexes.map(i => tokens[parseInt(i)].text);
-    let button = document.createElement('button');
-    button.innerText = text.join(', ') + ' (' + pictograms.length + ')';
-    button.id = 'group-' + key;
-    button.addEventListener('click', selectPictoGroup);
-    button.classList.add('token');
-    button.classList.add('mb-right');
-    for (let i in indexes) {
-      button.classList.add('token-' + indexes[i]);
-    }
-    // exprList.appendChild(button);
-
-    let library = document.createElement('div');
-    library.id = 'library-' + key;
-    library.classList.add('picto-library');
-    if (key === selectedLibrary) {
-      library.classList.add('selected-library');
-      button.classList.add('selected-group');
-    }
-    library.addEventListener('wheel', scrollHorizontally);
-    // pictoGroups.appendChild(library);
     let urlImage = [];
     let keyImage = [];
     for (let p in pictograms) {
@@ -373,7 +338,6 @@ function pictogramsReceived(pictograms) {
       keyImage.push(key);
       picto.addEventListener('dragstart', pictoDragStart);
       picto.addEventListener('click', pictoClick);
-      library.appendChild(picto);
     }
     saveKeyPicto(keyImage);
     saveUrlPicto(urlImage);

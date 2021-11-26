@@ -206,7 +206,23 @@ function synsetsToPictogram(synsetsStr) {
 			}
 		}
 	}
+	console.log('results dans lancienne fonction : ', results);
 	return JSON.stringify(results);
+}
+
+function wordSynsetAndVariation(toolbox,token){
+  let synsets = toolbox.synsets.get(token);
+  for(let i = 0; i < 3; i++){
+    token = toolbox.variations.get(token);
+    if (token !== undefined){
+      let variationSynsets = toolbox.synsets.get(token);
+      variationSynsets.forEach(synset => synsets.push(synset))
+    }
+    if(token === undefined){
+      break;
+    }
+  }
+  return synsets;
 }
 
 function sentenceToSynsets(toolbox, text) {
@@ -222,6 +238,8 @@ function sentenceToSynsets(toolbox, text) {
 		let start = stop + i;
 		stop = start + token.length;
 		token = token.toLowerCase();
+		// avec la fonction on choisi de récupérer les variants avec leur synsets
+    //let synsets = wordSynsetAndVariation(toolbox,token);
 		let synsets = toolbox.synsets.get(token);
     if(synsets === undefined){
       for(let i = 0; i < 3; i++){
@@ -243,8 +261,34 @@ function sentenceToSynsets(toolbox, text) {
 			definitions[synset] = define(toolbox.definitions, synset);
 		}
 	}
-	console.log('tokens',tokens);
+	console.log('tokens : ',tokens);
 	return JSON.stringify({ tokens, definitions });
+}
+
+function sentenceToPictogram(toolbox,text){
+  let tokenized = toolbox.tokenizer.tokenize(text);
+  console.log('tokenized',tokenized);
+  let results = {};
+  for (let b in pictograms) {
+    let bank = pictograms[b];
+    for (let t in tokenized) {
+      let tIdx = parseInt(tokenized[t]);
+      let indexToken = bank.names.findIndex(name => tokenized[t] === name);
+      let corresponding = bank.names[indexToken];
+      console.log('corresponding', corresponding);
+      if (corresponding === undefined) continue;
+      for (let c in corresponding) {
+        let p = 'p/' + b + '/' + indexToken.toString();
+        if (p in results) {
+          results[p].push(tIdx)
+        }else{
+          results[p] = [tIdx];
+        }
+      }
+    }
+  }
+  console.log('results dans la nouvelle fonction : ', results);
+  return JSON.stringify(results);
 }
 
 function feedTranslationToStorage(user, data) {
@@ -284,7 +328,8 @@ function appGetToolbox(path, then) {
 
 // sentence to synsets
 // example: /t2s/eng/Brian%20is%20in%20the%20kitchen
-appGetToolbox('/t2s/:lang/:text', (q, r, t) => r.send(sentenceToSynsets(t, q.params.text)));
+// appGetToolbox('/t2s/:lang/:text', (q, r, t) => r.send(sentenceToSynsets(t, q.params.text)));
+appGetToolbox('/t2s/:lang/:text', (q, r, t) => r.send(sentenceToPictogram(t, q.params.text)));
 
 // get a pictogram
 // example: /p/arasaac/35
