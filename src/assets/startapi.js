@@ -114,12 +114,12 @@ function revokeContribution(sessionId, timestamp, user, file) {
 
 function setAdd(set, element) {
 	if (set.indexOf(element) === -1) set.push(element);
-};
+}
 
 function setRem(set, element) {
 	let idx = set.indexOf(element);
 	if (idx !== -1) set.splice(idx, 1);
-};
+}
 
 // ADMIN FUNCTIONS
 
@@ -206,7 +206,6 @@ function synsetsToPictogram(synsetsStr) {
 			}
 		}
 	}
-	console.log('results dans lancienne fonction : ', results);
 	return JSON.stringify(results);
 }
 
@@ -231,7 +230,7 @@ function sentenceToPictogram(toolbox,text){
   for (let b in pictograms) {
     let bank = pictograms[b];
     for (let t in tokenized) {
-      let tIdx = parseInt(tokenized[t]);
+      let tIdx = parseInt(t);
       let indexToken = bank.names.findIndex(name => tokenized[t] === name);
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
@@ -239,7 +238,7 @@ function sentenceToPictogram(toolbox,text){
       if (p in results) {
         results[p].push(tIdx);
       }else{
-        results[p] = [1,0];
+        results[p] = [1,tIdx];
       }
     }
   }
@@ -262,6 +261,7 @@ function sentenceToSynsets(toolbox, text) {
 		// avec la fonction on choisi de récupérer les variants avec leur synsets
     //let synsets = wordSynsetAndVariation(toolbox,token);
 		let synsets = toolbox.synsets.get(token);
+		/*
     if(synsets === undefined){
       for(let i = 0; i < 3; i++){
         token = toolbox.variations.get(token);
@@ -273,10 +273,9 @@ function sentenceToSynsets(toolbox, text) {
         }
       }
     }
-    if(synsets === undefined){
-      synsets = ['herb.n.01'];
-    }
+		 */
 		tokens.push({ start, stop, synsets });
+		if(synsets === undefined) continue;
 		for (let s in synsets) {
 			let synset = synsets[s];
 			definitions[synset] = define(toolbox.definitions, synset);
@@ -324,7 +323,10 @@ function appGetToolbox(path, then) {
 // sentence to synsets
 // example: /t2s/eng/Brian%20is%20in%20the%20kitchen
 appGetToolbox('/t2s/:lang/:text', (q, r, t) => r.send(sentenceToSynsets(t, q.params.text)));
-// appGetToolbox('/t2s/:lang/:text', (q, r, t) => r.send(sentenceToPictogram(t, q.params.text)));
+
+// sentence to pictograms
+// example: /t2p/eng/Brian%20is%20in%20the%20kitchen
+appGetToolbox('/t2p/:lang/:text', (q, r, t) => r.send(sentenceToPictogram(t, q.params.text)));
 
 // get a pictogram
 // example: /p/arasaac/35

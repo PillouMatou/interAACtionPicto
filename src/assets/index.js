@@ -51,88 +51,6 @@ var internationalization = {
   }
 };
 
-function onBodyLoad() {
-  languageSelect = document.getElementById('language-select');
-  sentenceInput = document.getElementById('sentence-input');
-  textHighlights = document.getElementById('text-highlights');
-  meaningsList = document.getElementById('meanings-list');
-  highlitTokenCss = document.getElementById('highlit-token-css');
-  pictoGroups = document.getElementById('picto-groups');
-  pictoSentence = document.getElementById('picto-sentence');
-  loadingIndicator = document.getElementById('loading-indicator');
-  uploadButton = document.getElementById('upload-translation');
-  sentenceAlternative = document.getElementById('sentence-alternative');
-  let mobileSwitchViewButton = document.getElementById('mobile-switch-view');
-  let missingEntitySelect = document.getElementById('missing-entity');
-
-  let param = window.location.search.substring(1);
-  if (param.length) {
-    try {
-      let [language, sentence] = param.split(':');
-      languageSelect.value = language;
-      sentenceInput.value = atob(sentence);
-    } catch (e) {
-      // fail silently
-    }
-  }
-
-  missingEntitySelect.value = 'none';
-  trash = document.getElementById('trash');
-  setInterval(monitorInput, 500);
-  sentenceInput.addEventListener('keydown', notifyTextUpdate);
-  languageSelect.addEventListener('change', changeLanguage);
-  missingEntitySelect.addEventListener('change', reportMissingEntity);
-  pictoSentence.addEventListener('dragover', allowDrag);
-  pictoSentence.addEventListener('drop', pictoSentenceDrop);
-  trash.addEventListener('dragover', allowDrag);
-  trash.addEventListener('click', trashClick);
-  trash.addEventListener('drop', trashDrop);
-  uploadButton.addEventListener('click', uploadTranslation);
-  pictoSentence.addEventListener('wheel', scrollHorizontally);
-  mobileSwitchViewButton.addEventListener('click', mobileSwitchView);
-  document.documentElement.addEventListener('mousemove', highlightToken);
-  changeLanguage();
-}
-
-// tell the user there has been a problem
-function networkError() {
-  alert(internationalization[lang]['_network-error']);
-}
-
-// callback of the "Mode 🗘" button visible on mobile clients
-// we detect mobile clients when they press this button,
-// because they are required to press it at least once before
-// they can assemble pictograms
-function mobileSwitchView() {
-  mobile = true;
-  document.body.classList.toggle('m-view-sentence');
-}
-
-// callback of the "Report" buttons
-function reportMissingEntity(e) {
-  if (e.target.value == 'none') return;
-  let p = internationalization[lang]['_missing-comment'];
-  let comment = prompt(p); // the user can cancel here
-  if (comment !== null) {
-    setVisibility(loadingIndicator, true);
-    this.report(e.target.value, lang, text, comment, issueReported);
-  }
-  e.target.value = 'none';
-}
-
-// network callback (user report uploaded)
-function issueReported(e) {
-  if (e === undefined) return networkError();
-  setVisibility(loadingIndicator, false);
-  alert(internationalization[lang]['_missing-thanks']);
-}
-
-// utility function to control elements visibility
-function setVisibility(e, shown) {
-  if (shown) e.classList.add('shown');
-  else e.classList.remove('shown');
-}
-
 // called when the user selects an option in the language menu
 function changeLanguage() {
   lang = languageSelect.value;
@@ -143,31 +61,6 @@ function changeLanguage() {
     document.getElementById(id_and_prop[0])[id_and_prop[1]] = texts[i];
   }
   textUpdated = true;
-}
-
-// called on user keypress in the text field
-function notifyTextUpdate(e) {
-  textHighlights.textContent = "";
-  textUpdated = true;
-}
-
-// called when user moves the mouse cursor
-// highlights related UI parts
-function highlightToken(e) {
-  let target = e.target;
-  if (target && target.classList.contains('token')) {
-    let selectors = [];
-    let classes = Array.from(target.classList);
-    for (let i in classes) {
-      let parts = classes[i].split('-');
-      if (parts.length != 2) continue;
-      selectors.push('.token-' + parts[1]);
-    }
-    let css = selectors.join(', ') + ' { background-color: teal !important; }';
-    highlitTokenCss.textContent = css;
-  } else {
-    highlitTokenCss.textContent = '';
-  }
 }
 
 function getTokens(tokens){
@@ -188,12 +81,25 @@ function monitorInput(textInput, lang) {
   sentenceInput = currentText;
   text = currentText;
 
-  this.tokenize(currentText, lang, tokenized);
+  // test
+  // this.pictogramsFromName(currentText, lang, pictogramsReceived);
+
+  this.tokenize(currentText,lang,tokenizedAndPicto);
+
+  // this.tokenize(currentText, lang, tokenized);
+}
+
+function tokenizedAndPicto(result){
+  tokens = result.tokens;
+  console.log(tokens,tokens)
+  getTokens(tokens);
+  console.log('text : ', text);
+  lang = "fra";
+  this.pictogramsFromName(text, lang, pictogramsReceived);
 }
 
 // called on api response with tokenization results
 function tokenized(result) {
-  if (result === undefined) return networkError();
   tokens = result.tokens;
   // meaningsList.textContent = "";
   let len = selectedMeanings.length;
@@ -287,11 +193,16 @@ function onMeaningSelection(e) {
 // either on user input or when meanings were received.
 function refreshPictograms() {
   let synsets = tokens.map((token, t) => {
+    console.log('token refreshPicto : ', token);
     let s = selectedMeanings[t];
     return token.synsets[0];
   });
   if (synsets.length > 0) {
     this.pictograms(synsets,pictogramsReceived);
+  }else{
+    tokens.map((token, t) => {
+      pictogramsFromName(token.text,lang);
+    });
   }
 }
 
@@ -305,8 +216,7 @@ function relevanceComparator(a, b) {
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
 function pictogramsReceived(pictograms) {
-  if (pictograms === undefined) return networkError();
-  console.log('pictograms : ', pictograms);
+  // console.log('pictograms : ', pictograms);
   let expressions = {};
   for (let p in pictograms) {
     let pictoData = pictograms[p];
@@ -336,8 +246,6 @@ function pictogramsReceived(pictograms) {
       picto.dataset.url = url;
       urlImage.push(url);
       keyImage.push(key);
-      picto.addEventListener('dragstart', pictoDragStart);
-      picto.addEventListener('click', pictoClick);
     }
     saveKeyPicto(keyImage);
     saveUrlPicto(urlImage);
@@ -357,148 +265,6 @@ function saveUrlPicto(urlImage){
 
 function getUrlPicto(){
   return urlImageJS;
-}
-
-// on library pictogram click, add the pictogram to the
-// pictogram sentence
-function pictoClick(e) {
-  let copy = e.target.cloneNode();
-  addSentenceEvents(copy);
-  pictoSentence.appendChild(copy);
-  refreshUploadButton();
-}
-
-// on sentence pictogram click, remove the pictogram from
-// the pictogram sentence
-function pictoDelete(e) {
-  e.target.remove();
-  refreshUploadButton();
-}
-
-// remember from which pictogram the drag was originated
-function pictoDragStart(e) {
-  dragged = e.target;
-}
-
-// add various drag event callbacks to a pictogram
-// (called indirectly when a pictogram is inserted in
-// the pictogram sentence)
-function addSentenceEvents(picto) {
-  picto.removeEventListener('click', pictoClick);
-  picto.addEventListener('click', pictoDelete);
-  picto.addEventListener('dragstart', pictoDragStart);
-  picto.addEventListener('dragover', allowDrag);
-  picto.addEventListener('drop', dropOnPicto);
-}
-
-// when the user drops a pictogram on the pictogram sentence
-function pictoSentenceDrop(e) {
-  e.preventDefault();
-  if (dragged !== undefined) {
-    moveToPicto(null);
-  }
-}
-
-// when the user drops a pictogram on another pictogram,
-// which is also in the pictogram sentence
-function dropOnPicto(e) {
-  e.preventDefault();
-  moveToPicto(e.target);
-  dragged = undefined;
-}
-
-// when the user drops a pictogram on the trashcan
-function trashDrop(e) {
-  e.preventDefault();
-  if (dragged.parentElement == pictoSentence) {
-    dragged.remove();
-    dragged = undefined;
-  }
-  refreshUploadButton();
-}
-
-// when the trashcan is clicked, empty the pictogram sentence
-function trashClick(e) {
-  pictoSentence.textContent = '';
-  refreshUploadButton();
-}
-
-// utility function to move the dragged pictogram somewhere in
-// the pictogram sentence
-function moveToPicto(picto) {
-  if (dragged.parentElement != pictoSentence) {
-    dragged = dragged.cloneNode();
-    addSentenceEvents(dragged);
-  } else {
-    if (picto) {
-      let nodes = pictoSentence.children;
-      let i = Array.prototype.indexOf.call(nodes, dragged);
-      let j = Array.prototype.indexOf.call(nodes, picto);
-      if (i < j) picto = picto.nextElementSibling;
-    }
-  }
-  pictoSentence.insertBefore(dragged, picto);
-  refreshUploadButton();
-}
-
-// tell the browser this element accepts drag from everything
-function allowDrag(e) {
-  e.preventDefault();
-}
-
-// refresh the upload button's availability: if the pictogram
-// sentence is empty, it should not be available.
-function refreshUploadButton() {
-  let shown = pictoSentence.childElementCount != 0;
-  setVisibility(uploadButton, shown);
-}
-
-// allows the user to scroll horizontally in pictogram libraries
-function scrollHorizontally(e) {
-  let element = e.target;
-  while (!element.classList.contains('picto-library')) {
-    element = element.parentElement;
-  }
-  element.scrollLeft += e.deltaY * 5;
-}
-
-// toggle libraries and buttons visibility (see next function)
-function switchSelected(newSelected, className) {
-  let current = document.querySelector('.' + className);
-  current.classList.remove(className);
-  newSelected.classList.add(className);
-}
-
-// switch from one visible pictogram library to another,
-// using the buttons located to the center/left
-function selectPictoGroup(e) {
-  let ps = 'selected-library';
-  let group = e.target.id;
-  selectedLibrary = group.split('-')[1];
-  let library = group.replace('group', 'library');
-  current = document.getElementById(library);
-  switchSelected(current, ps);
-  switchSelected(e.target, 'selected-group');
-}
-
-// callback of the "Upload translation" button: upload
-// the translation using the API.
-function uploadTranslation(e) {
-  let images = Array.from(pictoSentence.children);
-  let pictograms = images.map(img => [img.dataset.key.split('-').map(key => {
-    let i = parseInt(key);
-    return tokens[i].synsets[selectedMeanings[i]];
-  }).join('-'), img.dataset.url]);
-  setVisibility(loadingIndicator, true);
-  let alt = sentenceAlternative.value;
-  this.feed(mobile, lang, text, alt, pictograms, translationUploaded);
-}
-
-// network callback on API response from translation upload requests.
-function translationUploaded(e) {
-  setVisibility(loadingIndicator, false);
-  if (e === undefined) return networkError();
-  alert(internationalization[lang]['_missing-thanks']);
 }
 
 function _phoneHome(path, callback, error) {
@@ -521,6 +287,11 @@ function _encode(text) {
 // PUBLIC ENDPOINTS
 function tokenize(sentence, language, callback, error) {
   let path = ['t2s', language, this._encode(sentence)];
+  this._phoneHome(path, callback, error);
+}
+
+function pictogramsFromName(sentence, language, callback, error) {
+  let path = ['t2p', language, this._encode(sentence)];
   this._phoneHome(path, callback, error);
 }
 
