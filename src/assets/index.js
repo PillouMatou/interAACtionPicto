@@ -91,9 +91,15 @@ function monitorInput(textInput, lang) {
 
 function tokenizedAndPicto(result){
   tokens = result.tokens;
-  console.log(tokens,tokens)
+  let lastStop = 0;
+  for (let t in tokens) {
+    let meaning = tokens[t];
+    let before = text.slice(lastStop, meaning.start);
+    let token = text.slice(meaning.start, meaning.stop);
+    tokens[t].text = token
+    lastStop = meaning.stop;
+  }
   getTokens(tokens);
-  console.log('text : ', text);
   lang = "fra";
   this.pictogramsFromName(text, lang, pictogramsReceived);
 }
@@ -113,70 +119,13 @@ function tokenized(result) {
     tokens[t].text = token;
 
     lastStop = meaning.stop;
-    addSentencePart(before, -1);
-    addSentencePart(token, t);
     if (selectedMeanings[t] >= meaning.synsets.length) {
       selectedMeanings[t] = 0;
     }
-    addTokenMeanings(token, t, result.definitions);
     // don't care about the last part because it would be invisible.
     getTokens(tokens);
   }
   refreshPictograms();
-}
-
-// adds a token or unrecognized text to the background of the sentence
-// input; this is what makes the meanings visual ('teal' background color)
-function addSentencePart(text, tokenIndex) {
-  let partElement;
-  if (tokenIndex != -1) {
-    partElement = document.createElement('u');
-    partElement.classList.add('token');
-    partElement.classList.add('token-' + tokenIndex.toString());
-    partElement.innerText = text;
-  }
-}
-
-// adds a new meaning to the meanings list, containing the relevant token
-// and its potential meanings
-function addTokenMeanings(tokenText, tokenIndex, definitions) {
-  let token = tokens[tokenIndex];
-  let name = 'token-' + tokenIndex.toString();
-  let details = document.createElement('details');
-  let summary = document.createElement('summary');
-  details.appendChild(summary);
-  for (let s in token.synsets) {
-    let synset = token.synsets[s];
-    let id = name + '-' + s.toString();
-    let input = document.createElement('input');
-    let label = document.createElement('label');
-    let content = document.createTextNode(definitions[synset]);
-    input.type = 'radio';
-    input.name = name;
-    input.classList.add('token-input');
-    input.addEventListener('click', onMeaningSelection);
-    input.id = id;
-    input.checked = s == selectedMeanings[tokenIndex];
-    label.htmlFor = id;
-    label.appendChild(input);
-    label.appendChild(content);
-    details.appendChild(label);
-  }
-  summary.innerText = tokenText + ' (' + token.synsets.length + ')';
-  summary.classList.add('token');
-  summary.classList.add(name);
-  details.classList.add(name);
-  details.id = name + '-meanings';
-  let open = openTokens[details.id];
-  details.open = open ? open : false;
-  summary.addEventListener('click', onToggleMeaning);
-  // meaningsList.appendChild(details);
-}
-
-// saving UI state (open meanings)
-function onToggleMeaning(e) {
-  let details = e.target.parentElement;
-  openTokens[details.id] ^= true;
 }
 
 // called when a meaning is selected, pictograms
