@@ -69,7 +69,8 @@
     <mat-grid-tile *ngFor="let carousel of this.editionService.result;let index = index">
       <div class="picto">
         <div class="margin-right">
-          <img src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
+          <input *ngIf="this.editionService.imageSelected[index] == undefined" type="file" (change)="onFileSelected($event, index)">
+          <img *ngIf="this.editionService.imageSelected[index] != undefined" src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
         </div>
         <div class="labelPicto" *ngIf="transformationValue !== 'capitale' ">
           {{this.editionService.wordsText[index].text}}

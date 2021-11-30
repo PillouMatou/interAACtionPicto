@@ -91,4 +91,19 @@ export class LayoutComponent implements OnInit {
     // @ts-ignore
     goTo.scrollIntoView(true);
   }
+
+  onFileSelected(event: any, index: number) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        this.editionService.imageSelected[index] = reader.result;
+      }
+    };
+
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
+  }
 }
