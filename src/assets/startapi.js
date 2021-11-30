@@ -185,6 +185,7 @@ function storeAndApplyUpdate(data) {
 	return ok;
 }
 
+// search and return all pictograms from synsets
 function synsetsToPictogram(synsetsStr) {
 	let synsets = synsetsStr.split('+');
 	let results = {};
@@ -209,6 +210,7 @@ function synsetsToPictogram(synsetsStr) {
 	return JSON.stringify(results);
 }
 
+// useless function atm
 function wordSynsetAndVariation(toolbox,token){
   let synsets = toolbox.synsets.get(token);
   for(let i = 0; i < 3; i++){
@@ -224,6 +226,7 @@ function wordSynsetAndVariation(toolbox,token){
   return synsets;
 }
 
+// search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text){
   let tokenized = toolbox.tokenizer.tokenize(text);
   let results = {};
@@ -246,6 +249,7 @@ function sentenceToPictogram(toolbox,text){
   return JSON.stringify(results);
 }
 
+// this function search synsets in the toolbox from the text wrote by the user
 function sentenceToSynsets(toolbox, text) {
 	let tokenized = toolbox.tokenizer.tokenize(text);
 	let tokens = [];

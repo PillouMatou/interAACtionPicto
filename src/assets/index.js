@@ -89,14 +89,14 @@ function monitorInput(textInput, lang) {
   // this.tokenize(currentText, lang, tokenized);
 }
 
+// called on api response with tokenization results
 function tokenizedAndPicto(result){
   tokens = result.tokens;
   let lastStop = 0;
   for (let t in tokens) {
     let meaning = tokens[t];
-    let before = text.slice(lastStop, meaning.start);
-    let token = text.slice(meaning.start, meaning.stop);
-    tokens[t].text = token
+    text.slice(lastStop, meaning.start);
+    tokens[t].text = text.slice(meaning.start, meaning.stop)
     lastStop = meaning.stop;
   }
   getTokens(tokens);
@@ -243,6 +243,7 @@ function tokenize(sentence, language, callback, error) {
   this._phoneHome(path, callback, error);
 }
 
+// use the function pictogramsFormName from the file : startapi.js
 function pictogramsFromName(sentence, language, callback, error) {
   let path = ['t2p', language, this._encode(sentence)];
   this._phoneHome(path, callback, error);
