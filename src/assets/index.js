@@ -216,6 +216,10 @@ function getUrlPicto(){
   return urlImageJS;
 }
 
+function clearUrlImageJS(){
+  urlImageJS = [];
+}
+
 function _phoneHome(path, callback, error) {
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();

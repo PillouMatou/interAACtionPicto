@@ -32,12 +32,8 @@ export class LayoutComponent implements OnInit {
     // recuperation de toutes les valeurs que j'aurai besoin pour la génération de PDF ou création du picto
     this.editionService.policeSize = Number(this.policeSize);
     this.editionService.police = this.police;
-    console.log('policeColor : ', this.editionService.policeColor);
-    console.log('transformation : ', this.transformationValue);
     this.editionService.typeOfBorder = this.typeOfBorder;
     this.editionService.borderSize = Number(this.borderSize);
-    console.log('borderColor : ', this.editionService.curentBorderColor);
-    console.log('location : ', this.location);
     this.editionService.location = this.location;
     this.router.navigate(['/print']);
   }

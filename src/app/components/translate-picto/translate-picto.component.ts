@@ -9,6 +9,7 @@ declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
 declare var getKeyPicto:any;
+declare var clearUrlImageJS:any;
 
 @Component({
   selector: 'app-translate-picto',
@@ -82,12 +83,18 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   resetRequest(){
+    clearUrlImageJS();
+    this.result = [];
+    this.result.length = 0;
     this.editionService.result = [];
     this.editionService.imageSelected = [];
-    this.result.length = 0;
+    this.displayResult = [];
     this.displayResult.length = 0;
+    this.keyPicto = [];
     this.keyPicto.length = 0;
+    this.wordSearch = '';
   }
+
   Download( url: any, filename: any ) {
     let setFetching = false;
     let setError = false;
