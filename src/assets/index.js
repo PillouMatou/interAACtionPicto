@@ -82,8 +82,6 @@ function monitorInput(textInput, lang) {
   text = currentText;
 
   // test
-  // this.pictogramsFromName(currentText, lang, pictogramsReceived);
-
   this.tokenize(currentText,lang,tokenizedAndPicto);
 
   // this.tokenize(currentText, lang, tokenized);

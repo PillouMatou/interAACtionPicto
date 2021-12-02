@@ -225,6 +225,27 @@ function wordSynsetAndVariation(toolbox,token){
   }
   return synsets;
 }
+// search with dichotomous method
+// it fail because the array is not sort for javascript, if we sort this array, the index of picto will not changed so we will have the wrong index
+function dichotomousInArray(array,name) {
+  console.log('search world petit , at the index 8711 : ',array[8711]);
+  array.sort();
+  console.log(array);
+  let start = 0;
+  let end = array.length - 1;
+  while(start < end){
+    const mid = Math.ceil((start + end) / 2);
+    console.log('mid',mid);
+    console.log('word : ',array[mid]);
+    if(array[mid] === name){
+      return mid;
+    } else if (array[mid] < name){
+      start = mid + 1;
+    } else {
+      end = mid - 1;
+    }
+  }
+}
 
 // search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text){
@@ -234,7 +255,9 @@ function sentenceToPictogram(toolbox,text){
     let bank = pictograms[b];
     for (let t in tokenized) {
       let tIdx = parseInt(t);
+      // let indexToken = dichotomousInArray(bank.names,tokenized[t]);
       let indexToken = bank.names.findIndex(name => tokenized[t] === name);
+      console.log('indexToken : ',indexToken);
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
       let p = 'p/' + b + '/' + indexToken.toString();

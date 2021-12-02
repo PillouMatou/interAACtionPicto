@@ -66,7 +66,10 @@ export class TranslatePictoComponent implements OnInit {
       this.addWordsIfNeeded();
       this.editionService.isSearch = true;
       if(this.dataRegisterChecked){
+        this.saveData.dataRegisterChecked = true;
         this.saveData.addDataSearched(this.editionService.wordsText);
+      }else{
+        this.saveData.dataRegisterChecked = false;
       }
       this.debug();
     },100);
