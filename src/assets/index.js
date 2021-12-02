@@ -120,7 +120,6 @@ function tokenized(result) {
     if (selectedMeanings[t] >= meaning.synsets.length) {
       selectedMeanings[t] = 0;
     }
-    // don't care about the last part because it would be invisible.
     getTokens(tokens);
   }
   refreshPictograms();
