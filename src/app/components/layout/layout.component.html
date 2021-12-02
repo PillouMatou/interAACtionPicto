@@ -23,7 +23,7 @@
     <h3> Transformation </h3>
     <mat-radio-group>
       <mat-radio-button #aucun (change)="transformation(aucun)" class="margin-right" value="aucun" [checked]="true">Aucun</mat-radio-button>
-      <mat-radio-button #minuscule (change)="transformation(minuscule)" value="minuscule" [checked]="false">Minuscule</mat-radio-button>
+      <mat-radio-button #minuscule (change)="transformation(minuscule)" class="margin-right" value="minuscule" [checked]="false">Minuscule</mat-radio-button>
       <mat-radio-button #majuscule (change)="transformation(majuscule)" class="margin-right" value="majuscule" [checked]="false">Majuscule</mat-radio-button>
       <mat-radio-button #capitale (change)="transformation(capitale)" value="capitale" [checked]="false">Capitale</mat-radio-button>
     </mat-radio-group>
