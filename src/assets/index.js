@@ -82,9 +82,9 @@ function monitorInput(textInput, lang) {
   text = currentText;
 
   // test
-  this.tokenize(currentText,lang,tokenizedAndPicto);
+  //this.tokenize(currentText,lang,tokenizedAndPicto);
 
-  // this.tokenize(currentText, lang, tokenized);
+  this.tokenize(currentText, lang, tokenized);
 }
 
 // called on api response with tokenization results
