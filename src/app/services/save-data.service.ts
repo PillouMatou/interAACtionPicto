@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SaveDataService {
+  dataRegisterChecked : boolean = false;
   dataSearch: Array<{nombre: number,label: string}> = [];
 
   constructor() { }

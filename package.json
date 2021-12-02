@@ -28,6 +28,7 @@
     "angular-responsive-carousel": "^2.1.2",
     "bootstrap": "^5.1.1",
     "concurrently": "^6.3.0",
+    "export-from-json": "^1.4.1",
     "express": "^4.17.1",
     "natural": "^5.1.1",
     "ngx-color-picker": "^11.0.0",

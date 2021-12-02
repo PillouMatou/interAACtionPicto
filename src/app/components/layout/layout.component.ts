@@ -3,6 +3,8 @@ import {EditionService} from "../../services/edition-service";
 import {MatRadioButton} from "@angular/material/radio";
 import {Router} from "@angular/router";
 import {MatExpansionPanel} from "@angular/material/expansion";
+import exportFromJSON from 'export-from-json';
+import {SaveDataService} from "../../services/save-data.service";
 
 @Component({
   selector: 'app-layout',
@@ -22,6 +24,7 @@ export class LayoutComponent implements OnInit {
   bottomTop:string = "bottom"
 
   constructor(public editionService: EditionService,
+              public saveDataService: SaveDataService,
               public router: Router) { }
 
   ngOnInit(): void {
@@ -35,6 +38,15 @@ export class LayoutComponent implements OnInit {
     this.editionService.typeOfBorder = this.typeOfBorder;
     this.editionService.borderSize = Number(this.borderSize);
     this.editionService.location = this.location;
+    if(this.saveDataService.dataRegisterChecked){
+      exportFromJSON({
+        data: [{word : this.editionService.wordsText}, this.editionService.imageSelected],
+        fileName: 'request',
+        extension: "json",
+        fields: {} ,
+        exportType: exportFromJSON.types.json
+      });
+    }
     this.router.navigate(['/print']);
   }
 
