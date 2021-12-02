@@ -24,6 +24,7 @@ import {MatSelectModule} from "@angular/material/select";
 import { SelectPictoComponent } from './components/select-picto/select-picto.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule} from "@angular/router";
+import { VersionComponent } from './components/version/version.component';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -35,7 +36,8 @@ export function createTranslateLoader(http: HttpClient) {
     TranslatePictoComponent,
     DialogMaxWordsComponent,
     LayoutComponent,
-    SelectPictoComponent
+    SelectPictoComponent,
+    VersionComponent
   ],
   imports: [
     TranslateModule.forRoot({
