@@ -75,7 +75,6 @@ var session = {
 	issues: fs.openSync(sessionPath + '/issues.json', 'w'),
 	updates: fs.openSync(sessionPath + '/updates.json', 'w')
 };
-var resultsPicto;
 
 function getContribution(sessionId, file) {
 	let content = [];
@@ -199,16 +198,17 @@ function synsetsToPictogram(synsetsStr) {
 			for (let c in corresponding) {
 				let i = corresponding[c];
 				let p = 'p/' + b + '/' + i.toString();
-				if (p in resultsPicto) {
-          resultsPicto[p].push(sIdx)
+				if (p in results) {
+          results[p].push(sIdx)
 				} else {
 					let count = bank.counts[i];
-          resultsPicto[p] = [count, sIdx];
+          results[p] = [count, sIdx];
 				}
 			}
 		}
 	}
-	return JSON.stringify(resultsPicto);
+	console.log('valeur de retour synsets to Pictogram : ',results);
+	return JSON.stringify(results);
 }
 
 // useless function atm
@@ -251,7 +251,7 @@ function dichotomousInArray(array,name) {
 // search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text){
   let tokenized = toolbox.tokenizer.tokenize(text);
-  // let results = {};
+  let results = {};
   for (let b in pictograms) {
     let bank = pictograms[b];
     for (let t in tokenized) {
@@ -262,15 +262,15 @@ function sentenceToPictogram(toolbox,text){
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
       let p = 'p/' + b + '/' + indexToken.toString();
-      if (p in resultsPicto) {
-        resultsPicto[p].push(tIdx);
+      if (p in results) {
+        results[p].push(tIdx);
       }else{
-        resultsPicto[p] = [1,tIdx];
+        results[p] = [1,tIdx];
       }
     }
   }
-  console.log('results dans la nouvelle fonction : ', resultsPicto);
-  return JSON.stringify(resultsPicto);
+  console.log('results dans la nouvelle fonction : ', results);
+  return JSON.stringify(results);
 }
 
 // this function search synsets in the toolbox from the text wrote by the user
