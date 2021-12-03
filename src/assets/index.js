@@ -85,6 +85,8 @@ function monitorInput(textInput, lang) {
   //this.tokenize(currentText,lang,tokenizedAndPicto);
 
   this.tokenize(currentText, lang, tokenized);
+
+  this.resetResultPicto();
 }
 
 // called on api response with tokenization results
@@ -248,6 +250,11 @@ function pictogramsFromName(sentence, language, callback, error) {
 
 function pictograms(synsets, callback, error) {
   let path = ['s2p', synsets.map(encodeURIComponent).join('+')];
+  this._phoneHome(path, callback, error);
+}
+
+function resetResultPicto(callback,error){
+  let path = ['reset'];
   this._phoneHome(path, callback, error);
 }
 

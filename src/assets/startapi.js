@@ -335,12 +335,20 @@ function getPictogram(b, fileNumber) {
 	}
 }
 
+function resetResultPictogram(){
+  resultPicto = {};
+}
+
 // PUBLIC ENDPOINTS
 
 // synsets to pictogram
 // example: /s2p/02207206v+07679356n
 app.get('/s2p/:synsets', (q, r) => {
 	r.send(synsetsToPictogram(q.params.synsets));
+});
+
+app.get('/reset', (q, r) => {
+  r.send(resetResultPictogram());
 });
 
 function appGetToolbox(path, then) {
