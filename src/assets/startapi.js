@@ -188,7 +188,7 @@ function storeAndApplyUpdate(data) {
 // search and return all pictograms from synsets
 function synsetsToPictogram(synsetsStr) {
 	let synsets = synsetsStr.split('+');
-	// let results = {};
+	let results = {};
 	for (let b in pictograms) {
 		let bank = pictograms[b];
 		for (let s in synsets) {
@@ -286,8 +286,6 @@ function sentenceToSynsets(toolbox, text) {
 		let start = stop + i;
 		stop = start + token.length;
 		token = token.toLowerCase();
-		// avec la fonction on choisi de récupérer les variants avec leur synsets
-    //let synsets = wordSynsetAndVariation(toolbox,token);
 		let synsets = toolbox.synsets.get(token);
 		/*
     if(synsets === undefined){
@@ -302,11 +300,11 @@ function sentenceToSynsets(toolbox, text) {
       }
     }
 		 */
-		tokens.push({ start, stop, synsets });
-		if(synsets === undefined){
+    if(synsets === undefined){
       sentenceToPictogram(toolbox,token);
-      continue;
+      synsets = '';
     }
+		tokens.push({ start, stop, synsets });
 		for (let s in synsets) {
 			let synset = synsets[s];
 			definitions[synset] = define(toolbox.definitions, synset);
