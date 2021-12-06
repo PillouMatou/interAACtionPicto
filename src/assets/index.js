@@ -75,18 +75,13 @@ function getTokensForTS(){
 // this function sends the text field's content to the API
 // for tokenization, as a first step of the translation process
 function monitorInput(textInput, lang) {
-  // lang = 'fra';
   if (!textUpdated) return;
   let currentText = textInput.replace(/\n|\s{2,}/g, ' ').replace(/^\s/, '');
   sentenceInput = currentText;
   text = currentText;
 
-  // test
-  // this.tokenize(currentText,lang,tokenizedAndPicto);
-
-  this.tokenize(currentText, lang, tokenized);
-
   this.resetResultPicto();
+  this.tokenize(currentText, lang, tokenized);
 }
 
 // called on api response with tokenization results
