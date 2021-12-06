@@ -70,7 +70,9 @@
       <div class="picto">
         <div class="margin-right">
           <div *ngIf="this.editionService.imageSelected[index] == undefined">
-            <input type="file" (change)="onFileSelected($event, index)"> ajouter une image
+            <button (click)="inputFile.click()"> ajouter une image
+              <input hidden type="file" (change)="onFileSelected($event, index)" #inputFile>
+            </button>
           </div>
           <img *ngIf="this.editionService.imageSelected[index] != undefined" src="{{this.editionService.imageSelected[index]}}" alt="" height="200px" width="200px">
         </div>
@@ -94,3 +96,4 @@
   <br>
   <button mat-raised-button color="primary" (click)="generatePDF()">Génération de PDF</button>
 </div>
+

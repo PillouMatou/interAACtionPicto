@@ -213,21 +213,6 @@ function synsetsToPictogram(synsetsStr) {
 	return JSON.stringify(resultPicto);
 }
 
-// useless function atm
-function wordSynsetAndVariation(toolbox,token){
-  let synsets = toolbox.synsets.get(token);
-  for(let i = 0; i < 3; i++){
-    token = toolbox.variations.get(token);
-    if (token !== undefined){
-      let variationSynsets = toolbox.synsets.get(token);
-      variationSynsets.forEach(synset => synsets.push(synset))
-    }
-    if(token === undefined){
-      break;
-    }
-  }
-  return synsets;
-}
 // search with dichotomous method
 // it fail because the array is not sort for javascript, if we sort this array, the index of picto will not changed so we will have the wrong index
 function dichotomousInArray(array,name) {
