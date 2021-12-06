@@ -82,9 +82,11 @@ function monitorInput(textInput, lang) {
   text = currentText;
 
   // test
-  this.tokenize(currentText,lang,tokenizedAndPicto);
+  // this.tokenize(currentText,lang,tokenizedAndPicto);
 
-  // this.tokenize(currentText, lang, tokenized);
+  this.tokenize(currentText, lang, tokenized);
+
+  this.resetResultPicto();
 }
 
 // called on api response with tokenization results
@@ -120,7 +122,6 @@ function tokenized(result) {
     if (selectedMeanings[t] >= meaning.synsets.length) {
       selectedMeanings[t] = 0;
     }
-    // don't care about the last part because it would be invisible.
     getTokens(tokens);
   }
   refreshPictograms();
@@ -249,6 +250,11 @@ function pictogramsFromName(sentence, language, callback, error) {
 
 function pictograms(synsets, callback, error) {
   let path = ['s2p', synsets.map(encodeURIComponent).join('+')];
+  this._phoneHome(path, callback, error);
+}
+
+function resetResultPicto(callback,error){
+  let path = ['reset'];
   this._phoneHome(path, callback, error);
 }
 

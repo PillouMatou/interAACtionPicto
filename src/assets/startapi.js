@@ -61,6 +61,8 @@ var toolboxes = (() => {
 	return toolboxes;
 })();
 
+var resultPicto = {};
+
 // SESSION FILES
 
 var sessionId = Date.now().toString();
@@ -188,7 +190,7 @@ function storeAndApplyUpdate(data) {
 // search and return all pictograms from synsets
 function synsetsToPictogram(synsetsStr) {
 	let synsets = synsetsStr.split('+');
-	let results = {};
+	// let results = {};
 	for (let b in pictograms) {
 		let bank = pictograms[b];
 		for (let s in synsets) {
@@ -198,16 +200,17 @@ function synsetsToPictogram(synsetsStr) {
 			for (let c in corresponding) {
 				let i = corresponding[c];
 				let p = 'p/' + b + '/' + i.toString();
-				if (p in results) {
-					results[p].push(sIdx)
+				if (p in resultPicto) {
+          resultPicto[p].push(sIdx)
 				} else {
 					let count = bank.counts[i];
-					results[p] = [count, sIdx];
+          resultPicto[p] = [count, sIdx];
 				}
 			}
 		}
 	}
-	return JSON.stringify(results);
+	console.log('valeur de retour synsets to Pictogram : ',resultPicto);
+	return JSON.stringify(resultPicto);
 }
 
 // search with dichotomous method
@@ -235,7 +238,7 @@ function dichotomousInArray(array,name) {
 // search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text){
   let tokenized = toolbox.tokenizer.tokenize(text);
-  let results = {};
+  // let results = {};
   for (let b in pictograms) {
     let bank = pictograms[b];
     for (let t in tokenized) {
@@ -246,15 +249,15 @@ function sentenceToPictogram(toolbox,text){
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
       let p = 'p/' + b + '/' + indexToken.toString();
-      if (p in results) {
-        results[p].push(tIdx);
+      if (p in resultPicto) {
+        resultPicto[p].push(tIdx);
       }else{
-        results[p] = [1,tIdx];
+        resultPicto[p] = [1,tIdx];
       }
     }
   }
-  console.log('results dans la nouvelle fonction : ', results);
-  return JSON.stringify(results);
+  console.log('results dans la nouvelle fonction : ', resultPicto);
+  return JSON.stringify(resultPicto);
 }
 
 // this function search synsets in the toolbox from the text wrote by the user
@@ -270,8 +273,6 @@ function sentenceToSynsets(toolbox, text) {
 		let start = stop + i;
 		stop = start + token.length;
 		token = token.toLowerCase();
-		// avec la fonction on choisi de récupérer les variants avec leur synsets
-    //let synsets = wordSynsetAndVariation(toolbox,token);
 		let synsets = toolbox.synsets.get(token);
 		/*
     if(synsets === undefined){
@@ -286,8 +287,11 @@ function sentenceToSynsets(toolbox, text) {
       }
     }
 		 */
+    if(synsets === undefined){
+      sentenceToPictogram(toolbox,token);
+      synsets = '';
+    }
 		tokens.push({ start, stop, synsets });
-		if(synsets === undefined) continue;
 		for (let s in synsets) {
 			let synset = synsets[s];
 			definitions[synset] = define(toolbox.definitions, synset);
@@ -316,12 +320,20 @@ function getPictogram(b, fileNumber) {
 	}
 }
 
+function resetResultPictogram(){
+  resultPicto = {};
+}
+
 // PUBLIC ENDPOINTS
 
 // synsets to pictogram
 // example: /s2p/02207206v+07679356n
 app.get('/s2p/:synsets', (q, r) => {
 	r.send(synsetsToPictogram(q.params.synsets));
+});
+
+app.get('/reset', (q, r) => {
+  r.send(resetResultPictogram());
 });
 
 function appGetToolbox(path, then) {
