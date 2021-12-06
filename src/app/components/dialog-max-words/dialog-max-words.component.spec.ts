@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogMaxWordsComponent } from './dialog-max-words.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 describe('DialogMaxWordsComponent', () => {
   let component: DialogMaxWordsComponent;
@@ -8,7 +9,8 @@ describe('DialogMaxWordsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogMaxWordsComponent ]
+      declarations: [ DialogMaxWordsComponent ],
+      imports: [TranslateModule.forRoot()]
     })
     .compileComponents();
   });
