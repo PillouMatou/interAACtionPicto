@@ -61,9 +61,11 @@ export class TranslatePictoComponent implements OnInit {
         this.resultTab = [];
       }
       this.wordsText = getTokensForTS();
+      console.log('this.wordsText : ',this.wordsText);
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
-      this.addWordsIfNeeded();
+      // this.addWordsIfNeeded();
+      this.addResult();
       this.editionService.isSearch = true;
       if(this.dataRegisterChecked){
         this.saveData.dataRegisterChecked = true;
@@ -127,12 +129,16 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   private addWordsIfNeeded() {
+    let lastKey: string[];
     for(let i = 0; i < this.keyPicto.length; i++){
+      this.keyPicto[i] = this.deleteDoublonFromArray(this.keyPicto[i]);
       this.keyPicto[i].forEach(key => {
-        if(key.includes('-')){
+        if(key.includes('-') || lastKey !== this.keyPicto[i]){
           const placement = key.split('-');
+          console.log('placement : ', placement);
           let textKey = '';
           for(let j = 0; j < placement.length; j++){
+            console.log('placement[j] : ',placement[j]);
             textKey = textKey + this.wordsText[placement[j]].text + ' ';
           }
           this.wordsText.splice(i,0,{text: textKey});
@@ -160,6 +166,16 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   private debug() {
-    console.log('result', this.editionService.result);
+    console.log('result : ', this.editionService.result);
+  }
+
+  deleteDoublonFromArray(tab: string[]):string[]{
+    const antiDoublon = [... new Set(tab)];
+    console.log('antiDoublon : ',antiDoublon);
+    return antiDoublon;
+  }
+
+  private addResult() {
+    this.result.push(this.result[1]);
   }
 }

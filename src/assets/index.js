@@ -143,7 +143,6 @@ function relevanceComparator(a, b) {
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
 function pictogramsReceived(pictograms) {
-  // console.log('pictograms : ', pictograms);
   let expressions = {};
   for (let p in pictograms) {
     let pictoData = pictograms[p];
