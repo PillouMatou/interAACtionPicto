@@ -263,6 +263,7 @@ function sentenceToPictogram(toolbox,text){
 // this function search synsets in the toolbox from the text wrote by the user
 function sentenceToSynsets(toolbox, text) {
 	let tokenized = toolbox.tokenizer.tokenize(text);
+	console.log('tokenized : ',tokenized);
 	let tokens = [];
 	let definitions = {};
 	let stop = 0;
@@ -274,19 +275,6 @@ function sentenceToSynsets(toolbox, text) {
 		stop = start + token.length;
 		token = token.toLowerCase();
 		let synsets = toolbox.synsets.get(token);
-		/*
-    if(synsets === undefined){
-      for(let i = 0; i < 3; i++){
-        token = toolbox.variations.get(token);
-        if (token !== undefined){
-          synsets = toolbox.synsets.get(token);
-        }
-        if(synsets !== undefined) {
-          break;
-        }
-      }
-    }
-		 */
     if(synsets === undefined){
       sentenceToPictogram(toolbox,token);
       synsets = '';

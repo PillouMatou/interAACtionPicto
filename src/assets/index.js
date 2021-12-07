@@ -85,21 +85,6 @@ function monitorInput(textInput, lang) {
 }
 
 // called on api response with tokenization results
-function tokenizedAndPicto(result){
-  tokens = result.tokens;
-  let lastStop = 0;
-  for (let t in tokens) {
-    let meaning = tokens[t];
-    text.slice(lastStop, meaning.start);
-    tokens[t].text = text.slice(meaning.start, meaning.stop)
-    lastStop = meaning.stop;
-  }
-  getTokens(tokens);
-  lang = "fra";
-  this.pictogramsFromName(text, lang, pictogramsReceived);
-}
-
-// called on api response with tokenization results
 function tokenized(result) {
   tokens = result.tokens;
   // meaningsList.textContent = "";
@@ -136,7 +121,6 @@ function onMeaningSelection(e) {
 // either on user input or when meanings were received.
 function refreshPictograms() {
   let synsets = tokens.map((token, t) => {
-    console.log('token refreshPicto : ', token);
     let s = selectedMeanings[t];
     return token.synsets[0];
   });

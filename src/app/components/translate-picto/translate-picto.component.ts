@@ -49,6 +49,7 @@ export class TranslatePictoComponent implements OnInit {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
+      console.log("this.keyPicto : ", this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
@@ -60,7 +61,6 @@ export class TranslatePictoComponent implements OnInit {
         this.resultTab = [];
       }
       this.wordsText = getTokensForTS();
-      console.log('wordstext', this.wordsText);
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
       this.addWordsIfNeeded();
@@ -93,7 +93,6 @@ export class TranslatePictoComponent implements OnInit {
     this.editionService.imageSelected = [];
     this.displayResult = [];
     this.displayResult.length = 0;
-    this.keyPicto = [];
     this.keyPicto.length = 0;
     this.wordSearch = '';
   }
