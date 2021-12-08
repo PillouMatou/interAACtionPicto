@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"npm run serve-api\" \"npm run serve\"",
-    "serve": "ng serve --port 30000",
+    "serve": "ng serve",
     "serve-api": "node src/assets/startapi.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

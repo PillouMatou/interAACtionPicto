@@ -53,7 +53,7 @@ export class TranslatePictoComponent implements OnInit {
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
-          if(this.banksChecked.includes(tabValue[4])){
+          if(this.banksChecked.includes(tabValue[5])){
             this.resultTab.push(value);
           }
         });
