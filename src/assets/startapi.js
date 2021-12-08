@@ -212,7 +212,6 @@ function synsetsToPictogram(synsetsStr) {
 			}
 		}
 	}
-	console.log('valeur de retour synsets to Pictogram : ',resultPicto);
 	return JSON.stringify(resultPicto);
 }
 
