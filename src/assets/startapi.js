@@ -201,7 +201,10 @@ function synsetsToPictogram(synsetsStr) {
 				let i = corresponding[c];
 				let p = 'p/' + b + '/' + i.toString();
 				if (p in resultPicto) {
-          resultPicto[p].push(sIdx)
+				  console.log('p : ', p);
+				  if(resultPicto[p][1] !== sIdx){
+            resultPicto[p].push(sIdx);
+          }
 				} else {
 					let count = bank.counts[i];
           resultPicto[p] = [count, sIdx];

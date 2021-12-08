@@ -65,7 +65,6 @@ export class TranslatePictoComponent implements OnInit {
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
       // this.addWordsIfNeeded();
-      this.addResult();
       this.editionService.isSearch = true;
       if(this.dataRegisterChecked){
         this.saveData.dataRegisterChecked = true;
@@ -74,7 +73,7 @@ export class TranslatePictoComponent implements OnInit {
         this.saveData.dataRegisterChecked = false;
       }
       this.debug();
-    },100);
+    },500);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
@@ -129,16 +128,13 @@ export class TranslatePictoComponent implements OnInit {
   }
 
   private addWordsIfNeeded() {
-    let lastKey: string[];
     for(let i = 0; i < this.keyPicto.length; i++){
-      this.keyPicto[i] = this.deleteDoublonFromArray(this.keyPicto[i]);
+      // this.keyPicto[i] = this.deleteDoublonFromArray(this.keyPicto[i]);
       this.keyPicto[i].forEach(key => {
-        if(key.includes('-') || lastKey !== this.keyPicto[i]){
+        if(key.includes('-')){
           const placement = key.split('-');
-          console.log('placement : ', placement);
           let textKey = '';
           for(let j = 0; j < placement.length; j++){
-            console.log('placement[j] : ',placement[j]);
             textKey = textKey + this.wordsText[placement[j]].text + ' ';
           }
           this.wordsText.splice(i,0,{text: textKey});
@@ -146,6 +142,7 @@ export class TranslatePictoComponent implements OnInit {
       });
     }
   }
+
   openDialog(){
     this.dialog.open(DialogMaxWordsComponent, {
       height: '20%',
@@ -167,15 +164,5 @@ export class TranslatePictoComponent implements OnInit {
 
   private debug() {
     console.log('result : ', this.editionService.result);
-  }
-
-  deleteDoublonFromArray(tab: string[]):string[]{
-    const antiDoublon = [... new Set(tab)];
-    console.log('antiDoublon : ',antiDoublon);
-    return antiDoublon;
-  }
-
-  private addResult() {
-    this.result.push(this.result[1]);
   }
 }
