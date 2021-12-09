@@ -46,6 +46,8 @@ export class LayoutComponent implements OnInit {
         fields: {} ,
         exportType: exportFromJSON.types.json
       });
+      const fs = require('fs');
+      fs.mkdir('requestFolder', { recursive: true });
     }
     this.router.navigate(['/print']);
   }
