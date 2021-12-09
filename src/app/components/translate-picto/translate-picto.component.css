@@ -98,3 +98,7 @@ carousel{
   box-sizing: border-box;
   margin-top: -1px;
 }
+
+.borderColorGreen{
+  border: solid green;
+}
