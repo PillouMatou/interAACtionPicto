@@ -7,7 +7,6 @@ var textHighlights;
 var inputSection;
 var outputSection;
 var meaningsList;
-var highlitTokenCss;
 var pictoGroups;
 var pictoSentence;
 var loadingIndicator;
@@ -23,6 +22,7 @@ var mobile = false;
 var urlImageJS = [];
 var keyImageJS = [];
 var tokensJS = [];
+var dataJS;
 
 var internationalization = {
   'fra': {
@@ -164,7 +164,7 @@ function pictogramsReceived(pictograms) {
     let urlImage = [];
     let keyImage = [];
     for (let p in pictograms) {
-      let url = 'http://lig-interaactionpicto.imag.fr/api/' + pictograms[p][1];
+      let url = 'http://localhost:30000/' + pictograms[p][1];
       let picto = document.createElement('img');
       picto.src = url;
       picto.draggable = true;
@@ -206,7 +206,7 @@ function _phoneHome(path, callback, error) {
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
-  xhr.open('GET', 'http://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.open('GET', 'http://localhost:30000/' + path.join('/'));
   xhr.send();
 }
 
@@ -234,6 +234,20 @@ function pictograms(synsets, callback, error) {
 function resetResultPicto(callback,error){
   let path = ['reset'];
   this._phoneHome(path, callback, error);
+}
+
+function mkdirJ(data,callback,error){
+  let path = ['mkdirJS'];
+  this._phoneHome(path, callback, error);
+}
+
+function setDataTS(data){
+  dataJS = data;
+  console.log('dataJS : ',dataJS);
+}
+
+function getDataTS(){
+  return dataJS;
 }
 
 // DIRECT DATA SEARCH

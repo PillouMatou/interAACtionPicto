@@ -5,6 +5,9 @@ import {Router} from "@angular/router";
 import {MatExpansionPanel} from "@angular/material/expansion";
 import exportFromJSON from 'export-from-json';
 import {SaveDataService} from "../../services/save-data.service";
+declare var mkdirJ:any;
+declare var setDataTS:any;
+declare var mkdirJS:any;
 
 @Component({
   selector: 'app-layout',
@@ -39,6 +42,7 @@ export class LayoutComponent implements OnInit {
     this.editionService.borderSize = Number(this.borderSize);
     this.editionService.location = this.location;
     if(this.saveDataService.dataRegisterChecked){
+      /*
       exportFromJSON({
         data: [{word : this.editionService.wordsText}, this.editionService.imageSelected],
         fileName: 'request',
@@ -46,8 +50,12 @@ export class LayoutComponent implements OnInit {
         fields: {} ,
         exportType: exportFromJSON.types.json
       });
-      const fs = require('fs');
-      fs.mkdir('requestFolder', { recursive: true });
+       */
+      const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
+      setDataTS(JSON.stringify(data));
+      //console.log('data : ',JSON.stringify(data));
+      //mkdirJ();
+      mkdirJS();
     }
     this.router.navigate(['/print']);
   }

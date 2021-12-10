@@ -112,6 +112,18 @@ function revokeContribution(sessionId, timestamp, user, file) {
 	fs.closeSync(fd);
 }
 
+function mkdirJS(){
+  console.log("on passe dans mkdir");
+  var date = Date.now().toString();
+  var data = getDataTS();
+  console.log('data : ', data);
+  fs.mkdirSync('requests/', { recursive: true });
+  fs.appendFile('requests/request'+date+'.json', data, function (err){
+    if (err) throw err;
+    console.log('Fichier créé !');
+  });
+}
+
 // TOOL UPDATING
 
 function setAdd(set, element) {
@@ -324,6 +336,10 @@ app.get('/s2p/:synsets', (q, r) => {
 
 app.get('/reset', (q, r) => {
   r.send(resetResultPictogram());
+});
+
+app.get('/mkdirJS', (q, r) => {
+  r.send(mkdirJS());
 });
 
 function appGetToolbox(path, then) {
