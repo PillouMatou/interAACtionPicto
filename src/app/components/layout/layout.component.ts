@@ -54,8 +54,7 @@ export class LayoutComponent implements OnInit {
       const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
       setDataTS(JSON.stringify(data));
       //console.log('data : ',JSON.stringify(data));
-      //mkdirJ();
-      mkdirJS();
+      mkdirJ();
     }
     this.router.navigate(['/print']);
   }

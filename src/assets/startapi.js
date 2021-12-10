@@ -78,6 +78,8 @@ var session = {
 	updates: fs.openSync(sessionPath + '/updates.json', 'w')
 };
 
+var dataJS;
+
 function getContribution(sessionId, file) {
 	let content = [];
 	let dir = dirs.sessions + sessionId + '/';
@@ -112,10 +114,15 @@ function revokeContribution(sessionId, timestamp, user, file) {
 	fs.closeSync(fd);
 }
 
+function setDataTS(data){
+  dataJS = data;
+  console.log('dataJS : ',dataJS);
+}
+
 function mkdirJS(){
   console.log("on passe dans mkdir");
   var date = Date.now().toString();
-  var data = getDataTS();
+  var data = dataJS;
   console.log('data : ', data);
   fs.mkdirSync('requests/', { recursive: true });
   fs.appendFile('requests/request'+date+'.json', data, function (err){

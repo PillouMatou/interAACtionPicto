@@ -22,7 +22,6 @@ var mobile = false;
 var urlImageJS = [];
 var keyImageJS = [];
 var tokensJS = [];
-var dataJS;
 
 var internationalization = {
   'fra': {
@@ -239,15 +238,6 @@ function resetResultPicto(callback,error){
 function mkdirJ(data,callback,error){
   let path = ['mkdirJS'];
   this._phoneHome(path, callback, error);
-}
-
-function setDataTS(data){
-  dataJS = data;
-  console.log('dataJS : ',dataJS);
-}
-
-function getDataTS(){
-  return dataJS;
 }
 
 // DIRECT DATA SEARCH
