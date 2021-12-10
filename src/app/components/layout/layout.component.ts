@@ -52,12 +52,23 @@ export class LayoutComponent implements OnInit {
         exportType: exportFromJSON.types.json
       });
        */
-      /*const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
-      setDataTS(JSON.stringify(data));*/
+      const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
+      let test = this.editionService.imageSelected[0];
+      console.log(test);
+      test = this.replaceAll(test);
+      console.log(test);
+      setDataTS(test);
       //console.log('data : ',JSON.stringify(data));
       mkdirJ();
     }
     this.router.navigate(['/print']);
+  }
+
+  replaceAll(text: any){
+    while (text.includes("/")){
+      text = text.replace("/", "_")
+    }
+    return text;
   }
 
   transformation(buton: MatRadioButton) {

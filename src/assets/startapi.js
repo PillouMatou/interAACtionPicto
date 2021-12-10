@@ -114,11 +114,6 @@ function revokeContribution(sessionId, timestamp, user, file) {
 	fs.closeSync(fd);
 }
 
-function setDataTS(data){
-  dataJS = data;
-  console.log('dataJS : ',dataJS);
-}
-
 /*function mkdirJS(){
   console.log("on passe dans mkdir");
   var date = Date.now().toString();

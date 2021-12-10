@@ -241,6 +241,11 @@ function mkdirJ(data,callback,error){
   this._phoneHome(path, callback, error);
 }
 
+function setDataTS(value){
+  dataJS = value;
+  console.log(dataJS);
+}
+
 // DIRECT DATA SEARCH
 function findWordVariation(word, language, callback, error) {
   let path = ['find-word-variation', language, this._encode(word)];
