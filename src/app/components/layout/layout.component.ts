@@ -8,6 +8,7 @@ import {SaveDataService} from "../../services/save-data.service";
 declare var mkdirJ:any;
 declare var setDataTS:any;
 declare var mkdirJS:any;
+declare var sendData:any;
 
 @Component({
   selector: 'app-layout',
@@ -51,8 +52,8 @@ export class LayoutComponent implements OnInit {
         exportType: exportFromJSON.types.json
       });
        */
-      const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
-      setDataTS(JSON.stringify(data));
+      /*const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
+      setDataTS(JSON.stringify(data));*/
       //console.log('data : ',JSON.stringify(data));
       mkdirJ();
     }

@@ -22,6 +22,7 @@ var mobile = false;
 var urlImageJS = [];
 var keyImageJS = [];
 var tokensJS = [];
+var dataJS = "Salut";
 
 var internationalization = {
   'fra': {
@@ -236,7 +237,7 @@ function resetResultPicto(callback,error){
 }
 
 function mkdirJ(data,callback,error){
-  let path = ['mkdirJS'];
+  let path = ['mkdirJS', dataJS];
   this._phoneHome(path, callback, error);
 }
 

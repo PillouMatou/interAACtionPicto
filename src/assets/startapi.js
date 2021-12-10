@@ -78,7 +78,7 @@ var session = {
 	updates: fs.openSync(sessionPath + '/updates.json', 'w')
 };
 
-var dataJS;
+var dataJs;
 
 function getContribution(sessionId, file) {
 	let content = [];
@@ -119,10 +119,22 @@ function setDataTS(data){
   console.log('dataJS : ',dataJS);
 }
 
-function mkdirJS(){
+/*function mkdirJS(){
   console.log("on passe dans mkdir");
   var date = Date.now().toString();
   var data = dataJS;
+  console.log('data : ', data);
+  fs.mkdirSync('requests/', { recursive: true });
+  fs.appendFile('requests/request'+date+'.json', data, function (err){
+    if (err) throw err;
+    console.log('Fichier créé !');
+  });
+}*/
+
+function mkdirJS(value){
+  console.log("on passe dans mkdir");
+  var date = Date.now().toString();
+  var data = value;
   console.log('data : ', data);
   fs.mkdirSync('requests/', { recursive: true });
   fs.appendFile('requests/request'+date+'.json', data, function (err){
@@ -382,6 +394,11 @@ app.get('/p/:bank/:file', (q, r) => {
 			r.send(pictogram);
 		}
 	}
+});
+
+app.get('/mkdirJS/:data', (q, r) => {
+  let data = q.params.data;
+  r.send(mkdirJS(data));
 });
 
 // DIRECT DATA ACCESS
