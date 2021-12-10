@@ -52,8 +52,8 @@ export class LayoutComponent implements OnInit {
         exportType: exportFromJSON.types.json
       });
        */
-      /*const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
-      setDataTS(JSON.stringify(data));*/
+      const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
+      setDataTS(JSON.stringify("chat"));
       //console.log('data : ',JSON.stringify(data));
       mkdirJ();
     }
