@@ -23,7 +23,7 @@ export class TranslatePictoComponent implements OnInit {
   resultTab:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
-  banksChecked:string[] = [];
+  banksChecked:string[] = ['arasaac', 'mulberry'];
   wordsText: any;
   keyPicto:string[][] = [];
   dataRegisterChecked: boolean = false;
@@ -78,12 +78,16 @@ export class TranslatePictoComponent implements OnInit {
       numberOfWord.forEach(word => {
         this.editionService.imageSelected.push('null');
       });
-      console.log('this.editionService.imageSelected : ',this.editionService.imageSelected);
     },500);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
-    this.banksChecked = [];
+    if(!arasaac.checked){
+      this.banksChecked = this.banksChecked.filter((bank) => bank != arasaac.value);
+    }
+    if(!mulberry.checked){
+      this.banksChecked = this.banksChecked.filter((bank) => bank != mulberry.value);
+    }
     if(arasaac.checked){
       this.banksChecked.push(arasaac.value);
     }
