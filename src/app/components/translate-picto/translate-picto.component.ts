@@ -40,6 +40,7 @@ export class TranslatePictoComponent implements OnInit {
     this.resetRequest();
     this.wordSearch = formText.form.value.text;
     const numberOfWord = this.wordSearch.split(' ');
+    this.editionService.wordsSearchTab = numberOfWord;
     if(numberOfWord.length > 50){
       this.openDialog();
       return;

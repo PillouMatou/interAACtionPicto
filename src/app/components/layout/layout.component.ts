@@ -43,22 +43,13 @@ export class LayoutComponent implements OnInit {
     this.editionService.borderSize = Number(this.borderSize);
     this.editionService.location = this.location;
     if(this.saveDataService.dataRegisterChecked){
-      /*
-      exportFromJSON({
-        data: [{word : this.editionService.wordsText}, this.editionService.imageSelected],
-        fileName: 'request',
-        extension: "json",
-        fields: {} ,
-        exportType: exportFromJSON.types.json
+      let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.editionService.imageSelected));
+      urlPictoDataSelected.forEach((url,index) => {
+        urlPictoDataSelected[index] = this.replaceAll(url);
       });
-       */
-      const data = [[{word : this.editionService.wordsText}, this.editionService.imageSelected]];
-      let test = this.editionService.imageSelected[0];
-      console.log(test);
-      test = this.replaceAll(test);
-      console.log(test);
-      setDataTS(test);
-      //console.log('data : ',JSON.stringify(data));
+      const data = [this.editionService.wordsSearchTab, urlPictoDataSelected];
+      setDataTS(data);
+      console.log('data : ',JSON.stringify(data));
       mkdirJ();
     }
     this.router.navigate(['/print']);

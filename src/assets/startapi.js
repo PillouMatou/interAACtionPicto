@@ -126,8 +126,15 @@ function revokeContribution(sessionId, timestamp, user, file) {
   });
 }*/
 
+function replaceAllElem (text) {
+  while (text.includes("_")){
+    text = text.replace("_", "/");
+  }
+  return text;
+}
+
 function mkdirJS(value){
-  console.log("on passe dans mkdir");
+  value = replaceAllElem(value);
   var date = Date.now().toString();
   var data = value;
   console.log('data : ', data);
