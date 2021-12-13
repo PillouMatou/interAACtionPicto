@@ -133,10 +133,32 @@ function replaceAllElem (text) {
   return text;
 }
 
+function ArrayToList(tab){
+  var list = {};
+  var result = [];
+  for (let i = 0; i < tab.length / 2; i++){
+    if(tab[tab.length/2+i] !== undefined){
+      list = {word: tab[i], URL: tab[tab.length/2+i]};
+    }
+    else{
+      list = {word: tab[i], URL: ''};
+    }
+    result.push(list);
+  }
+  return result;
+}
+
 function mkdirJS(value){
   value = replaceAllElem(value);
+  // transforme la data en string
+
+  // faire 1 liste avec le mot et son URL
+  value = value.split(',');
+  var tabWordUrl = ArrayToList(value);
+
+
   var date = Date.now().toString();
-  var data = value;
+  var data = JSON.stringify(tabWordUrl);
   console.log('data : ', data);
   fs.mkdirSync('requests/', { recursive: true });
   fs.appendFile('requests/request'+date+'.json', data, function (err){

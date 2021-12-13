@@ -3,12 +3,9 @@ import {EditionService} from "../../services/edition-service";
 import {MatRadioButton} from "@angular/material/radio";
 import {Router} from "@angular/router";
 import {MatExpansionPanel} from "@angular/material/expansion";
-import exportFromJSON from 'export-from-json';
 import {SaveDataService} from "../../services/save-data.service";
 declare var mkdirJ:any;
 declare var setDataTS:any;
-declare var mkdirJS:any;
-declare var sendData:any;
 
 @Component({
   selector: 'app-layout',
@@ -45,7 +42,12 @@ export class LayoutComponent implements OnInit {
     if(this.saveDataService.dataRegisterChecked){
       let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.editionService.imageSelected));
       urlPictoDataSelected.forEach((url,index) => {
-        urlPictoDataSelected[index] = this.replaceAll(url);
+        if(urlPictoDataSelected[index] == null || urlPictoDataSelected[index].length > 100){
+          urlPictoDataSelected[index] = "null";
+        }
+        else{
+          urlPictoDataSelected[index] = this.replaceAll(url);
+        }
       });
       const data = [this.editionService.wordsSearchTab, urlPictoDataSelected];
       setDataTS(data);
