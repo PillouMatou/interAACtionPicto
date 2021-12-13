@@ -55,7 +55,6 @@ export class TranslatePictoComponent implements OnInit {
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
-          console.log('this.banksChecked : ', this.banksChecked);
           if(this.banksChecked.includes(tabValue[4])){
             this.resultTab.push(value);
           }
@@ -79,7 +78,6 @@ export class TranslatePictoComponent implements OnInit {
       numberOfWord.forEach(word => {
         this.editionService.imageSelected.push('null');
       });
-      console.log('this.editionService.imageSelected : ',this.editionService.imageSelected);
     },500);
   }
 
