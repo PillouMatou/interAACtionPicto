@@ -34,12 +34,15 @@ export class TranslatePictoComponent implements OnInit {
               public saveData: SaveDataService,
               public dialog: MatDialog) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.editionService.isSearch = false;
+  }
 
   onSubmit(formText: NgForm) {
     this.resetRequest();
     this.wordSearch = formText.form.value.text;
     const numberOfWord = this.wordSearch.split(' ');
+    this.editionService.wordsSearchTab = numberOfWord;
     if(numberOfWord.length > 50){
       this.openDialog();
       return;
@@ -49,11 +52,10 @@ export class TranslatePictoComponent implements OnInit {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
-      console.log("this.keyPicto : ", this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
-          if(this.banksChecked.includes(tabValue[5])){
+          if(this.banksChecked.includes(tabValue[4])){
             this.resultTab.push(value);
           }
         });
@@ -73,6 +75,10 @@ export class TranslatePictoComponent implements OnInit {
         this.saveData.dataRegisterChecked = false;
       }
       this.debug();
+      numberOfWord.forEach(word => {
+        this.editionService.imageSelected.push('null');
+      });
+      console.log('this.editionService.imageSelected : ',this.editionService.imageSelected);
     },500);
   }
 
