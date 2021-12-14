@@ -164,7 +164,7 @@ function pictogramsReceived(pictograms) {
     let urlImage = [];
     let keyImage = [];
     for (let p in pictograms) {
-      let url = 'http://localhost:30000/' + pictograms[p][1];
+      let url = 'http://lig-interaactionpicto.imag.fr/api/' + pictograms[p][1];
       let picto = document.createElement('img');
       picto.src = url;
       picto.draggable = true;
@@ -206,7 +206,7 @@ function _phoneHome(path, callback, error) {
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
-  xhr.open('GET', 'http://localhost:30000/' + path.join('/'));
+  xhr.open('GET', 'http://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
   xhr.send();
 }
 
