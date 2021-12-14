@@ -7,6 +7,8 @@ export class EditionService {
 
   constructor() { }
 
+  wordsSearchTab: string[] = [];
+
   bottomTop: string = "bottom";
   location: string = "dans";
 

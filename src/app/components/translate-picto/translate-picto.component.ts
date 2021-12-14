@@ -23,7 +23,7 @@ export class TranslatePictoComponent implements OnInit {
   resultTab:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
-  banksChecked:string[] = [];
+  banksChecked:string[] = ['arasaac', 'mulberry'];
   wordsText: any;
   keyPicto:string[][] = [];
   dataRegisterChecked: boolean = false;
@@ -34,12 +34,15 @@ export class TranslatePictoComponent implements OnInit {
               public saveData: SaveDataService,
               public dialog: MatDialog) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.editionService.isSearch = false;
+  }
 
   onSubmit(formText: NgForm) {
     this.resetRequest();
     this.wordSearch = formText.form.value.text;
     const numberOfWord = this.wordSearch.split(' ');
+    this.editionService.wordsSearchTab = numberOfWord;
     if(numberOfWord.length > 50){
       this.openDialog();
       return;
@@ -49,11 +52,10 @@ export class TranslatePictoComponent implements OnInit {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
-      console.log("this.keyPicto : ", this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
-          if(this.banksChecked.includes(tabValue[5])){
+          if(this.banksChecked.includes(tabValue[4])){
             this.resultTab.push(value);
           }
         });
@@ -73,11 +75,19 @@ export class TranslatePictoComponent implements OnInit {
         this.saveData.dataRegisterChecked = false;
       }
       this.debug();
+      numberOfWord.forEach(word => {
+        this.editionService.imageSelected.push('null');
+      });
     },500);
   }
 
   chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement) {
-    this.banksChecked = [];
+    if(!arasaac.checked){
+      this.banksChecked = this.banksChecked.filter((bank) => bank != arasaac.value);
+    }
+    if(!mulberry.checked){
+      this.banksChecked = this.banksChecked.filter((bank) => bank != mulberry.value);
+    }
     if(arasaac.checked){
       this.banksChecked.push(arasaac.value);
     }

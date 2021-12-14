@@ -3,8 +3,9 @@ import {EditionService} from "../../services/edition-service";
 import {MatRadioButton} from "@angular/material/radio";
 import {Router} from "@angular/router";
 import {MatExpansionPanel} from "@angular/material/expansion";
-import exportFromJSON from 'export-from-json';
 import {SaveDataService} from "../../services/save-data.service";
+declare var mkdirJ:any;
+declare var setDataTS:any;
 
 @Component({
   selector: 'app-layout',
@@ -39,15 +40,28 @@ export class LayoutComponent implements OnInit {
     this.editionService.borderSize = Number(this.borderSize);
     this.editionService.location = this.location;
     if(this.saveDataService.dataRegisterChecked){
-      exportFromJSON({
-        data: [{word : this.editionService.wordsText}, this.editionService.imageSelected],
-        fileName: 'request',
-        extension: "json",
-        fields: {} ,
-        exportType: exportFromJSON.types.json
+      let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.editionService.imageSelected));
+      urlPictoDataSelected.forEach((url,index) => {
+        if(urlPictoDataSelected[index] == null || urlPictoDataSelected[index].length > 100){
+          urlPictoDataSelected[index] = "null";
+        }
+        else{
+          urlPictoDataSelected[index] = this.replaceAll(url);
+        }
       });
+      const data = [this.editionService.wordsSearchTab, urlPictoDataSelected];
+      setDataTS(data);
+      console.log('data : ',JSON.stringify(data));
+      mkdirJ();
     }
     this.router.navigate(['/print']);
+  }
+
+  replaceAll(text: any){
+    while (text.includes("/")){
+      text = text.replace("/", "_")
+    }
+    return text;
   }
 
   transformation(buton: MatRadioButton) {

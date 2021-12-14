@@ -4,11 +4,11 @@
   <form (change)="chooseBank(arasaac, mulberry)">
     <div>
       <p>
-        <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac">
+        <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac" [checked]="true">
         <label for="arasaac"><span class="ui"></span>Arasaac</label>
       </p>
       <p>
-        <input #mulberry type="checkbox" id="mulberry" name="mulberry" value="mulberry">
+        <input #mulberry type="checkbox" id="mulberry" name="mulberry" value="mulberry" [checked]="true">
         <label for="mulberry"><span class="ui"></span>Mulberry</label>
       </p>
     </div>
