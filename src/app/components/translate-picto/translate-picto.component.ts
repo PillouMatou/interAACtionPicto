@@ -52,6 +52,7 @@ export class TranslatePictoComponent implements OnInit {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
+      console.log('keys : ', this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');

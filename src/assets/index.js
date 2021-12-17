@@ -139,6 +139,18 @@ function relevanceComparator(a, b) {
   return b[0] - a[0];
 }
 
+function sortKeys(tab){
+  for(let i = 0; i < tab.length - 1; i++){
+    console.log('parseInt(tab[i][0][0])', parseInt(tab[i][0][0]));
+    console.log('parseInt(tab[i+1][0][0])', parseInt(tab[i+1][0][0]));
+    if(parseInt(tab[i][0][0]) < parseInt(tab[i + 1][0][0])){
+      const arrayDeleted = tab.splice(i+1);
+      tab.splice(i,0,arrayDeleted);
+    }
+  }
+  return tab;
+}
+
 // called when the API has found relevant pictograms
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
@@ -149,16 +161,29 @@ function pictogramsReceived(pictograms) {
     let count = pictoData.shift();
     let matches = pictoData.length;
     let relevance = matches / count;
-    let indexes = pictoData.map(synsetIndex => synsetIndex.toString());
+    let indexes = pictoData.map(synsetIndex => synsetIndex.toString() + "e");
     indexes.sort();
     let key = indexes.join('-');
-    if (key in expressions) expressions[key].push([relevance, p]);
-    else expressions[key] = [[relevance, p]];
+    //comparer la première valeur du premier élément de la première ligne du tableau avec la valeur du premier élement du tableau suivant
+    //key = sortKeys(key);
+
+    if (key in expressions) {
+      expressions[key].push([relevance, p]);
+    }
+    else {
+      expressions[key] = [[relevance, p]];
+    }
   }
   if (selectedLibrary === undefined || expressions[selectedLibrary] === undefined) {
     selectedLibrary = Object.keys(expressions)[0];
   }
+  console.log('expressions : ',expressions);
+  let lengthExpression = 0;
+  for (key in expressions){
+    lengthExpression = lengthExpression + 1;
+  }
   for (key in expressions) {
+    console.log('key in expressions : ', key);
     let pictograms = expressions[key];
     pictograms.sort(relevanceComparator);
     let urlImage = [];
