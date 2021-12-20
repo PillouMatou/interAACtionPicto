@@ -62,6 +62,7 @@ var toolboxes = (() => {
 })();
 
 var resultPicto = {};
+var tIdxSave;
 
 // SESSION FILES
 
@@ -295,13 +296,18 @@ function dichotomousInArray(array,name) {
 // search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text){
   let tokenized = toolbox.tokenizer.tokenize(text);
-  // let results = {};
+  let resultFound = false;
   for (let b in pictograms) {
     let bank = pictograms[b];
     for (let t in tokenized) {
       let tIdx = parseInt(t);
+      // if nothing is found save the tIdx
+      tIdxSave = tIdx;
       // let indexToken = dichotomousInArray(bank.names,tokenized[t]);
       let indexToken = bank.names.findIndex(name => tokenized[t] === name);
+      if(indexToken !== -1){
+        resultFound = true;
+      }
       console.log('indexToken : ',indexToken);
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
@@ -312,6 +318,9 @@ function sentenceToPictogram(toolbox,text){
         resultPicto[p] = [1,tIdx];
       }
     }
+  }
+  if(!resultFound){
+    resultPicto = {'p/arasaac/10056': [1,tIdxSave]};
   }
   console.log('results dans la nouvelle fonction : ', resultPicto);
   return JSON.stringify(resultPicto);

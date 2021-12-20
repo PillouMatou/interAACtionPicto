@@ -181,13 +181,16 @@ export class TranslatePictoComponent implements OnInit {
 
   duplicateCase(wordText: any){
     console.log('wordText : ',wordText);
+    let alreadyAdd = false;
     wordText.forEach((word: string, index: number) => {
       for(let i = index + 1; i < wordText.length; i++){
-        if(word == wordText[i]){
+        if(word == wordText[i] && !alreadyAdd){
           this.displayResult.splice(i,0,this.displayResult[index]);
           this.result.splice(i,0,this.result[index]);
+          alreadyAdd = true;
         }
       }
+      alreadyAdd = false;
     });
   }
 }
