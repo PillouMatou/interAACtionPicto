@@ -47,7 +47,8 @@ export class TranslatePictoComponent implements OnInit {
       this.openDialog();
       return;
     }
-    monitorInput(formText.form.value.text, this.languageService.languageSearch);
+    let textInput = formText.form.value.text.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    monitorInput(textInput, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
