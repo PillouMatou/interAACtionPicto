@@ -326,7 +326,15 @@ function checkDoublonInResultPictoTabBetter(){
     for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
       if(url === resultPictoTabBetter[0][i]){
         // pas bon
-        resultPictoTabBetter[2][index].push(resultPictoTabBetter[2][i][1]);
+        resultPictoTabBetter[1][index].push(resultPictoTabBetter[1][i][1]);
+      }
+    }
+  });
+  resultPictoTabBetter[0].forEach((url,index) => {
+    for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
+      if(url === resultPictoTabBetter[0][i]){
+        resultPictoTabBetter[0].splice(i,1);
+        resultPictoTabBetter[1].splice(i,1);
       }
     }
   });
@@ -355,12 +363,10 @@ function sentenceToPictogram(toolbox,text, index){
         resultPictoNewFunction[p].push(tIdx);
         resultPictoTabBetter[0].push(p);
         resultPictoTabBetter[1].push([1,tIdx]);
-        // resultPictoTab[2].push(tIdx);
       }else{
         resultPictoNewFunction[p] = [1,tIdx];
         resultPictoTabBetter[0].push(p);
         resultPictoTabBetter[1].push([1,tIdx]);
-        // resultPictoTab[2].push(tIdx);
       }
     }
   }
@@ -368,9 +374,8 @@ function sentenceToPictogram(toolbox,text, index){
     resultPictoNewFunction['p/arasaac/10056'] = [1,tIdxSave];
     resultPictoTabBetter[0].push('p/arasaac/10056');
     resultPictoTabBetter[1].push([1,tIdxSave]);
-    // resultPictoTab[2].push(tIdxSave);
   }
-  // checkDoublonInResultPictoTab();
+  checkDoublonInResultPictoTabBetter();
   console.log('resultPictoTabBetter', resultPictoTabBetter);
   return JSON.stringify({});
 }
