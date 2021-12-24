@@ -68,7 +68,6 @@ export class TranslatePictoComponent implements OnInit {
       console.log('this.wordsText : ',this.wordsText);
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
-      // this.addWordsIfNeeded();
       this.editionService.isSearch = true;
       if(this.dataRegisterChecked){
         this.saveData.dataRegisterChecked = true;
@@ -79,7 +78,8 @@ export class TranslatePictoComponent implements OnInit {
       numberOfWord.forEach(word => {
         this.editionService.imageSelected.push('null');
       });
-      this.duplicateCase(numberOfWord);
+      this.duplicateCaseKey(this.keyPicto);
+      // this.duplicateCase(numberOfWord);
       this.debug();
     },500);
   }
@@ -140,22 +140,6 @@ export class TranslatePictoComponent implements OnInit {
     download(url,filename);
   }
 
-  private addWordsIfNeeded() {
-    for(let i = 0; i < this.keyPicto.length; i++){
-      // this.keyPicto[i] = this.deleteDoublonFromArray(this.keyPicto[i]);
-      this.keyPicto[i].forEach(key => {
-        if(key.includes('-')){
-          const placement = key.split('-');
-          let textKey = '';
-          for(let j = 0; j < placement.length; j++){
-            textKey = textKey + this.wordsText[placement[j]].text + ' ';
-          }
-          this.wordsText.splice(i,0,{text: textKey});
-        }
-      });
-    }
-  }
-
   openDialog(){
     this.dialog.open(DialogMaxWordsComponent, {
       height: '20%',
@@ -179,7 +163,37 @@ export class TranslatePictoComponent implements OnInit {
     console.log('result : ', this.editionService.result);
     console.log('displayResult : ', this.displayResult);
   }
+  replaceAllElem (text:string) {
+    while (text.includes("e")){
+      text = text.replace("e", "");
+    }
+    return text;
+  }
+  //duplication par clé
+  duplicateCaseKey(keys :string[][]){
+    keys.forEach(listKeys => {
+      listKeys = [...new Set(listKeys)];
+      listKeys.forEach(key => {
+        key = this.replaceAllElem(key);
+        console.log('key', key);
+        const allKeys = key.split('-');
+        console.log('allKeys : ', allKeys);
+        // we don't want to do something about the first key
+        let first = true
+        allKeys.forEach(keySplited => {
+          const index = Number(keySplited);
+          if(!first){
+            this.displayResult.splice(index,0,this.displayResult[Number(allKeys[0])]);
+            this.result.splice(index,0,this.result[Number(allKeys[0])]);
+          }else{
+            first = false;
+          }
+          });
+      });
+    });
+  }
 
+  //duplication par nom
   duplicateCase(wordText: any){
     console.log('wordText : ',wordText);
     let alreadyAdd = false;
