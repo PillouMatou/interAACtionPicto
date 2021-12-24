@@ -19,7 +19,7 @@
     <div>
       <mat-form-field class="widthTextarea" appearance="fill">
         <textarea matInput type="text" placeholder="{{'translatePicto.typeAWord' | translate}}"
-                  id="sentence-input" name="text" ngModel required rows="10"></textarea>
+                  id="sentence-input" name="text" ngModel required rows="10" (keyup.enter)="onSubmit(formText)"></textarea>
       </mat-form-field>
       <br>
       <button class="margin-right" type="submit" mat-raised-button color="primary"

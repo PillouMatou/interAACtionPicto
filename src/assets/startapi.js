@@ -65,6 +65,7 @@ var resultPicto = {};
 var resultPictoNewFunction = {};
 var tIdxSave;
 var resultPictoTab = [[],[],[]];
+var resultPictoTabBetter = [[],[]];
 
 // SESSION FILES
 
@@ -246,24 +247,24 @@ function storeAndApplyUpdate(data) {
 }
 
 function checkAddPicto(currentIndexTarget){
-  resultPictoTab[2].forEach((indexInTab,index) => {
-    if(indexInTab <= currentIndexTarget){
-      resultPicto[resultPictoTab[0][index]] = [resultPictoTab[1][index],resultPictoTab[2][index]];
+  resultPictoTabBetter[1].forEach((Tab,index) => {
+    if(Tab[1] <= currentIndexTarget){
+      resultPicto[resultPictoTabBetter[0][index]] = resultPictoTabBetter[1][index];
     }
   });
-  resultPictoTab[2].forEach((indexInTab,index) => {
-    if(indexInTab <= currentIndexTarget){
-      resultPictoTab[0].splice(index,1);
-      resultPictoTab[1].splice(index,1);
-      resultPictoTab[2].splice(index,1);
+  resultPictoTabBetter[1].forEach((Tab,index) => {
+    if(Tab[1] <= currentIndexTarget){
+      resultPictoTabBetter[0].splice(index,1);
+      resultPictoTabBetter[1].splice(index,1);
+      // resultPictoTab[2].splice(index,1);
     }
   });
 }
 
 function addRemainingPicto(){
-  console.log('remain picto', resultPictoTab);
-  resultPictoTab[2].forEach((indexInTab,index) => {
-    resultPicto[resultPictoTab[0][index]] = [resultPictoTab[1][index],resultPictoTab[2][index]];
+  console.log('remain picto', resultPictoTabBetter);
+  resultPictoTabBetter[1].forEach((indexInTab,index) => {
+    resultPicto[resultPictoTabBetter[0][index]] = resultPictoTabBetter[1][index];
   });
 }
 
@@ -320,6 +321,17 @@ function dichotomousInArray(array,name) {
   }
 }
 
+function checkDoublonInResultPictoTabBetter(){
+  resultPictoTabBetter[0].forEach((url,index) => {
+    for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
+      if(url === resultPictoTabBetter[0][i]){
+        // pas bon
+        resultPictoTabBetter[2][index].push(resultPictoTabBetter[2][i][1]);
+      }
+    }
+  });
+}
+
 // search if the name of every word is in the library, take the index in this library and put it in the URL
 function sentenceToPictogram(toolbox,text, index){
   let tokenized = toolbox.tokenizer.tokenize(text);
@@ -341,24 +353,25 @@ function sentenceToPictogram(toolbox,text, index){
       let p = 'p/' + b + '/' + indexToken.toString();
       if (p in resultPictoNewFunction) {
         resultPictoNewFunction[p].push(tIdx);
-        resultPictoTab[0].push(p);
-        resultPictoTab[1].push(1);
-        resultPictoTab[2].push(tIdx);
+        resultPictoTabBetter[0].push(p);
+        resultPictoTabBetter[1].push([1,tIdx]);
+        // resultPictoTab[2].push(tIdx);
       }else{
         resultPictoNewFunction[p] = [1,tIdx];
-        resultPictoTab[0].push(p);
-        resultPictoTab[1].push(1);
-        resultPictoTab[2].push(tIdx);
+        resultPictoTabBetter[0].push(p);
+        resultPictoTabBetter[1].push([1,tIdx]);
+        // resultPictoTab[2].push(tIdx);
       }
     }
   }
   if(!resultFound){
     resultPictoNewFunction['p/arasaac/10056'] = [1,tIdxSave];
-    resultPictoTab[0].push('p/arasaac/10056');
-    resultPictoTab[1].push(1);
-    resultPictoTab[2].push(tIdxSave);
+    resultPictoTabBetter[0].push('p/arasaac/10056');
+    resultPictoTabBetter[1].push([1,tIdxSave]);
+    // resultPictoTab[2].push(tIdxSave);
   }
-  console.log('resultPictoTab', resultPictoTab);
+  // checkDoublonInResultPictoTab();
+  console.log('resultPictoTabBetter', resultPictoTabBetter);
   return JSON.stringify({});
 }
 
