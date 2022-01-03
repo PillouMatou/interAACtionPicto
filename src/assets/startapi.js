@@ -64,7 +64,6 @@ var toolboxes = (() => {
 var resultPicto = {};
 var resultPictoNewFunction = {};
 var tIdxSave;
-var resultPictoTab = [[],[],[]];
 var resultPictoTabBetter = [[],[]];
 
 // SESSION FILES
@@ -256,7 +255,6 @@ function checkAddPicto(currentIndexTarget){
     if(Tab[1] <= currentIndexTarget){
       resultPictoTabBetter[0].splice(index,1);
       resultPictoTabBetter[1].splice(index,1);
-      // resultPictoTab[2].splice(index,1);
     }
   });
 }
@@ -271,13 +269,25 @@ function addRemainingPicto(){
 // search and return all pictograms from synsets
 function synsetsToPictogram(synsetsStr) {
 	let synsets = synsetsStr.split('+');
+	console.log('synsets : ',synsets);
 	// let results = {};
 	for (let b in pictograms) {
+	  console.log('bank : ', b);
     let bank = pictograms[b];
     for (let s in synsets) {
       let sIdx = parseInt(s);
       let corresponding = bank.synsets[synsets[sIdx]];
-      if (corresponding === undefined) continue;
+      console.log('corresponding', corresponding);
+      // if any images are found, bind manually these images
+      if (corresponding === undefined && synsets[s] !== 'undefined'){
+        // test avec "passe" y a des petits soucis éclatés regarde le terminal
+        if(b === 'arasaac'){
+          corresponding = [10056];
+        }
+        if(b === 'mulberry'){
+          corresponding = [1029]
+        }
+      }
       for (let c in corresponding) {
         let i = corresponding[c];
         let p = 'p/' + b + '/' + i.toString();
