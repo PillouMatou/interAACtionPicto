@@ -129,6 +129,7 @@ function revokeContribution(sessionId, timestamp, user, file) {
   });
 }*/
 
+// this function is used to reconvert the image URL
 function replaceAllElem (text) {
   while (text.includes("_")){
     text = text.replace("_", "/");
@@ -151,11 +152,9 @@ function ArrayToList(tab){
   return result;
 }
 
+// this function create a folder in the source code and create a file which contain request datas
 function mkdirJS(value){
   value = replaceAllElem(value);
-  // transforme la data en string
-
-  // faire 1 liste avec le mot et son URL
   value = value.split(',');
   var tabWordUrl = ArrayToList(value);
 
@@ -245,6 +244,7 @@ function storeAndApplyUpdate(data) {
 	return ok;
 }
 
+//check if the picto in the resultPictoTabBetter is at the good index to be add, if not we don't push in the final result
 function checkAddPicto(currentIndexTarget){
   resultPictoTabBetter[1].forEach((Tab,index) => {
     if(Tab[1] <= currentIndexTarget){
@@ -259,6 +259,7 @@ function checkAddPicto(currentIndexTarget){
   });
 }
 
+// add remain picto in the final result
 function addRemainingPicto(){
   console.log('remain picto', resultPictoTabBetter);
   resultPictoTabBetter[1].forEach((indexInTab,index) => {
@@ -284,9 +285,11 @@ function synsetsToPictogram(synsetsStr) {
         if(b === 'arasaac'){
           corresponding = [10056];
         }
+        /*
         if(b === 'mulberry'){
           corresponding = [1029]
         }
+         */
       }
       for (let c in corresponding) {
         let i = corresponding[c];
@@ -331,11 +334,11 @@ function dichotomousInArray(array,name) {
   }
 }
 
+// if picto are the same for different words, it reformat datas to match with the structure of data used
 function checkDoublonInResultPictoTabBetter(){
   resultPictoTabBetter[0].forEach((url,index) => {
     for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
       if(url === resultPictoTabBetter[0][i]){
-        // pas bon
         resultPictoTabBetter[1][index].push(resultPictoTabBetter[1][i][1]);
       }
     }
@@ -440,8 +443,11 @@ function getPictogram(b, fileNumber) {
 	}
 }
 
+// reset variables before searching for pictograms
 function resetResultPictogram(){
   resultPicto = {};
+  resultPictoNewFunction = {};
+  resultPictoTabBetter = [[],[]];
 }
 
 // PUBLIC ENDPOINTS

@@ -27,6 +27,7 @@ export class TranslatePictoComponent implements OnInit {
   wordsText: any;
   keyPicto:string[][] = [];
   dataRegisterChecked: boolean = false;
+  keyDouble: boolean = false;
 
 
   constructor(public languageService: LanguageService,
@@ -79,7 +80,6 @@ export class TranslatePictoComponent implements OnInit {
         this.editionService.imageSelected.push('null');
       });
       this.duplicateCaseKey(this.keyPicto);
-      // this.duplicateCase(numberOfWord);
       this.debug();
     },500);
   }
@@ -109,6 +109,7 @@ export class TranslatePictoComponent implements OnInit {
     this.displayResult.length = 0;
     this.keyPicto.length = 0;
     this.wordSearch = '';
+    this.keyDouble = false;
   }
 
   Download( url: any, filename: any ) {
@@ -171,6 +172,8 @@ export class TranslatePictoComponent implements OnInit {
   }
   //duplication par clé
   duplicateCaseKey(keys :string[][]){
+    // il faut qu'ici on regarde les clés si y a des doublons et les mettre au bon endroit
+    this.keyDoublon(keys);
     keys.forEach(listKeys => {
       listKeys = [...new Set(listKeys)];
       listKeys.forEach(key => {
@@ -182,7 +185,13 @@ export class TranslatePictoComponent implements OnInit {
         let first = true
         allKeys.forEach(keySplited => {
           const index = Number(keySplited);
+          /*
+          console.log('key pour index : ', key, 'keySplited pour index : ',keySplited);
+          const indexForResult = key.indexOf(keySplited);
+          && indexForResult === -1
+           */
           if(!first){
+            console.log("duplicateCaseKey proc");
             this.displayResult.splice(index,0,this.displayResult[Number(allKeys[0])]);
             this.result.splice(index,0,this.result[Number(allKeys[0])]);
           }else{
@@ -193,19 +202,31 @@ export class TranslatePictoComponent implements OnInit {
     });
   }
 
-  //duplication par nom
-  duplicateCase(wordText: any){
-    console.log('wordText : ',wordText);
-    let alreadyAdd = false;
-    wordText.forEach((word: string, index: number) => {
-      for(let i = index + 1; i < wordText.length; i++){
-        if(word == wordText[i] && !alreadyAdd){
-          this.displayResult.splice(i,0,this.displayResult[index]);
-          this.result.splice(i,0,this.result[index]);
-          alreadyAdd = true;
-        }
+  private keyDoublon(keys: string[][]) {
+    let indexToDeleteInUrlArray: number[] = [];
+    keys.forEach((key,indexDoubleKey) => {
+      if(key[0].includes('-')){
+        const splitKey = key[0].split('-');
+        splitKey.forEach(keySplited => {
+          keys.forEach((keytab, indexKeytab) => {
+            const indexForResult = keytab.indexOf(keySplited);
+            if(indexForResult !== -1){
+              indexToDeleteInUrlArray.push(indexDoubleKey);
+              this.displayResult[indexDoubleKey].forEach(url => {
+                this.displayResult[indexKeytab].push(url);
+                this.result[indexKeytab].push(url);
+              });
+            }
+          });
+        });
       }
-      alreadyAdd = false;
+    });
+    indexToDeleteInUrlArray = [... new Set(indexToDeleteInUrlArray)];
+    //reverse because if we delete first element, the other will be at the wrong index
+    indexToDeleteInUrlArray.reverse();
+    indexToDeleteInUrlArray.forEach(index => {
+      this.result.splice(index,1);
+      this.displayResult.splice(index,1);
     });
   }
 }

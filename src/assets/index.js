@@ -67,6 +67,7 @@ function getTokens(tokens){
   tokensJS = tokens;
 }
 
+//return words searched for the typescript file
 function getTokensForTS(){
   return tokensJS;
 }
@@ -183,26 +184,32 @@ function pictogramsReceived(pictograms) {
     saveUrlPicto(urlImage);
   }
 }
+// build an array of keys for the typescript file
 function saveKeyPicto(keyImage){
   keyImageJS.push(keyImage);
 }
 
+//return keys for the typescript file
 function getKeyPicto(){
   return keyImageJS;
 }
 
+// build an array of urls for the typescript file
 function saveUrlPicto(urlImage){
   urlImageJS.push(urlImage);
 }
 
+//return urls for the typescript file
 function getUrlPicto(){
   return urlImageJS;
 }
 
+// reset urls when we send a new request
 function clearUrlImageJS(){
   urlImageJS = [];
 }
 
+//request to the server at url
 function _phoneHome(path, callback, error) {
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();
