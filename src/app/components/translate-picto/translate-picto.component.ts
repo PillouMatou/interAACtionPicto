@@ -27,6 +27,7 @@ export class TranslatePictoComponent implements OnInit {
   wordsText: any;
   keyPicto:string[][] = [];
   dataRegisterChecked: boolean = false;
+  keyDouble: boolean = false;
 
 
   constructor(public languageService: LanguageService,
@@ -47,11 +48,13 @@ export class TranslatePictoComponent implements OnInit {
       this.openDialog();
       return;
     }
-    monitorInput(formText.form.value.text, this.languageService.languageSearch);
+    let textInput = formText.form.value.text.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    monitorInput(textInput, this.languageService.languageSearch);
     setTimeout(()=> {
       this.result = getUrlPicto();
       this.editionService.result = this.result;
       this.keyPicto = getKeyPicto();
+      console.log('keys : ', this.keyPicto);
       for (let i=0; i<this.result.length; i = i+1){
         this.result[i].forEach(value => {
           const tabValue = value.split('/');
@@ -66,7 +69,6 @@ export class TranslatePictoComponent implements OnInit {
       console.log('this.wordsText : ',this.wordsText);
       this.editionService.wordsText = this.wordsText;
       this.editionService.wordsTextSave = JSON.parse(JSON.stringify(this.wordsText));
-      // this.addWordsIfNeeded();
       this.editionService.isSearch = true;
       if(this.dataRegisterChecked){
         this.saveData.dataRegisterChecked = true;
@@ -74,10 +76,11 @@ export class TranslatePictoComponent implements OnInit {
       }else{
         this.saveData.dataRegisterChecked = false;
       }
-      this.debug();
       numberOfWord.forEach(word => {
         this.editionService.imageSelected.push('null');
       });
+      this.duplicateCaseKey(this.keyPicto);
+      this.debug();
     },500);
   }
 
@@ -106,6 +109,7 @@ export class TranslatePictoComponent implements OnInit {
     this.displayResult.length = 0;
     this.keyPicto.length = 0;
     this.wordSearch = '';
+    this.keyDouble = false;
   }
 
   Download( url: any, filename: any ) {
@@ -137,22 +141,6 @@ export class TranslatePictoComponent implements OnInit {
     download(url,filename);
   }
 
-  private addWordsIfNeeded() {
-    for(let i = 0; i < this.keyPicto.length; i++){
-      // this.keyPicto[i] = this.deleteDoublonFromArray(this.keyPicto[i]);
-      this.keyPicto[i].forEach(key => {
-        if(key.includes('-')){
-          const placement = key.split('-');
-          let textKey = '';
-          for(let j = 0; j < placement.length; j++){
-            textKey = textKey + this.wordsText[placement[j]].text + ' ';
-          }
-          this.wordsText.splice(i,0,{text: textKey});
-        }
-      });
-    }
-  }
-
   openDialog(){
     this.dialog.open(DialogMaxWordsComponent, {
       height: '20%',
@@ -174,5 +162,72 @@ export class TranslatePictoComponent implements OnInit {
 
   private debug() {
     console.log('result : ', this.editionService.result);
+    console.log('displayResult : ', this.displayResult);
+  }
+  replaceAllElem (text:string) {
+    while (text.includes("e")){
+      text = text.replace("e", "");
+    }
+    return text;
+  }
+  //duplication par clé
+  duplicateCaseKey(keys :string[][]){
+    this.keyDoublon(keys);
+    keys.forEach((listKeys,indexListKeys) => {
+      listKeys = [...new Set(listKeys)];
+      //delete all "e" in keys
+      listKeys.forEach((key,indexKey) => {
+        listKeys[indexKey] = this.replaceAllElem(key);
+      });
+      listKeys.forEach((key) => {
+        const allKeys = key.split('-');
+        // we don't want to do something about the first key
+        let first = true
+        allKeys.forEach((keySplited) => {
+          const index = Number(keySplited);
+          let indexForResult = listKeys.indexOf(keySplited);
+          if(indexListKeys-1 > 0){
+            if(listKeys[0].includes('-') && keys[indexListKeys-1][0][0] === listKeys[0][0]){
+              indexForResult = 0;
+            }
+          }
+          //console.log('listKeys : ', listKeys, 'keySplited pour index : ',keySplited, 'indexForResult : ', indexForResult);
+          if(!first && indexForResult === -1){
+            this.displayResult.splice(index,0,this.displayResult[Number(allKeys[0])]);
+            this.result.splice(index,0,this.result[Number(allKeys[0])]);
+          }else{
+            first = false;
+          }
+          });
+      });
+    });
+  }
+
+  private keyDoublon(keys: string[][]) {
+    let indexToDeleteInUrlArray: number[] = [];
+    keys.forEach((key,indexDoubleKey) => {
+      if(key[0].includes('-')){
+        const splitKey = key[0].split('-');
+        splitKey.forEach(keySplited => {
+          keys.forEach((keytab, indexKeytab) => {
+            const indexForResult = keytab.indexOf(keySplited);
+            if(indexForResult !== -1){
+              indexToDeleteInUrlArray.push(indexDoubleKey);
+              this.displayResult[indexDoubleKey].forEach(url => {
+                this.displayResult[indexKeytab].push(url);
+                this.result[indexKeytab].push(url);
+              });
+            }
+          });
+        });
+      }
+    });
+    indexToDeleteInUrlArray = [... new Set(indexToDeleteInUrlArray)];
+    //reverse because if we delete first element, the other will be at the wrong index
+    indexToDeleteInUrlArray.reverse();
+    indexToDeleteInUrlArray.forEach(index => {
+      this.result.splice(index,1);
+      this.displayResult.splice(index,1);
+    });
   }
 }

@@ -67,6 +67,7 @@ function getTokens(tokens){
   tokensJS = tokens;
 }
 
+//return words searched for the typescript file
 function getTokensForTS(){
   return tokensJS;
 }
@@ -149,16 +150,22 @@ function pictogramsReceived(pictograms) {
     let count = pictoData.shift();
     let matches = pictoData.length;
     let relevance = matches / count;
-    let indexes = pictoData.map(synsetIndex => synsetIndex.toString());
+    let indexes = pictoData.map(synsetIndex => synsetIndex.toString() + "e");
     indexes.sort();
     let key = indexes.join('-');
-    if (key in expressions) expressions[key].push([relevance, p]);
-    else expressions[key] = [[relevance, p]];
+    if (key in expressions) {
+      expressions[key].push([relevance, p]);
+    }
+    else {
+      expressions[key] = [[relevance, p]];
+    }
   }
   if (selectedLibrary === undefined || expressions[selectedLibrary] === undefined) {
     selectedLibrary = Object.keys(expressions)[0];
   }
+  // console.log('expressions : ',expressions);
   for (key in expressions) {
+    // console.log('key in expressions : ', key);
     let pictograms = expressions[key];
     pictograms.sort(relevanceComparator);
     let urlImage = [];
@@ -177,26 +184,32 @@ function pictogramsReceived(pictograms) {
     saveUrlPicto(urlImage);
   }
 }
+// build an array of keys for the typescript file
 function saveKeyPicto(keyImage){
   keyImageJS.push(keyImage);
 }
 
+//return keys for the typescript file
 function getKeyPicto(){
   return keyImageJS;
 }
 
+// build an array of urls for the typescript file
 function saveUrlPicto(urlImage){
   urlImageJS.push(urlImage);
 }
 
+//return urls for the typescript file
 function getUrlPicto(){
   return urlImageJS;
 }
 
+// reset urls when we send a new request
 function clearUrlImageJS(){
   urlImageJS = [];
 }
 
+//request to the server at url
 function _phoneHome(path, callback, error) {
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();

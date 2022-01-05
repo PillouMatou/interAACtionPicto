@@ -62,6 +62,9 @@ var toolboxes = (() => {
 })();
 
 var resultPicto = {};
+var resultPictoNewFunction = {};
+var tIdxSave;
+var resultPictoTabBetter = [[],[]];
 
 // SESSION FILES
 
@@ -126,6 +129,7 @@ function revokeContribution(sessionId, timestamp, user, file) {
   });
 }*/
 
+// this function is used to reconvert the image URL
 function replaceAllElem (text) {
   while (text.includes("_")){
     text = text.replace("_", "/");
@@ -148,11 +152,9 @@ function ArrayToList(tab){
   return result;
 }
 
+// this function create a folder in the source code and create a file which contain request datas
 function mkdirJS(value){
   value = replaceAllElem(value);
-  // transforme la data en string
-
-  // faire 1 liste avec le mot et son URL
   value = value.split(',');
   var tabWordUrl = ArrayToList(value);
 
@@ -242,31 +244,71 @@ function storeAndApplyUpdate(data) {
 	return ok;
 }
 
+//check if the picto in the resultPictoTabBetter is at the good index to be add, if not we don't push in the final result
+function checkAddPicto(currentIndexTarget){
+  resultPictoTabBetter[1].forEach((Tab,index) => {
+    if(Tab[1] <= currentIndexTarget){
+      resultPicto[resultPictoTabBetter[0][index]] = resultPictoTabBetter[1][index];
+    }
+  });
+  resultPictoTabBetter[1].forEach((Tab,index) => {
+    if(Tab[1] <= currentIndexTarget){
+      resultPictoTabBetter[0].splice(index,1);
+      resultPictoTabBetter[1].splice(index,1);
+    }
+  });
+}
+
+// add remain picto in the final result
+function addRemainingPicto(){
+  console.log('remain picto', resultPictoTabBetter);
+  resultPictoTabBetter[1].forEach((indexInTab,index) => {
+    resultPicto[resultPictoTabBetter[0][index]] = resultPictoTabBetter[1][index];
+  });
+}
+
 // search and return all pictograms from synsets
 function synsetsToPictogram(synsetsStr) {
 	let synsets = synsetsStr.split('+');
+	console.log('synsets : ',synsets);
 	// let results = {};
 	for (let b in pictograms) {
-		let bank = pictograms[b];
-		for (let s in synsets) {
-			let sIdx = parseInt(s);
-			let corresponding = bank.synsets[synsets[sIdx]];
-			if (corresponding === undefined) continue;
-			for (let c in corresponding) {
-				let i = corresponding[c];
-				let p = 'p/' + b + '/' + i.toString();
-				if (p in resultPicto) {
-				  console.log('p : ', p);
-				  if(resultPicto[p][1] !== sIdx){
+	  console.log('bank : ', b);
+    let bank = pictograms[b];
+    for (let s in synsets) {
+      let sIdx = parseInt(s);
+      let corresponding = bank.synsets[synsets[sIdx]];
+      console.log('corresponding', corresponding);
+      // if any images are found, bind manually these images
+      if (corresponding === undefined && synsets[s] !== 'undefined'){
+        // test avec "passe" y a des petits soucis éclatés regarde le terminal
+        if(b === 'arasaac'){
+          corresponding = [10056];
+        }
+        /*
+        if(b === 'mulberry'){
+          corresponding = [1029]
+        }
+         */
+      }
+      for (let c in corresponding) {
+        let i = corresponding[c];
+        let p = 'p/' + b + '/' + i.toString();
+        if (p in resultPicto) {
+          checkAddPicto(sIdx);
+          if (resultPicto[p][1] !== sIdx) {
             resultPicto[p].push(sIdx);
           }
-				} else {
-					let count = bank.counts[i];
+        } else {
+          let count = bank.counts[i];
+          checkAddPicto(sIdx);
           resultPicto[p] = [count, sIdx];
-				}
-			}
-		}
-	}
+        }
+      }
+    }
+  }
+	addRemainingPicto();
+  console.log('results dans l"ancienne fonction : ', resultPicto);
 	return JSON.stringify(resultPicto);
 }
 
@@ -292,29 +334,63 @@ function dichotomousInArray(array,name) {
   }
 }
 
+// if picto are the same for different words, it reformat datas to match with the structure of data used
+function checkDoublonInResultPictoTabBetter(){
+  resultPictoTabBetter[0].forEach((url,index) => {
+    for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
+      if(url === resultPictoTabBetter[0][i]){
+        resultPictoTabBetter[1][index].push(resultPictoTabBetter[1][i][1]);
+      }
+    }
+  });
+  resultPictoTabBetter[0].forEach((url,index) => {
+    for(let i = index + 1; i < resultPictoTabBetter[0].length; i++){
+      if(url === resultPictoTabBetter[0][i]){
+        resultPictoTabBetter[0].splice(i,1);
+        resultPictoTabBetter[1].splice(i,1);
+      }
+    }
+  });
+}
+
 // search if the name of every word is in the library, take the index in this library and put it in the URL
-function sentenceToPictogram(toolbox,text){
+function sentenceToPictogram(toolbox,text, index){
   let tokenized = toolbox.tokenizer.tokenize(text);
-  // let results = {};
+  let resultFound = false;
   for (let b in pictograms) {
     let bank = pictograms[b];
     for (let t in tokenized) {
-      let tIdx = parseInt(t);
+      let tIdx = index;
+      // if nothing is found save the tIdx
+      tIdxSave = tIdx;
       // let indexToken = dichotomousInArray(bank.names,tokenized[t]);
       let indexToken = bank.names.findIndex(name => tokenized[t] === name);
+      if(indexToken !== -1){
+        resultFound = true;
+      }
       console.log('indexToken : ',indexToken);
       let corresponding = bank.names[indexToken];
       if (corresponding === undefined) continue;
       let p = 'p/' + b + '/' + indexToken.toString();
-      if (p in resultPicto) {
-        resultPicto[p].push(tIdx);
+      if (p in resultPictoNewFunction) {
+        resultPictoNewFunction[p].push(tIdx);
+        resultPictoTabBetter[0].push(p);
+        resultPictoTabBetter[1].push([1,tIdx]);
       }else{
-        resultPicto[p] = [1,tIdx];
+        resultPictoNewFunction[p] = [1,tIdx];
+        resultPictoTabBetter[0].push(p);
+        resultPictoTabBetter[1].push([1,tIdx]);
       }
     }
   }
-  console.log('results dans la nouvelle fonction : ', resultPicto);
-  return JSON.stringify(resultPicto);
+  if(!resultFound){
+    resultPictoNewFunction['p/arasaac/10056'] = [1,tIdxSave];
+    resultPictoTabBetter[0].push('p/arasaac/10056');
+    resultPictoTabBetter[1].push([1,tIdxSave]);
+  }
+  checkDoublonInResultPictoTabBetter();
+  console.log('resultPictoTabBetter', resultPictoTabBetter);
+  return JSON.stringify({});
 }
 
 // this function search synsets in the toolbox from the text wrote by the user
@@ -326,6 +402,8 @@ function sentenceToSynsets(toolbox, text) {
 	let stop = 0;
 	for (let t in tokenized) {
 		let token = tokenized[t];
+		let index = parseInt(t);
+		console.log('index : ',index);
 		let i = text.slice(stop).indexOf(token);
 		if (i == -1) console.error('A token was not found in original input:', text, token);
 		let start = stop + i;
@@ -333,7 +411,7 @@ function sentenceToSynsets(toolbox, text) {
 		token = token.toLowerCase();
 		let synsets = toolbox.synsets.get(token);
     if(synsets === undefined){
-      sentenceToPictogram(toolbox,token);
+      sentenceToPictogram(toolbox,token,index);
       synsets = '';
     }
 		tokens.push({ start, stop, synsets });
@@ -365,8 +443,11 @@ function getPictogram(b, fileNumber) {
 	}
 }
 
+// reset variables before searching for pictograms
 function resetResultPictogram(){
   resultPicto = {};
+  resultPictoNewFunction = {};
+  resultPictoTabBetter = [[],[]];
 }
 
 // PUBLIC ENDPOINTS
