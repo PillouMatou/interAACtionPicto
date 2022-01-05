@@ -172,26 +172,27 @@ export class TranslatePictoComponent implements OnInit {
   }
   //duplication par clé
   duplicateCaseKey(keys :string[][]){
-    // il faut qu'ici on regarde les clés si y a des doublons et les mettre au bon endroit
     this.keyDoublon(keys);
-    keys.forEach(listKeys => {
+    keys.forEach((listKeys,indexListKeys) => {
       listKeys = [...new Set(listKeys)];
-      listKeys.forEach(key => {
-        key = this.replaceAllElem(key);
-        console.log('key', key);
+      //delete all "e" in keys
+      listKeys.forEach((key,indexKey) => {
+        listKeys[indexKey] = this.replaceAllElem(key);
+      });
+      listKeys.forEach((key) => {
         const allKeys = key.split('-');
-        console.log('allKeys : ', allKeys);
         // we don't want to do something about the first key
         let first = true
-        allKeys.forEach(keySplited => {
+        allKeys.forEach((keySplited) => {
           const index = Number(keySplited);
-          /*
-          console.log('key pour index : ', key, 'keySplited pour index : ',keySplited);
-          const indexForResult = key.indexOf(keySplited);
-          && indexForResult === -1
-           */
-          if(!first){
-            console.log("duplicateCaseKey proc");
+          let indexForResult = listKeys.indexOf(keySplited);
+          if(indexListKeys-1 > 0){
+            if(listKeys[0].includes('-') && keys[indexListKeys-1][0][0] === listKeys[0][0]){
+              indexForResult = 0;
+            }
+          }
+          //console.log('listKeys : ', listKeys, 'keySplited pour index : ',keySplited, 'indexForResult : ', indexForResult);
+          if(!first && indexForResult === -1){
             this.displayResult.splice(index,0,this.displayResult[Number(allKeys[0])]);
             this.result.splice(index,0,this.result[Number(allKeys[0])]);
           }else{
