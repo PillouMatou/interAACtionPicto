@@ -40,19 +40,7 @@ export class LayoutComponent implements OnInit {
     this.editionService.borderSize = Number(this.borderSize);
     this.editionService.location = this.location;
     if(this.saveDataService.dataRegisterChecked){
-      let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.editionService.imageSelected));
-      urlPictoDataSelected.forEach((url,index) => {
-        if(urlPictoDataSelected[index] == null || urlPictoDataSelected[index].length > 100){
-          urlPictoDataSelected[index] = "null";
-        }
-        else{
-          urlPictoDataSelected[index] = this.replaceAll(url);
-        }
-      });
-      const data = [this.editionService.wordsSearchTab, urlPictoDataSelected];
-      setDataTS(data);
-      console.log('data : ',JSON.stringify(data));
-      mkdirJ();
+      this.sendUsersDataToServer();
     }
     this.router.navigate(['/print']);
   }
@@ -127,5 +115,27 @@ export class LayoutComponent implements OnInit {
     reader.onerror = (error) => {
       console.log('Error: ', error);
     };
+  }
+
+  private sendUsersDataToServer() {
+    let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.editionService.imageSelected));
+    urlPictoDataSelected.forEach((url,index) => {
+      if(urlPictoDataSelected[index] == null || urlPictoDataSelected[index].length > 100){
+        urlPictoDataSelected[index] = "null";
+      }
+      else{
+        urlPictoDataSelected[index] = this.replaceAll(url);
+      }
+    });
+    let words: string[] = [];
+    let synsets: string[] = [];
+    this.editionService.wordsText.forEach(word => {
+      words.push(word.text);
+      synsets.push(word.synsets[0]);
+    })
+    const data = [words, synsets, urlPictoDataSelected];
+    setDataTS(data);
+    console.log('data : ',JSON.stringify(data));
+    mkdirJ();
   }
 }
