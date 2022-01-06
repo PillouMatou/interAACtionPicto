@@ -117,18 +117,6 @@ function revokeContribution(sessionId, timestamp, user, file) {
 	fs.closeSync(fd);
 }
 
-/*function mkdirJS(){
-  console.log("on passe dans mkdir");
-  var date = Date.now().toString();
-  var data = dataJS;
-  console.log('data : ', data);
-  fs.mkdirSync('requests/', { recursive: true });
-  fs.appendFile('requests/request'+date+'.json', data, function (err){
-    if (err) throw err;
-    console.log('Fichier créé !');
-  });
-}*/
-
 // this function is used to reconvert the image URL
 function replaceAllElem (text) {
   while (text.includes("_")){
@@ -140,30 +128,46 @@ function replaceAllElem (text) {
 function ArrayToList(tab){
   var list = {};
   var result = [];
-  for (let i = 0; i < tab.length / 2; i++){
-    if(tab[tab.length/2+i] !== undefined){
-      list = {word: tab[i], URL: tab[tab.length/2+i]};
+  var text = "";
+  for (let i = 0; i < tab.length / 3; i++){
+    if(tab[tab.length*2/3+i] !== undefined){
+      list = {surface_form: tab[i],synsets: tab[tab.length/3+i], URL: tab[tab.length*2/3+i]};
     }
     else{
-      list = {word: tab[i], URL: ''};
+      list = {surface_form: tab[i],synsets: tab[tab.length/3+i], URL: ''};
     }
+    text = text + tab[i] + " ";
     result.push(list);
   }
-  return result;
+  return [result, text];
 }
 
 // this function create a folder in the source code and create a file which contain request datas
 function mkdirJS(value){
   value = replaceAllElem(value);
   value = value.split(',');
-  var tabWordUrl = ArrayToList(value);
+  var resultArrayToList = ArrayToList(value)
+  var tabWordUrl = resultArrayToList[0];
+  var text = resultArrayToList[1];
 
-
-  var date = Date.now().toString();
+  var date = new Date();
+  var dateNow = Date.now().toString();
+  date = date.toLocaleDateString();
   var data = JSON.stringify(tabWordUrl);
   console.log('data : ', data);
+  //document
+  var doc = {document:{
+    name:'request'+dateNow+'.json',
+      date: date,
+      sentences:{
+        text: text,
+        words:tabWordUrl
+      }
+    }};
+  doc = JSON.stringify(doc);
+  console.log('doc',doc);
   fs.mkdirSync('requests/', { recursive: true });
-  fs.appendFile('requests/request'+date+'.json', data, function (err){
+  fs.appendFile('requests/request'+dateNow+'.json', doc, function (err){
     if (err) throw err;
     console.log('Fichier créé !');
   });
