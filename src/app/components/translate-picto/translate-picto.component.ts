@@ -26,7 +26,7 @@ export class TranslatePictoComponent implements OnInit {
   banksChecked:string[] = ['arasaac', 'mulberry'];
   wordsText: any;
   keyPicto:string[][] = [];
-  dataRegisterChecked: boolean = false;
+  dataRegisterChecked: boolean = true;
   keyDouble: boolean = false;
 
 
