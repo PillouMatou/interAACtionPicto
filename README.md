@@ -1,41 +1,51 @@
 # InterAACtionPicto
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.8.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Website allowing you to transform your sentence or word into a pictogram.
 
 # Using with ARASAAC / Mulberry
-This repository includes a script which you can use to use this API with ARASAAC or Mulberry
+For use this project, you need at least to have one of the two image banks.
+
 ## ARASAAC
 ARASAAC has around 13000 pictograms in PNG format, weighting around 630MB.
+For get this image bank, use this in the terminal at the root of the project :
 ```sh
 git clone https://github.com/InteraactionGroup/olpapi-arasaac/ pictograms/arasaac
 ```
 
 ## Mulberry
 Mulberry has around 3500 pictograms in SVG format, weighting around 15MB.
+For get this image bank, use this in the terminal at the root of the project :
 ```sh
 git clone https://github.com/InteraactionGroup/olpapi-mulberry/ pictograms/mulberry
 ```
 
-## Further help
+# Setup InterAACtionPicto
+The first time you get the project, do a ```npm install```.
+This is necessary in order to install the "Concurrency" package.
+It will allow to launch the server + the API in parallel.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Run InterAACtionPicto
+To run the project, do ```ng start```.
+This command :
+- Launch the Angualer server on the port 4200
+- Then in parallel, launch the Api for communicate with images banks on the port 30000
+
+# How work the Api
+From the website, we do requête on the Api and this returns us pictograms.
+We convert the urls before sending them to the api, then on the api side, we reverse the conversion (it doesn't like the "/" in the urls)
+
+# Folders and their functions
+Src/assets :
+  - javascript code for communication with the api
+  - manage the language of the site
+  - Contains all images for website display
+
+Src/app -> typescript code for the website
+Wordnet -> python code for synsete
+
+# How work json
+The jsons contain the sentence written by the user and the chosen pictograms associated with his sentence.
+The jsons are created only if it accepts that we save this data (By default it is yes).
+Locally, a folder is created in the project and will contain all the jsons.
+
+## Put InterAACtionPicto on a server
+To put InterAACtion Picto on a server do in the terminal ```ng build --prod```.
