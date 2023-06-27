@@ -4,6 +4,7 @@ import {AnnotVocabComponent} from "./annot_vocab.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {MatDialogModule} from "@angular/material/dialog";
 import {RouterTestingModule} from "@angular/router/testing";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 describe('PostEditionComponent', () => {
   let component: AnnotVocabComponent;
@@ -12,7 +13,7 @@ describe('PostEditionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ AnnotVocabComponent ],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), MatDialogModule]
+      imports: [RouterTestingModule, TranslateModule.forRoot(), MatDialogModule, FormsModule, ReactiveFormsModule]
     })
     .compileComponents();
   });
