@@ -1,0 +1,69 @@
+<br>
+<div class="container">
+    <h1>Liste des requêtes enregistrées sur le serveur</h1>
+    <div class="menu">
+        <button *ngIf="!newRequest" type="button" class="btn btn-secondary" (click)="getAllPostEditionRequestFromServer()" [disabled]="disableButtons">Post Edition</button>
+        <button *ngIf="!newRequest" type="button" class="btn btn-secondary" (click)="getAllAnnotVocabRequestFromServer()" [disabled]="disableButtons">Annot Vocab</button>
+        <button *ngIf="newRequest" type="button" class="btn btn-secondary" (click)="doAnewRequest()">Faire une autre requête sur le serveur</button>
+    </div>
+    <div *ngIf="isPostEdition">
+        <br>
+        <h2>Liste des requêtes Post Edition</h2>
+        <div *ngIf="!getRequests"  class="text-center">
+            <div class="spinner-border loader" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <br>
+            <span>En cours de chargement ...</span>
+        </div>
+        <div *ngIf="showError" class="error">
+            <h1>Il n'y a pas de requêtes enregistrées sur le serveur</h1>
+        </div>
+        <table *ngIf="getRequests" class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>Référence pour la phrase</th>
+                <th>ids_picto</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let elem of allRequests; let index = index">
+                <td>{{allRequests[index][2][1]}}</td>
+                <td>{{allRequests[index][3][1]}}</td>
+                <td>{{allRequests[index][1][1]}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="isAnnotVocab">
+        <br>
+        <h2>Liste des requêtes Annot Vocab</h2>
+        <div *ngIf="!getRequests"  class="text-center">
+            <div class="spinner-border loader" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <br>
+            <span>En cours de chargement ...</span>
+        </div>
+        <div *ngIf="showError" class="error">
+            <h1>Il n'y a pas de requêtes enregistrées sur le serveur</h1>
+        </div>
+        <table *ngIf="getRequests" class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>Texte associé</th>
+                <th>N° Picto</th>
+                <th>Date modification</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let elem of allRequests; let index = index">
+                <td>{{allRequests[index][2][1]}}</td>
+                <td>{{allRequests[index][3][1]}}</td>
+                <td>{{allRequests[index][1][1]}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,46 +1,75 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from "@angular/forms";
-import {LanguageService} from "../../services/language-service";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
+import {Router} from "@angular/router";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {EditionService} from "../../services/edition-service";
+import {LanguageService} from "../../services/language-service";
 import {SaveDataService} from "../../services/save-data.service";
+import {MatDialog} from "@angular/material/dialog";
+import {NgForm} from "@angular/forms";
+import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
 
 declare var monitorInput:any;
 declare var getUrlPicto:any;
 declare var getTokensForTS:any;
 declare var getKeyPicto:any;
 declare var clearUrlImageJS:any;
+declare var setDataTS:any;
+declare var mkdirPostEdition:any;
 declare var getLemmaText:any;
 declare var lemmaText:any;
 
-@Component({
-  selector: 'app-translate-picto',
-  templateUrl: './translate-picto.component.html',
-  styleUrls: ['./translate-picto.component.css']
-})
-export class TranslatePictoComponent implements OnInit {
+export interface Sentences{
+  sentence: string,
+  pictos:string
+}
 
+@Component({
+  selector: 'app-post-edition',
+  templateUrl: './post-edition.component.html',
+  styleUrls: ['./post-edition.component.css']
+})
+export class PostEditionComponent implements OnInit {
+
+  num_sentences: number = 0;
+  sentence:string = '';
+  id_sentence:number = 0;
+  progress_bar_style:string = '';
+  sentences: Sentences[] = [];
   result:string[][] = [];
   displayResult:string[][] = [];
   resultTab:string[] = [];
   cellsToScroll:number = 4;
   wordSearch:string = '';
-  banksChecked:string[] = ['arasaac', 'mulberry'];
-  wantLema:boolean = true;
+  banksChecked:string[] = ['arasaac'];
   wordsText: any;
   keyPicto:string[][] = [];
   dataRegisterChecked: boolean = true;
   keyDouble: boolean = false;
+  is_selected:boolean = false;
+  selected_image:string = '';
+  double_click:boolean = false;
+  index_picto_to_delete:number = 0;
+  clicked:boolean = false;
+  clicked_add:boolean = false;
+  pictos:number[] = [];
+  pictosStyles:string[] = [];
+  pictosVisibility:boolean[] = [];
   loading: boolean = false;
 
   constructor(public languageService: LanguageService,
               public editionService: EditionService,
               public saveData: SaveDataService,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.editionService.isSearch = false;
+    if (!this.editionService.logged){
+      this.editionService.accessPage = "postEditPicto";
+      this.router.navigate(['login']);
+    }else {
+      this.editionService.isSearch = false;
+      this.goLoad("sentences.json");
+    }
   }
 
   onSubmit(formText: NgForm) {
@@ -54,20 +83,16 @@ export class TranslatePictoComponent implements OnInit {
         this.openDialog();
         return;
       }
-      if (this.wantLema){
-        let textLemma: string[] = [""];
-        lemmaText(this.wordSearch);
-        let lemmaTextInterval = setInterval(() => {
-          if (textLemma[0] == ""){
-            textLemma = getLemmaText();
-          }else {
-            clearInterval(lemmaTextInterval);
-            this.getPicto(numberOfWord, textLemma);
-          }
-        }, 200);
-      }else {
-        this.getPicto(numberOfWord, this.wordSearch);
-      }
+      let textLemma: string[] = [""];
+      lemmaText(this.wordSearch);
+      let lemmaTextInterval = setInterval(() => {
+        if (textLemma[0] == ""){
+          textLemma = getLemmaText();
+        }else {
+          clearInterval(lemmaTextInterval);
+          this.getPicto(numberOfWord, textLemma);
+        }
+      }, 200);
     }
   }
 
@@ -124,27 +149,6 @@ export class TranslatePictoComponent implements OnInit {
     }
   }
 
-  chooseBank(arasaac: HTMLInputElement, mulberry: HTMLInputElement, lema: HTMLInputElement) {
-    if(!arasaac.checked){
-      this.banksChecked = this.banksChecked.filter((bank) => bank != arasaac.value);
-    }
-    if(!mulberry.checked){
-      this.banksChecked = this.banksChecked.filter((bank) => bank != mulberry.value);
-    }
-    if(!lema.checked){
-      this.wantLema = false;
-    }
-    if(arasaac.checked){
-      this.banksChecked.push(arasaac.value);
-    }
-    if(mulberry.checked){
-      this.banksChecked.push(mulberry.value);
-    }
-    if(lema.checked){
-      this.wantLema = true;
-    }
-  }
-
   resetRequest(){
     clearUrlImageJS();
     this.result = [];
@@ -156,35 +160,6 @@ export class TranslatePictoComponent implements OnInit {
     this.keyPicto.length = 0;
     this.wordSearch = '';
     this.keyDouble = false;
-  }
-
-  Download( url: any, filename: any ) {
-    let setFetching = false;
-    let setError = false;
-
-    const download = (url: RequestInfo, name: string | any[]) => {
-      if (!url) {
-        throw new Error("Resource URL not provided! You need to provide one");
-      }
-      setFetching =true;
-      fetch(url)
-        .then(response => response.blob())
-        .then(blob => {
-          setFetching =false;
-          const blobURL = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = blobURL;
-
-          if (name && name.length) if (typeof name === "string") {
-            a.download = name;
-          }
-          document.body.appendChild(a);
-          a.click();
-        })
-        .catch(() => setError = true);
-    };
-
-    download(url,filename);
   }
 
   openDialog(){
@@ -200,10 +175,21 @@ export class TranslatePictoComponent implements OnInit {
 
   select(image: string,index: number) {
     this.editionService.imageSelected[index] = image;
+    this.is_selected = true;
+    let tabImage: any[] = image.split('/')
+    this.selected_image = tabImage[tabImage.length - 1];
+    this.clicked_add = false;
   }
 
-  dataRegister(data: HTMLInputElement) {
-    this.dataRegisterChecked = data.checked;
+  addPicto(){
+    this.pictos.push(Number(this.selected_image));
+    this.clicked_add = true;
+    this.pictosStyles.push("");
+  }
+
+  set_width_translation_box(pictos: number[]){
+    let num_pictos = pictos.length;
+    return String(num_pictos * 150 + 150);
   }
 
   replaceAllElem (text:string) {
@@ -212,6 +198,7 @@ export class TranslatePictoComponent implements OnInit {
     }
     return text;
   }
+
   //duplication par clé
   duplicateCaseKey(keys :string[][]){
     this.keyDoublon(keys);
@@ -239,7 +226,7 @@ export class TranslatePictoComponent implements OnInit {
           }else{
             first = false;
           }
-          });
+        });
       });
     });
   }
@@ -270,6 +257,91 @@ export class TranslatePictoComponent implements OnInit {
       this.result.splice(index,1);
       this.displayResult.splice(index,1);
     });
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.pictos, event.previousIndex, event.currentIndex);
+  }
+
+  goLoad(nameFile: string){
+    let pathJsonFile = '../../../assets/' + nameFile;
+    fetch(pathJsonFile).then(res => res.json()).then(jsonData => {
+      this.sentences = jsonData;
+      this.get_number_sentences();
+      this.getPictos(this.sentences[0].pictos)
+      this.pictosStyles = new Array(this.get_number_picto_in_sentence()).fill("");
+      this.pictosVisibility = new Array(this.num_sentences).fill(true)
+      this.pictosVisibility[0] = false
+    })
+  }
+
+  getPictos(sentence_picto:string){
+    this.pictos = sentence_picto.split(',').map(function(item) {
+      return parseInt(item, 10)});
+  }
+
+  get_number_sentences(){
+    this.num_sentences = this.sentences.length;
+  }
+
+  get_number_picto_in_sentence(){
+    return this.pictos.length
+  }
+
+  doubleClick(index_picto:number) {
+    this.clicked = false
+    this.double_click = true
+    this.index_picto_to_delete = index_picto
+
+    if (this.pictosStyles[index_picto] === "") {
+      this.resetStyle();
+      this.pictosStyles[index_picto] = 'border: 5px solid #555;';
+    }else {
+      this.pictosStyles[index_picto]= "";
+    }
+  }
+
+  resetStyle(){
+    this.pictosStyles.fill("");
+  }
+
+  deletePicto() {
+    this.pictos.splice(this.index_picto_to_delete, 1)
+    this.resetStyle()
+  }
+
+  set_progress_bar(index: number){
+    let progress = index / this.num_sentences * 100;
+    this.progress_bar_style = 'width: ' + progress.toString() + '%;';
+    return progress.toString()
+  }
+
+  saveUsersDataToServer(index: number, sentence:string){
+    let urlPictoDataSelected : string[] = JSON.parse(JSON.stringify(this.pictos));
+    const data = [[this.saveData.userLogged], [sentence], [urlPictoDataSelected]];
+    setDataTS(data);
+    mkdirPostEdition();
+  }
+
+  goToNextTask(index: number, sentence:string, pictos:string){
+    this.saveUsersDataToServer(index, sentence);
+    console.log(pictos);
+    if (index + 2 > this.num_sentences){
+      this.router.navigate(['PostEditPictoExit']);
+    }
+    else{
+      this.pictosVisibility.fill(true);
+      this.pictosVisibility[index+1] = false;
+      this.getPictos(pictos);
+      this.id_sentence = index+1;
+      this.set_progress_bar(this.id_sentence+1);
+      this.pictosStyles = new Array(this.get_number_picto_in_sentence()).fill("")
+    }
+  }
+
+  quitStudy(index: number, sentence:string): void {
+    this.saveUsersDataToServer(index, sentence);
+    this.router.navigate(['postEditPictoExit']);
   }
 
   checkDoublon(){

@@ -23,6 +23,10 @@ var urlImageJS = [];
 var keyImageJS = [];
 var tokensJS = [];
 var dataJS = "Salut";
+var dataLemma = [""];
+var requestAnnotVocab = [];
+var requestPostEdition = [];
+var requestLogin = [];
 
 var internationalization = {
   'fra': {
@@ -77,35 +81,44 @@ function getTokensForTS(){
 // for tokenization, as a first step of the translation process
 function monitorInput(textInput, lang) {
   if (!textUpdated) return;
-  let currentText = textInput.replace(/\n|\s{2,}/g, ' ').replace(/^\s/, '');
-  sentenceInput = currentText;
-  text = currentText;
+  sentenceInput = textInput;
+  text = textInput;
+
+  const textLength = textInput.split(" ");
+  for ( let i=0; i<textLength.length; i++){
+    urlImageJS.push([]);
+    keyImageJS.push([]);
+  }
 
   this.resetResultPicto();
-  this.tokenize(currentText, lang, tokenized);
+  this.tokenize(textInput, lang, tokenized);
+}
+
+function lemmaInput(textInput){
+
 }
 
 // called on api response with tokenization results
 function tokenized(result) {
-  tokens = result.tokens;
-  // meaningsList.textContent = "";
-  let len = selectedMeanings.length;
-  selectedMeanings.length = tokens.length;
-  selectedMeanings.fill(0, len);
-  let lastStop = 0;
-  for (let t in tokens) {
-    let meaning = tokens[t];
-    let before = text.slice(lastStop, meaning.start);
-    let token = text.slice(meaning.start, meaning.stop);
-    tokens[t].text = token;
+    tokens = result.tokens;
+    // meaningsList.textContent = "";
+    let len = selectedMeanings.length;
+    selectedMeanings.length = tokens.length;
+    selectedMeanings.fill(0, len);
+    let lastStop = 0;
+    for (let t in tokens) {
+      let meaning = tokens[t];
+      let before = text.slice(lastStop, meaning.start);
+      let token = text.slice(meaning.start, meaning.stop);
+      tokens[t].text = token;
 
-    lastStop = meaning.stop;
-    if (selectedMeanings[t] >= meaning.synsets.length) {
-      selectedMeanings[t] = 0;
+      lastStop = meaning.stop;
+      if (selectedMeanings[t] >= meaning.synsets.length) {
+        selectedMeanings[t] = 0;
+      }
+      getTokens(tokens);
     }
-    getTokens(tokens);
-  }
-  refreshPictograms();
+    refreshPictograms();
 }
 
 // called when a meaning is selected, pictograms
@@ -123,7 +136,7 @@ function onMeaningSelection(e) {
 function refreshPictograms() {
   let synsets = tokens.map((token, t) => {
     let s = selectedMeanings[t];
-    return token.synsets[0];
+    return token.synsets;
   });
   if (synsets.length > 0) {
     this.pictograms(synsets,pictogramsReceived);
@@ -143,7 +156,7 @@ function relevanceComparator(a, b) {
 // called when the API has found relevant pictograms
 // for the selected meanings. This function will organize
 // pictograms in "libraries".
-function pictogramsReceived(pictograms) {
+function pictogramsReceived(pictograms, indexPictos) {
   let expressions = {};
   for (let p in pictograms) {
     let pictoData = pictograms[p];
@@ -163,27 +176,32 @@ function pictogramsReceived(pictograms) {
   if (selectedLibrary === undefined || expressions[selectedLibrary] === undefined) {
     selectedLibrary = Object.keys(expressions)[0];
   }
-  // console.log('expressions : ',expressions);
+
   for (key in expressions) {
-    // console.log('key in expressions : ', key);
     let pictograms = expressions[key];
     pictograms.sort(relevanceComparator);
-    let urlImage = [];
-    let keyImage = [];
     for (let p in pictograms) {
-      let url = 'http://lig-interaactionpicto.imag.fr/api/' + pictograms[p][1];
+      let url = 'https://lig-interaactionpicto.imag.fr/api/' + pictograms[p][1];
+      /*if (!urlImageJS[0].includes(url)){
+        let picto = document.createElement('img');
+        picto.src = url;
+        picto.draggable = true;
+        picto.dataset.key = key;
+        picto.dataset.url = url;
+        urlImageJS[indexPictos].push(url);
+        keyImageJS[indexPictos].push(key);
+      }*/
       let picto = document.createElement('img');
       picto.src = url;
       picto.draggable = true;
       picto.dataset.key = key;
       picto.dataset.url = url;
-      urlImage.push(url);
-      keyImage.push(key);
+      urlImageJS[indexPictos].push(url);
+      keyImageJS[indexPictos].push(key);
     }
-    saveKeyPicto(keyImage);
-    saveUrlPicto(urlImage);
   }
 }
+
 // build an array of keys for the typescript file
 function saveKeyPicto(keyImage){
   keyImageJS.push(keyImage);
@@ -207,10 +225,60 @@ function getUrlPicto(){
 // reset urls when we send a new request
 function clearUrlImageJS(){
   urlImageJS = [];
+  keyImageJS = [];
+}
+
+function AnnotVocabRequest(){
+  getAllAnnotVocabRequest(setAnnotVocabRequest);
+}
+
+function setAnnotVocabRequest(value){
+  requestAnnotVocab = value;
+}
+
+function getAnnotVocabRequest(){
+  return requestAnnotVocab;
+}
+
+function PostEditionRequest(){
+  getAllPostEditionRequest(setPostEditionRequest);
+}
+
+function setPostEditionRequest(value){
+  requestPostEdition = value;
+}
+
+function getPostEditionRequest(){
+  return requestPostEdition;
+}
+
+function lemmaText(value){
+  textToLemma(value, setLemmaText);
+}
+
+function setLemmaText(value){
+  dataLemma = value;
+}
+
+function getLemmaText(){
+  return dataLemma;
+}
+
+function logged(){
+  checkLogin(setLogin);
+}
+
+function setLogin(value){
+  requestLogin = value;
+}
+
+function getLogin(){
+  return requestLogin;
 }
 
 //request to the server at url
 function _phoneHome(path, callback, error) {
+
   if (error === undefined) error = callback;
   let xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
@@ -219,8 +287,74 @@ function _phoneHome(path, callback, error) {
     if (xhr.status == 200) callback(xhr.response);
     else error(undefined, xhr.response);
   });
-  xhr.open('GET', 'http://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
   xhr.send();
+}
+
+function _phoneHomeLemma(path, callback, error) {
+
+  if (error === undefined) error = callback;
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', (e) => {
+    let xhr = e.target;
+    if (xhr.status == 200) callback(xhr.response);
+    else error(undefined, xhr.response);
+  });
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send();
+}
+
+function _phoneHomePicto(path, callback, index, error) {
+
+  if (error === undefined) error = callback;
+  let xhr = new XMLHttpRequest();
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', (e) => {
+    let xhr = e.target;
+    if (xhr.status == 200) callback(xhr.response, index);
+    else error(undefined, xhr.response);
+  });
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send();
+}
+
+function _phoneHomeAnnotVocab(path, callback, error){
+
+  if (error === undefined) error = callback;
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', (e) => {
+    let xhr = e.target;
+    if (xhr.status == 200) setAnnotVocabRequest(xhr.response);
+    else error(undefined, xhr.response);
+  });
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send(null);
+}
+
+function _phoneHomePostEdition(path, callback, error){
+
+  if (error === undefined) error = callback;
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', (e) => {
+    let xhr = e.target;
+    if (xhr.status == 200) setPostEditionRequest(xhr.response);
+    else error(undefined, xhr.response);
+  });
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send(null);
+}
+
+function _phoneHomeLogin(path, callback, error){
+
+  if (error === undefined) error = callback;
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', (e) => {
+    let xhr = e.target;
+    if (xhr.status == 200) setLogin(xhr.response);
+    else error(undefined, xhr.response);
+  });
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send(null);
 }
 
 function _encode(text) {
@@ -233,6 +367,31 @@ function tokenize(sentence, language, callback, error) {
   this._phoneHome(path, callback, error);
 }
 
+function getAllAnnotVocabRequest(callback, error) {
+  let path = ['getAllAnnotVocabRequest'];
+  this._phoneHomeAnnotVocab(path, callback, error);
+}
+
+function removeAnnotVocabRequest(nameRequest, callback, error){
+  let path = ['removeAnnotVocabRequest', nameRequest];
+  this._phoneHome(path, callback, error);
+}
+
+function removePostEditionRequest(nameRequest, callback, error){
+  let path = ['removePostEditionRequest', nameRequest];
+  this._phoneHome(path, callback, error);
+}
+
+function getAllPostEditionRequest(callback, error) {
+  let path = ['getAllPostEditionRequest'];
+  this._phoneHomePostEdition(path, callback, error);
+}
+
+function textToLemma(text, callback, error){
+  let path = ['t2l', text];
+  this._phoneHomeLemma(path, callback, error);
+}
+
 // use the function pictogramsFormName from the file : startapi.js
 function pictogramsFromName(sentence, language, callback, error) {
   let path = ['t2p', language, this._encode(sentence)];
@@ -240,8 +399,12 @@ function pictogramsFromName(sentence, language, callback, error) {
 }
 
 function pictograms(synsets, callback, error) {
-  let path = ['s2p', synsets.map(encodeURIComponent).join('+')];
-  this._phoneHome(path, callback, error);
+  for (let i=0; i<synsets.length; i++){
+    for (let j=0; j<synsets[i].length; j++){
+      let path = ['s2p', synsets[i][j]];
+      this._phoneHomePicto(path, callback, i, error);
+    }
+  }
 }
 
 function resetResultPicto(callback,error){
@@ -254,9 +417,28 @@ function mkdirJ(data,callback,error){
   this._phoneHome(path, callback, error);
 }
 
+function mkdirPostEdition(data,callback,error){
+  let path = ['mkdirPostEdition', dataJS];
+  this._phoneHome(path, callback, error);
+}
+
+function mkdirAnnotVocab(data,callback,error){
+  let path = ['mkdirAnnotVocab', dataJS];
+  this._phoneHome(path, callback, error);
+}
+
+function mkdirEval(data,callback,error){
+  let path = ['mkdirEval', dataJS];
+  this._phoneHome(path, callback, error);
+}
+
+function checkLogin(callback,error){
+  let path = ['pwd'];
+  this._phoneHomeLogin(path, callback, error);
+}
+
 function setDataTS(value){
   dataJS = value;
-  console.log(dataJS);
 }
 
 // DIRECT DATA SEARCH

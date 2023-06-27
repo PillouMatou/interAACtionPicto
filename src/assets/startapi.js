@@ -1,4 +1,5 @@
 var express = require('express');
+var {spawn} = require('child_process');
 var natural = require('natural');
 var fs = require('fs');
 var Dichotomous = require('./dicho').Dichotomous;
@@ -18,6 +19,11 @@ var dirs = {
 	wordnets: 'wordnets/',
 	pictograms: 'pictograms/',
 	sessions: 'sessions/',
+	annotVocab: 'requestsAnnotVocab/',
+	postEdition: 'requestsPostEdition/',
+	eval: 'requestEval/',
+	//add path to login file
+	login: ''
 };
 
 // pictogram banks
@@ -157,12 +163,12 @@ function mkdirJS(value){
   console.log('data : ', data);
   //document
   var doc = {document:{
-    name:'request'+dateNow+'.json',
-      date: date,
-      sentences:{
-        text: text,
-        words:tabWordUrl
-      }
+	  name:'request'+dateNow+'.json',
+		  date: date,
+		  sentences:{
+		  	text: text, words:tabWordUrl
+      },
+		  version: '10 février 2023'
     }};
   doc = JSON.stringify(doc);
   console.log('doc',doc);
@@ -171,6 +177,158 @@ function mkdirJS(value){
     if (err) throw err;
     console.log('Fichier créé !');
   });
+}
+
+function mkdirPostEdition(value){
+	value = replaceAllElem(value);
+	value = value.split(',');
+
+	let idPictos = "";
+	for (let i=1; i<value.length; i++){
+		idPictos += value[i] + ", ";
+	}
+
+	var date = new Date();
+	var dateNow = Date.now().toString();
+	date = date.toLocaleDateString();
+	//document
+	var doc = {document:{
+			name:'request'+dateNow+'.json',
+			date: date,
+			user: value[0],
+			text: value[1],
+			picto: idPictos,
+			version: '10 février 2023'
+		}};
+	doc = JSON.stringify(doc);
+	console.log('doc',doc);
+	fs.mkdirSync('requestsPostEdition/', { recursive: true });
+	fs.appendFile('requestsPostEdition/requestsPostEdition'+dateNow+'.json', doc, function (err){
+		if (err) throw err;
+		console.log('Fichier créé !');
+	});
+}
+
+function mkdirAnnotVocab(value){
+	value = value.split(',');
+
+	var date = new Date();
+	var dateNow = Date.now().toString();
+	date = date.toLocaleDateString();
+
+	var doc = {
+		name:'requestsAnnotVocab'+dateNow+'.json',
+		date: date,
+		user: value[0],
+		text: value[1],
+		picto: value[2],
+		version: '10 février 2023'
+	};
+	doc = JSON.stringify(doc);
+	console.log('doc',doc);
+	fs.mkdirSync('requestsAnnotVocab/', { recursive: true });
+	fs.appendFile('requestsAnnotVocab/requestsAnnotVocab'+dateNow+'.json', doc, function (err){
+		if (err) throw err;
+		console.log('Fichier créé !');
+	});
+}
+
+function mkdirEval(value){
+	value = replaceAllElem(value);
+	value = value.split(',');
+
+	let idPictos = "";
+	for (let i=5; i<value.length; i++){
+		idPictos += value[i] + ", ";
+	}
+
+	var date = new Date();
+	var dateNow = Date.now().toString();
+	date = date.toLocaleDateString();
+	//document
+	var doc = {document:{
+			name:'request'+dateNow+'.json',
+			date: date,
+			user: value[0],
+			id_annot: value[1],
+			quest1: value[2],
+			quest2: value[3],
+			text: value[4],
+			picto: idPictos,
+			version: '10 février 2023'
+		}};
+	doc = JSON.stringify(doc);
+	console.log('doc',doc);
+	fs.mkdirSync('requestsEval/', { recursive: true });
+	fs.appendFile('requestsEval/requestsEval'+dateNow+'.json', doc, function (err){
+		if (err) throw err;
+		console.log('Fichier créé !');
+	});
+}
+
+function checkLogin(r){
+ 	const listAccounts = [];
+
+	 fs.readFile(dirs.login,  'utf8', function (err, jsonString){
+		 if (err) {
+			 return console.log('Unable to scan directory: ' + err);
+		 }
+		 let data = JSON.parse(jsonString);
+		 listAccounts.push(data);
+		 r.send(listAccounts);
+	 });
+}
+
+function getAllAnnotVocabRequest(r){
+	const listFiles = [];
+
+	fs.readdir(dirs.annotVocab, function (err, files) {
+		if (err) {
+			return console.log('Unable to scan directory: ' + err);
+		}
+		files.forEach(function (file) {
+			let rawData = fs.readFileSync(dirs.annotVocab + '/' + file);
+			let data = JSON.parse(rawData);
+			listFiles.push(data);
+		});
+		r.send(listFiles);
+	});
+}
+
+function getAllPostEditionRequest(r){
+	const listFiles = [];
+
+	fs.readdir(dirs.postEdition, function (err, files) {
+		if (err) {
+			return console.log('Unable to scan directory: ' + err);
+		}
+		files.forEach(function (file) {
+			let rawData = fs.readFileSync(dirs.postEdition + '/' + file);
+			let data = JSON.parse(rawData);
+			listFiles.push(data);
+		});
+		r.send(listFiles);
+	});
+}
+
+function removeAnnotVocabRequest(nameRequest){
+	const pathFile = dirs.annotVocab + '/' + nameRequest + '.json';
+
+	try {
+		fs.unlinkSync(pathFile);
+	} catch(err) {
+		console.error(err);
+	}
+}
+
+function removePostEditionRequest(nameRequest){
+	const pathFile = dirs.postEdition + '/' + nameRequest + '.json';
+
+	try {
+		fs.unlinkSync(pathFile);
+	} catch(err) {
+		console.error(err);
+	}
 }
 
 // TOOL UPDATING
@@ -312,8 +470,10 @@ function synsetsToPictogram(synsetsStr) {
     }
   }
 	addRemainingPicto();
-  console.log('results dans l"ancienne fonction : ', resultPicto);
-	return JSON.stringify(resultPicto);
+
+	let result = JSON.stringify(resultPicto);
+	resultPicto = {};
+	return result;
 }
 
 // search with dichotomous method
@@ -399,8 +559,8 @@ function sentenceToPictogram(toolbox,text, index){
 
 // this function search synsets in the toolbox from the text wrote by the user
 function sentenceToSynsets(toolbox, text) {
-	let tokenized = toolbox.tokenizer.tokenize(text);
-	console.log('tokenized : ',tokenized);
+
+	let tokenized = text.split(" ");
 	let tokens = [];
 	let definitions = {};
 	let stop = 0;
@@ -414,10 +574,10 @@ function sentenceToSynsets(toolbox, text) {
 		stop = start + token.length;
 		token = token.toLowerCase();
 		let synsets = toolbox.synsets.get(token);
-    if(synsets === undefined){
-      sentenceToPictogram(toolbox,token,index);
-      synsets = '';
-    }
+		if(synsets === undefined){
+			sentenceToPictogram(toolbox,token,index);
+			synsets = '';
+		}
 		tokens.push({ start, stop, synsets });
 		for (let s in synsets) {
 			let synset = synsets[s];
@@ -470,6 +630,39 @@ app.get('/mkdirJS', (q, r) => {
   r.send(mkdirJS());
 });
 
+app.get('/mkdirPostEdition', (q, r) => {
+	r.send(mkdirPostEdition());
+});
+
+app.get('/mkdirAnnotVocab', (q, r) => {
+	r.send(mkdirAnnotVocab());
+});
+
+app.get('/mkdirEval', (q, r) => {
+	r.send(mkdirEval());
+});
+
+app.get('/t2l/:text', (q, r) => {
+	var dataLemma = "";
+	const pythonLemma = spawn('python3', ['./assets/lemma.py', q.params.text]);
+
+	pythonLemma.stdout.on('data', function (data) {
+		console.log('Pipe data from python script ...');
+		dataLemma = data.toString();
+	});
+
+	pythonLemma.stderr.on('data', (data) => {
+		console.error('stderr: ', data.toString());
+	})
+
+	// in close event we are sure that stream from child process is closed
+	pythonLemma.on('close', (code) => {
+		console.log('Close script python');
+		console.log('Word(s) lemma -> ' + dataLemma);
+		r.send(dataLemma);
+	});
+});
+
 function appGetToolbox(path, then) {
 	app.get(path, (q, r) => {
 		let toolbox = has(toolboxes, q.params.lang);
@@ -508,6 +701,43 @@ app.get('/p/:bank/:file', (q, r) => {
 app.get('/mkdirJS/:data', (q, r) => {
   let data = q.params.data;
   r.send(mkdirJS(data));
+});
+
+app.get('/mkdirPostEdition/:data', (q, r) => {
+	let data = q.params.data;
+	r.send(mkdirPostEdition(data));
+});
+
+app.get('/mkdirAnnotVocab/:data', (q, r) => {
+	let data = q.params.data;
+	r.send(mkdirAnnotVocab(data));
+});
+
+app.get('/mkdirEval/:data', (q, r) => {
+	let data = q.params.data;
+	r.send(mkdirEval(data));
+});
+
+app.get('/getAllAnnotVocabRequest', (q, r) => {
+	getAllAnnotVocabRequest(r);
+});
+
+app.get('/getAllPostEditionRequest', (q, r) => {
+	getAllPostEditionRequest(r);
+});
+
+app.get('/removeAnnotVocabRequest/:data', (q, r) => {
+	let data = q.params.data;
+	r.send(removeAnnotVocabRequest(data));
+});
+
+app.get('/removePostEditionRequest/:data', (q, r) => {
+	let data = q.params.data;
+	r.send(removePostEditionRequest(data));
+});
+
+app.get('/pwd', (q, r) => {
+	checkLogin(r);
 });
 
 // DIRECT DATA ACCESS

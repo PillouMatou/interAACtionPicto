@@ -1,0 +1,13 @@
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 15%;
+}
+
+.btnContainer {
+    text-align: center;
+}
+
+.card {
+    width: 20%;
+}

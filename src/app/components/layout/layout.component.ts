@@ -135,7 +135,6 @@ export class LayoutComponent implements OnInit {
     })
     const data = [words, synsets, urlPictoDataSelected];
     setDataTS(data);
-    console.log('data : ',JSON.stringify(data));
     mkdirJ();
   }
 }

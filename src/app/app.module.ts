@@ -23,8 +23,18 @@ import {ColorPickerModule} from "ngx-color-picker";
 import {MatSelectModule} from "@angular/material/select";
 import { SelectPictoComponent } from './components/select-picto/select-picto.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {RouterModule} from "@angular/router";
 import { VersionComponent } from './components/version/version.component';
+import { PostEditionComponent } from './components/post_edition/post-edition.component';
+import { PostEditionHomeComponent } from './components/post_edition_home/post-edition-home.component';
+import { PostEditionExitComponent } from './components/post_edition_exit/post-edition-exit.component';
+import {AnnotVocabComponent} from './components/annot_vocab/annot_vocab.component';
+import {EvalHomeComponent} from './components/eval_home/eval_home.component';
+import {EvalComponent} from './components/eval/eval.component';
+import {EvalExitComponent} from "./components/eval_exit/eval_exit.component";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { AdminComponent } from './components/admin/admin.component';
+import { LoginComponent } from './components/login/login.component';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -37,7 +47,16 @@ export function createTranslateLoader(http: HttpClient) {
     DialogMaxWordsComponent,
     LayoutComponent,
     SelectPictoComponent,
-    VersionComponent
+    VersionComponent,
+    PostEditionComponent,
+    PostEditionHomeComponent,
+    PostEditionExitComponent,
+    AnnotVocabComponent,
+    EvalHomeComponent,
+    EvalComponent,
+    EvalExitComponent,
+    AdminComponent,
+    LoginComponent
   ],
   imports: [
     TranslateModule.forRoot({
@@ -62,7 +81,9 @@ export function createTranslateLoader(http: HttpClient) {
     MatExpansionModule,
     ColorPickerModule,
     MatSelectModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DragDropModule,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,25 @@
+<div class="loginContainer">
+    <div class="card">
+        <div class="card-header">
+            Connexion
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <label for="loginAccount">Nom de compte :</label>
+                    <input class="form-control" id="loginAccount" aria-describedby="loginAccount" placeholder="Account" (change)="getAccount($event)">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe :</label>
+                    <input type="password" class="form-control" id="loginPassword" aria-describedby="loginPwd" placeholder="Password" (change)="getPassword($event)">
+                </div>
+                <div *ngIf="showError" class="alert alert-danger btnContainer" role="alert">
+                    {{errorMessage}}
+                </div>
+                <div class="btnContainer">
+                    <button type="submit" class="btn btn-primary" (click)="checkLoginPassword()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

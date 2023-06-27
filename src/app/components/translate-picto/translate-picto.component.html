@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="margin">
   <h2> {{'translatePicto.bankImage' | translate}} </h2>
-  <form (change)="chooseBank(arasaac, mulberry)">
+  <form (change)="chooseBank(arasaac, mulberry, lema)">
     <div>
       <p>
         <input #arasaac type="checkbox" id="arasaac" name="arasaac" value="arasaac" [checked]="true">
@@ -11,6 +11,10 @@
         <input #mulberry type="checkbox" id="mulberry" name="mulberry" value="mulberry" [checked]="true">
         <label for="mulberry"><span class="ui"></span>Mulberry</label>
       </p>
+      <p>
+        <input #lema type="checkbox" id="lema" name="lema" value="lema" [checked]="true">
+        <label for="lema"><span class="ui"></span>Lemmatisation</label>
+      </p>
     </div>
     <br>
   </form>
@@ -19,7 +23,7 @@
     <div>
       <mat-form-field class="widthTextarea" appearance="fill">
         <textarea matInput type="text" placeholder="{{'translatePicto.typeAWord' | translate}}"
-                  id="sentence-input" name="text" ngModel required rows="10" (keyup.enter)="onSubmit(formText)"></textarea>
+                  id="sentence-input" name="text" ngModel required rows="5" (keyup.enter)="onSubmit(formText)"></textarea>
       </mat-form-field>
       <br>
       <button class="margin-right" type="submit" mat-raised-button color="primary"
@@ -29,16 +33,21 @@
       <label for="data"><span class="ui"></span>Je veux aider la recherche et j'accepte que mes données soient traitées, utilisées voire diffusées de manière anonymes</label>
     </div>
     <br>
+    <div *ngIf="loading"  class="text-center">
+      <div class="spinner-border loader" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
     <div *ngFor="let carousel of result;let index = index">
       <h2 class="middle">{{'translatePicto.SearchResult' | translate}} : "{{this.wordsText[index].text}}"</h2>
-      <carousel *ngIf="carousel[0] !=='http://lig-interaactionpicto.imag.fr/api/p/arasaac/10056'"  [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" arrowsTheme="dark">
+      <carousel *ngIf="carousel[0] !=='https://lig-interaactionpicto.imag.fr/api/p/arasaac/10056'"  [cellsToScroll]="2" [loop]="true" [arrowsOutside]="true" arrowsTheme="dark">
         <div class="carousel-cell" *ngFor="let image of displayResult[index]">
           <!--(click)="Download(image,this.wordsText[index].text+'.png')"-->
           <img [ngClass]="{'borderColorGreen': this.editionService.imageSelected.indexOf(image) != -1}" src="{{image}}" width="100%" height="100%" alt="image" (click)="select(image,index)">
 
         </div>
       </carousel>
-      <div class="middle" *ngIf="carousel[0] === 'http://lig-interaactionpicto.imag.fr/api/p/arasaac/10056'">
+      <div class="middle" *ngIf="carousel[0] === 'https://lig-interaactionpicto.imag.fr/api/p/arasaac/10056'">
         Aucun pictogramme n'a été trouvé pour ce mot
       </div>
       <br>
@@ -46,3 +55,6 @@
   </form>
 </div>
 <app-layout></app-layout>
+<div class="version">
+  <app-version></app-version>
+</div>

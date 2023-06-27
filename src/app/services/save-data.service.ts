@@ -7,6 +7,8 @@ export class SaveDataService {
   dataRegisterChecked : boolean = false;
   dataSearch: Array<{nombre: number,label: string}> = [];
 
+  userLogged: string = "";
+
   constructor() { }
 
   addDataSearched(wordsText: any[]) {
