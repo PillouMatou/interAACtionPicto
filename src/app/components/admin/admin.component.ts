@@ -40,7 +40,7 @@ export class AdminComponent implements OnInit{
   }
 
   doAnewRequest(){
-    window.location.reload();
+    this.router.navigate(['loading']);
   }
 
   getAllAnnotVocabRequestFromServer(){
