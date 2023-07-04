@@ -34,7 +34,7 @@ export class AdminComponent implements OnInit{
 
   ngOnInit() {
     if (!this.editionService.logged){
-      this.editionService.accessPage = 'login';
+      this.editionService.accessPage = 'admin';
       this.router.navigate(['login']);
     }
   }
