@@ -35,6 +35,7 @@ export class EvalComponent implements OnInit {
     id_sentence: number = 0;
     progress_bar_style: string = '';
     sentences: Sentences[] = [];
+    pictos_copy: number[] = [];
     result: string[][] = [];
     displayResult: string[][] = [];
     resultTab: string[] = [];
@@ -280,6 +281,9 @@ export class EvalComponent implements OnInit {
             this.sentences = jsonData;
             this.get_number_sentences();
             this.getPictos(this.sentences[0].pictos)
+            this.pictos_copy = this.sentences[0].pictos.split(',').map(function (item) {
+              return parseInt(item, 10)
+            });
             this.pictosStyles = new Array(this.get_number_picto_in_sentence()).fill("");
             this.pictosVisibility = new Array(this.num_sentences).fill(true)
             this.pictosVisibility[0] = false
@@ -343,6 +347,12 @@ export class EvalComponent implements OnInit {
         if (index + 2 > this.num_sentences) {
             this.router.navigate(['evalPictoExit']);
         } else {
+            this.pictos_copy = this.sentences[index+1].pictos.split(',').map(function (item) {
+              return parseInt(item, 10)
+            });
+            this.showError = false;
+            this.quest1 = 0;
+            this.quest2 = 0;
             this.showQuestions = true;
             this.postEdit = false;
             this.pictosVisibility.fill(true);
