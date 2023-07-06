@@ -184,7 +184,7 @@ function mkdirPostEdition(value){
 	value = value.split(',');
 
 	let idPictos = "";
-	for (let i=1; i<value.length; i++){
+	for (let i=2; i<value.length; i++){
 		idPictos += value[i] + ", ";
 	}
 
