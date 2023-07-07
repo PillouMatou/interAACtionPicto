@@ -332,7 +332,7 @@ export class PostEditionComponent implements OnInit {
     else{
       this.pictosVisibility.fill(true);
       this.pictosVisibility[index+1] = false;
-      this.getPictos(pictos);
+      this.getPictos(this.sentences[index+1].pictos);
       this.id_sentence = index+1;
       this.set_progress_bar(this.id_sentence+1);
       this.pictosStyles = new Array(this.get_number_picto_in_sentence()).fill("")

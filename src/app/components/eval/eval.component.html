@@ -22,9 +22,9 @@
                 Chaque phrase est présentée une par une. Pour passer à la suivante, cliquez sur "Valider la traduction".
                 Il est possible de quitter la tâche à tout moment, en cliquant sur le bouton "Quitter".
             </p>
-            <div>
-                <label class="col-sm-2 col-form-label">{{'Username: ' + this.user}}</label>
-            </div>
+<!--            <div>-->
+<!--                <label class="col-sm-2 col-form-label">{{'Username: ' + this.user}}</label>-->
+<!--            </div>-->
             <br>
             <div>
                 <div *ngFor="let s of sentences; let index = index">
@@ -64,7 +64,7 @@
                                             <carousel [cellsToScroll]="1" [loop]="true" [arrowsOutside]="true"
                                                       arrowsTheme="dark">
                                                 <div class="carousel-cell"
-                                                     *ngFor="let sentence of pictos; let index = index">
+                                                     *ngFor="let sentence of pictos_copy; let index = index">
                                                     <img src="https://lig-interaactionpicto.imag.fr/api/p/arasaac/{{sentence}}"
                                                          alt=""
                                                          height="130px" width="130px">
