@@ -1,4 +1,8 @@
 <body>
+  <div *ngIf="errorLemma" class="alert alert-primary text-center" role="alert">
+    Suite à une erreur rencontrée, notre api de Lemmatisation a été redemarré !<br>
+    Merci de bien vouloir rafraîchir la page web (F5).
+  </div>
   <router-outlet></router-outlet>
 </body>
 

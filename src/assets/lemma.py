@@ -15,13 +15,13 @@ def request():
     print(eval(response))
 
 def relaunchServer():
-    subprocess.run(["python3", "./serverLemma.py", "&"])
+    subprocess.run(["sh", "./restartServerLemma.sh"])
 
 try :
     request()
 except :
     relaunchServer()
-    time.sleep(10)
+    time.sleep(20)
     request()
 finally :
     client.close()

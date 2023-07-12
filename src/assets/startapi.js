@@ -740,6 +740,10 @@ app.get('/pwd', (q, r) => {
 	checkLogin(r);
 });
 
+app.get('online', (q, r) => {
+  r.send("true");
+});
+
 // DIRECT DATA ACCESS
 
 function appGetToolFind(endpoint, tool) {
