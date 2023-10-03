@@ -12,8 +12,10 @@ do
       sleep 15m
     else
       sh ./restartServerLemma.sh
+      sleep 5m
     fi
   else
     sh ./restartApi.sh
+    sleep 5m
   fi
 done
