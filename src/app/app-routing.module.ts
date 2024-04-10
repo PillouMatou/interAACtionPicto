@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {SelectPictoComponent} from "./components/select-picto/select-picto.component";
+import {SpeechToPictoComponent} from "./components/speech-to-picto/speech-to-picto.component";
 import {TranslatePictoComponent} from "./components/translate-picto/translate-picto.component";
 import {AnnotVocabComponent} from "./components/annot_vocab/annot_vocab.component";
 import {PostEditionExitComponent} from "./components/post_edition_exit/post-edition-exit.component";
@@ -17,6 +18,7 @@ import {LoadingComponent} from "./components/loading/loading.component";
 const routes: Routes = [
   {path: 'print', component:SelectPictoComponent},
   {path: 'picto', component:TranslatePictoComponent},
+  {path: 'speechToPicto', component:SpeechToPictoComponent},
   {path: 'postEditPictoHome', component:PostEditionHomeComponent},
   {path: 'postEditPicto', component:PostEditionComponent},
   {path: 'postEditPictoExit', component:PostEditionExitComponent},
