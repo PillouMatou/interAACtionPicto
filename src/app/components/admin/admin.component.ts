@@ -6,6 +6,7 @@ declare var getAllAnnotVocabRequest:any;
 declare var getAnnotVocabRequest:any;
 declare var getAllPostEditionRequest:any;
 declare var getPostEditionRequest:any;
+declare var restartServers:any;
 
 declare var removeAnnotVocabRequest:any;
 declare var removePostEditionRequest:any;
@@ -250,5 +251,9 @@ export class AdminComponent implements OnInit{
     }else {
       removePostEditionRequest(nameRequest);
     }
+  }
+
+  restartScripts(){
+    restartServers();
   }
 }

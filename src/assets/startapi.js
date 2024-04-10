@@ -663,6 +663,10 @@ app.get('/t2l/:text', (q, r) => {
 	});
 });
 
+app.get('/restartScripts', (q, r) => {
+    spawn('bash', ['nohup', './assets/checkScripts.sh', '&']);
+});
+
 function appGetToolbox(path, then) {
 	app.get(path, (q, r) => {
 		let toolbox = has(toolboxes, q.params.lang);
