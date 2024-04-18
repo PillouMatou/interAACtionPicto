@@ -8,13 +8,31 @@ import { AudioRecorderService } from 'src/app/services/audioRecorder/audio-recor
 })
 export class SpeechToPictoComponent implements OnInit {
 
-  constructor() { }
+  isRecording: boolean = false;
+  soundToListen: any = "";
+  recordedSongToListen: any = "";
+
+
+
+  constructor(private audioRecorderService: AudioRecorderService,
+              /*public sanitizer: DomSanitizer*/) { }
 
   ngOnInit(): void {
   }
 
-  recordAudio() {
+  startRecord(){
+    this.isRecording = true;
+    this.audioRecorderService.startRecording();
+  }
 
+  stopRecord(){
+    this.isRecording = false;
+    this.audioRecorderService.stopRecording();
+    setTimeout(() => {
+      this.soundToListen = this.audioRecorderService.audioUrl;
+      /*this.recordedSongToListen = this.sanitizer.bypassSecurityTrustResourceUrl(this.audioRecorderService.audioUrl);*/
+    }, 500);
+    /*this.checkRecord();*/
   }
 
 }

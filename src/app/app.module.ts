@@ -37,6 +37,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { SpeechToPictoComponent } from './components/speech-to-picto/speech-to-picto.component';
+import { AudioTextFileComponent } from './components/audio-text-file/audio-text-file.component';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -60,7 +61,8 @@ export function createTranslateLoader(http: HttpClient) {
     AdminComponent,
     LoginComponent,
     LoadingComponent,
-    SpeechToPictoComponent
+    SpeechToPictoComponent,
+    AudioTextFileComponent
   ],
   imports: [
     TranslateModule.forRoot({
