@@ -1,1 +1,66 @@
+<div [class]="offcanvas" data-bs-scroll="true" tabindex="-1" id="playerRecorder" aria-labelledby="playerRecorderTitle">
+  <div class="offcanvas-header">
+    <div></div>
+    <h3 class="offcanvas-title" [class]="text" id="optionsTitle">Lecteur/Enregistreur</h3>
+    <a [class]="closeButton" data-bs-dismiss="offcanvas" type="button">
+      <h5 data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" aria-controls="menuTitle">
+        <i class="fa-solid fa-arrow-down"></i>
+      </h5>
+    </a>
+  </div>
+  <div class="offcanvas-body row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <nav>
+        <div class="nav nav-tabs" [class]="navTabs" id="playerRecorderNavbar" role="tablist">
+          <button class="nav-link active" [class]="navbarButton" id="playerNavbarTab" data-bs-toggle="tab" data-bs-target="#playerNavbarPanel" type="button" role="tab" aria-controls="playerTab" aria-selected="true" (click)="reset()">
+            Ajouter un son
+          </button>
+          <button class="nav-link" [class]="navbarButton" id="recordNavbarTab" data-bs-toggle="tab" data-bs-target="#recorderNavbarPanel" type="button" role="tab" aria-controls="recorderTab" aria-selected="false" (click)="reset()">
+            Enregistrer un son
+          </button>
+          <button class="nav-link" [class]="navbarButton" id="textNavbarTab" data-bs-toggle="tab" data-bs-target="#textNavbarPanel" type="button" role="tab" aria-controls="textTab" aria-selected="false" (click)="reset()">
+            Ecrire un texte
+          </button>
+        </div>
+      </nav>
+      <div class="tab-content" [class]="text" id="nav-tabContent">
+
+        <div class="tab-pane fade show text-center active" id="playerNavbarPanel" role="tabpanel" aria-labelledby="playerPanel" tabindex="0">
+          <br>
+          <ngx-dropzone (change)="dropFile($event)">
+            <ngx-dropzone-label>
+              <i class="fa-solid fa-file-export"></i>
+              <br>
+              Déposer votre fichier ici
+              <br>
+              ou
+              <br>
+              Cliquer pour ouvrir l'explorateur de fichier
+            </ngx-dropzone-label>
+            <ngx-dropzone-preview *ngIf="showFile" [removable]="true" (removed)="removeFile()">
+              <ngx-dropzone-label>
+                <i class="fa-solid fa-file-audio"></i>
+                <br>
+                {{nameSound}}
+              </ngx-dropzone-label>
+            </ngx-dropzone-preview>
+            <ngx-dropzone-preview *ngIf="showFileUpload">
+              <ngx-dropzone-label class="progressBar">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuemin="0" aria-valuemax="100" [style]="uploadFileProgress"></div>
+                </div>
+              </ngx-dropzone-label>
+            </ngx-dropzone-preview>
+          </ngx-dropzone>
+          <br>
+          <audio [src]="soundToListen" controls></audio>
+          <br>
+          <br>
+          <div *ngIf="showErrorDropFile" class="alert alert-danger text-center" role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            {{errorDropFile}}
+          </div>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce son</button>
+        </div>
 
