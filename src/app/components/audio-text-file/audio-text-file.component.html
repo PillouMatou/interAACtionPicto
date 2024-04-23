@@ -64,3 +64,63 @@
           <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce son</button>
         </div>
 
+        <div class="tab-pane fade text-center" id="recorderNavbarPanel" role="tabpanel" aria-labelledby="recorderPanel" tabindex="0">
+          <br>
+          <div>
+            <button *ngIf="isRecording" [class]="buttonAdd" type="button" (click)="recording()">
+              <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+            </button>
+            <button *ngIf="!isRecording" [class]="buttonAdd" type="button" (click)="recording()">
+              <i class="fa-solid fa-microphone-slash fa-2xl"></i>
+            </button>
+            <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
+            <span *ngIf="isRecording">
+              Enregistrement en cours
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden"></span>
+              </div>
+            </span>
+          </div>
+          <br>
+          <label for="nameRecord" class="form-label">Nom de mon enregistrement</label>
+          <input id="nameRecord"
+                 class="form-control inputRecord"
+                 placeholder="Par exemple : MonEnregistrement" type="text" (keyup)="getNameRecord($event)">
+          <br>
+          <audio [src]="recordedSongToListen" controls></audio>
+          <br>
+          <br>
+          <div *ngIf="showErrorRecord" class="alert alert-danger text-center" role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Le nom de l'enregistrement ne peut pas être vide !
+          </div>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce son</button>
+        </div>
+
+        <div class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel" aria-labelledby="textPanel" tabindex="0">
+          <br>
+          <label for="text" class="form-label">Texte a faire apparaître</label>
+          <div class="row">
+            <div class="col-7 text-end textInput">
+              <input id="text"
+                     class="form-control inputRecordText"
+                     placeholder="Par exemple : Voiture" type="text" [value]="nameSound" (keyup)="getText($event)">
+            </div>
+            <div class="col-5 text-start">
+              <button [class]="buttonAdd" type="button" (click)="listenText()" [disabled]="disableAddSongButton">
+                <i class="fa-solid fa-volume-high fa-xl"></i>
+              </button>
+            </div>
+          </div>
+          <br>
+          <div *ngIf="showErrorText" class="alert alert-danger text-center" role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Le texte ne peut pas être vide !
+          </div>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce texte</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

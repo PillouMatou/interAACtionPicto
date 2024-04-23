@@ -164,4 +164,19 @@ export class AudioTextFileComponent {
     this.showFile = false;
   }
 
+  reset(){
+    this.nameSound = "";
+    this.soundToListen = "";
+    //this.soundToZip = "";
+    this.uploadFileProgress = "width: 0%";
+
+    this.showErrorDropFile = false;
+    this.showErrorRecord = false;
+    this.showErrorText = false;
+    this.showFile = false;
+    this.showFileUpload = false;
+    this.disableAddSongButton = true;
+    this.isRecording = false;
+  }
+
 }
