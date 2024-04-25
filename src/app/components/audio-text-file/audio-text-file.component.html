@@ -1,9 +1,9 @@
-<div [class]="offcanvas" data-bs-scroll="true" tabindex="-1" id="playerRecorder" aria-labelledby="playerRecorderTitle">
+<div [class]="offcanvas" data-bs-scroll="true" tabindex="-1" id="audioTextFile" aria-labelledby="audioTextFileTitle">
   <div class="offcanvas-header">
     <div></div>
     <h3 class="offcanvas-title" [class]="text" id="optionsTitle">Lecteur/Enregistreur</h3>
     <a [class]="closeButton" data-bs-dismiss="offcanvas" type="button">
-      <h5 data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" aria-controls="menuTitle">
+      <h5 data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" aria-controls="menuTitle">
         <i class="fa-solid fa-arrow-down"></i>
       </h5>
     </a>
@@ -12,8 +12,8 @@
     <div class="col-3"></div>
     <div class="col-6">
       <nav>
-        <div class="nav nav-tabs" [class]="navTabs" id="playerRecorderNavbar" role="tablist">
-          <button class="nav-link active" [class]="navbarButton" id="playerNavbarTab" data-bs-toggle="tab" data-bs-target="#playerNavbarPanel" type="button" role="tab" aria-controls="playerTab" aria-selected="true" (click)="reset()">
+        <div class="nav nav-tabs" [class]="navTabs" id="audioTextFileNavbar" role="tablist">
+          <button class="nav-link active" [class]="navbarButton" id="audioNavbarTab" data-bs-toggle="tab" data-bs-target="#audioNavbarPanel" type="button" role="tab" aria-controls="audioTab" aria-selected="true" (click)="reset()">
             Ajouter un son
           </button>
           <button class="nav-link" [class]="navbarButton" id="recordNavbarTab" data-bs-toggle="tab" data-bs-target="#recorderNavbarPanel" type="button" role="tab" aria-controls="recorderTab" aria-selected="false" (click)="reset()">
@@ -26,7 +26,7 @@
       </nav>
       <div class="tab-content" [class]="text" id="nav-tabContent">
 
-        <div class="tab-pane fade show text-center active" id="playerNavbarPanel" role="tabpanel" aria-labelledby="playerPanel" tabindex="0">
+        <div class="tab-pane fade show text-center active" id="audioNavbarPanel" role="tabpanel" aria-labelledby="audioPanel" tabindex="0">
           <br>
           <ngx-dropzone (change)="dropFile($event)">
             <ngx-dropzone-label>
@@ -61,7 +61,7 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
             {{errorDropFile}}
           </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce son</button>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce son</button>
         </div>
 
         <div class="tab-pane fade text-center" id="recorderNavbarPanel" role="tabpanel" aria-labelledby="recorderPanel" tabindex="0">
@@ -94,7 +94,7 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
             Le nom de l'enregistrement ne peut pas être vide !
           </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce son</button>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce son</button>
         </div>
 
         <div class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel" aria-labelledby="textPanel" tabindex="0">
@@ -117,7 +117,7 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
             Le texte ne peut pas être vide !
           </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Ajouter ce texte</button>
+          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce texte</button>
         </div>
       </div>
     </div>
