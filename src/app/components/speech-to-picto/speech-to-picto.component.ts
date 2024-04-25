@@ -20,19 +20,8 @@ export class SpeechToPictoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  startRecord(){
-    this.isRecording = true;
-    this.audioRecorderService.startRecording();
-  }
 
-  stopRecord(){
-    this.isRecording = false;
-    this.audioRecorderService.stopRecording();
-    setTimeout(() => {
-      this.soundToListen = this.audioRecorderService.audioUrl;
-      /*this.recordedSongToListen = this.sanitizer.bypassSecurityTrustResourceUrl(this.audioRecorderService.audioUrl);*/
-    }, 500);
-    /*this.checkRecord();*/
-  }
+
+
 
 }
