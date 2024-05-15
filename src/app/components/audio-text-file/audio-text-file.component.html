@@ -1,126 +1,164 @@
-<div [class]="offcanvas" data-bs-scroll="true" tabindex="-1" id="audioTextFile" aria-labelledby="audioTextFileTitle">
+<div class="offcanvas offcanvas-center" aria-labelledby="audioTextFileTitle" data-bs-scroll="true" id="audioTextFile"
+     tabindex="-1">
   <div class="offcanvas-header">
-    <div></div>
-    <h3 class="offcanvas-title" [class]="text" id="optionsTitle">Lecteur/Enregistreur</h3>
-    <a [class]="closeButton" data-bs-dismiss="offcanvas" type="button">
-      <h5 data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" aria-controls="menuTitle">
-        <i class="fa-solid fa-arrow-down"></i>
-      </h5>
-    </a>
+    <h3 class="offcanvas-title" id="optionsTitle">Traduction Audio/Phrase écrite</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body row">
-    <div class="col-3"></div>
-    <div class="col-6">
-      <nav>
-        <div class="nav nav-tabs" [class]="navTabs" id="audioTextFileNavbar" role="tablist">
-          <button class="nav-link active" [class]="navbarButton" id="audioNavbarTab" data-bs-toggle="tab" data-bs-target="#audioNavbarPanel" type="button" role="tab" aria-controls="audioTab" aria-selected="true" (click)="reset()">
-            Ajouter un son
-          </button>
-          <button class="nav-link" [class]="navbarButton" id="recordNavbarTab" data-bs-toggle="tab" data-bs-target="#recorderNavbarPanel" type="button" role="tab" aria-controls="recorderTab" aria-selected="false" (click)="reset()">
-            Enregistrer un son
-          </button>
-          <button class="nav-link" [class]="navbarButton" id="textNavbarTab" data-bs-toggle="tab" data-bs-target="#textNavbarPanel" type="button" role="tab" aria-controls="textTab" aria-selected="false" (click)="reset()">
-            Ecrire un texte
-          </button>
-        </div>
-      </nav>
-      <div class="tab-content" [class]="text" id="nav-tabContent">
-
-        <div class="tab-pane fade show text-center active" id="audioNavbarPanel" role="tabpanel" aria-labelledby="audioPanel" tabindex="0">
-          <br>
-          <ngx-dropzone (change)="dropFile($event)">
-            <ngx-dropzone-label>
-              <i class="fa-solid fa-file-export"></i>
-              <br>
-              Déposer votre fichier ici
-              <br>
-              ou
-              <br>
-              Cliquer pour ouvrir l'explorateur de fichier
-            </ngx-dropzone-label>
-            <ngx-dropzone-preview *ngIf="showFile" [removable]="true" (removed)="removeFile()">
-              <ngx-dropzone-label>
-                <i class="fa-solid fa-file-audio"></i>
-                <br>
-                {{nameSound}}
-              </ngx-dropzone-label>
-            </ngx-dropzone-preview>
-            <ngx-dropzone-preview *ngIf="showFileUpload">
-              <ngx-dropzone-label class="progressBar">
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuemin="0" aria-valuemax="100" [style]="uploadFileProgress"></div>
-                </div>
-              </ngx-dropzone-label>
-            </ngx-dropzone-preview>
-          </ngx-dropzone>
-          <br>
-          <audio [src]="soundToListen" controls></audio>
-          <br>
-          <br>
-          <div *ngIf="showErrorDropFile" class="alert alert-danger text-center" role="alert">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            {{errorDropFile}}
+  <div class="offcanvas-body">
+    <div class="row">
+      <div class="col">
+        <nav>
+          <div [class]="navTabs" class="nav nav-tabs" id="audioTextFileNavbar" role="tablist">
+            <button (click)="reset()" [class]="navbarButton" aria-controls="audioTab" aria-selected="true"
+                    class="nav-link active" data-bs-target="#audioNavbarPanel" data-bs-toggle="tab" id="audioNavbarTab"
+                    role="tab" type="button">
+              Ajouter un son
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="recorderTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#recorderNavbarPanel" data-bs-toggle="tab" id="recordNavbarTab"
+                    role="tab" type="button">
+              Enregistrer un son
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="textTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#textNavbarPanel" data-bs-toggle="tab" id="textNavbarTab"
+                    role="tab" type="button">
+              Ecrire un texte
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="phraseTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#phraseNavbarPanel" data-bs-toggle="tab" id="phraseNavbarTab"
+                    role="tab" type="button">
+              Choisir une phrase prédéfinie
+            </button>
           </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce son</button>
-        </div>
+        </nav>
+        <div [class]="text" class="tab-content" id="nav-tabContent">
 
-        <div class="tab-pane fade text-center" id="recorderNavbarPanel" role="tabpanel" aria-labelledby="recorderPanel" tabindex="0">
-          <br>
-          <div>
-            <button *ngIf="isRecording" [class]="buttonAdd" type="button" (click)="recording()">
-              <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+          <div aria-labelledby="audioPanel" class="tab-pane fade show text-center active" id="audioNavbarPanel"
+               role="tabpanel" tabindex="0">
+            <br>
+            <ngx-dropzone (change)="dropFile($event)">
+              <ngx-dropzone-label>
+                <i class="fa-solid fa-file-export"></i>
+                <br>
+                Déposer votre fichier ici
+                <br>
+                ou
+                <br>
+                Cliquer pour ouvrir l'explorateur de fichier
+              </ngx-dropzone-label>
+              <ngx-dropzone-preview (removed)="removeFile()" *ngIf="showFile" [removable]="true">
+                <ngx-dropzone-label>
+                  <i class="fa-solid fa-file-audio"></i>
+                  <br>
+                  {{nameSound}}
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+              <ngx-dropzone-preview *ngIf="showFileUpload">
+                <ngx-dropzone-label class="progressBar">
+                  <div class="progress">
+                    <div [style]="uploadFileProgress" aria-label="Animated striped example"
+                         aria-valuemax="100" aria-valuemin="0"
+                         class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar"></div>
+                  </div>
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+            <br>
+            <audio [src]="soundToListen" controls></audio>
+            <br>
+            <br>
+            <div *ngIf="showErrorDropFile" class="alert alert-danger text-center" role="alert">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              {{errorDropFile}}
+            </div>
+            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
             </button>
-            <button *ngIf="!isRecording" [class]="buttonAdd" type="button" (click)="recording()">
-              <i class="fa-solid fa-microphone-slash fa-2xl"></i>
-            </button>
-            <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
-            <span *ngIf="isRecording">
+          </div>
+
+          <div aria-labelledby="recorderPanel" class="tab-pane fade text-center" id="recorderNavbarPanel"
+               role="tabpanel"
+               tabindex="0">
+            <br>
+            <div>
+              <button (click)="recording()" *ngIf="isRecording" [class]="buttonAdd" type="button">
+                <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+              </button>
+              <button (click)="recording()" *ngIf="!isRecording" [class]="buttonAdd" type="button">
+                <i class="fa-solid fa-microphone-slash fa-2xl"></i>
+              </button>
+              <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
+              <span *ngIf="isRecording">
               Enregistrement en cours
               <div class="spinner-border" role="status">
                 <span class="visually-hidden"></span>
               </div>
             </span>
+            </div>
+            <br>
+            <label class="form-label" for="nameRecord">Nom de mon enregistrement</label>
+            <input (keyup)="getNameRecord($event)"
+                   class="form-control inputRecord"
+                   id="nameRecord" placeholder="Par exemple : MonEnregistrement" type="text">
+            <br>
+            <audio [src]="recordedSongToListen" controls></audio>
+            <br>
+            <br>
+            <div *ngIf="showErrorRecord" class="alert alert-danger text-center" role="alert">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Le nom de l'enregistrement ne peut pas être vide !
+            </div>
+            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
           </div>
-          <br>
-          <label for="nameRecord" class="form-label">Nom de mon enregistrement</label>
-          <input id="nameRecord"
-                 class="form-control inputRecord"
-                 placeholder="Par exemple : MonEnregistrement" type="text" (keyup)="getNameRecord($event)">
-          <br>
-          <audio [src]="recordedSongToListen" controls></audio>
-          <br>
-          <br>
-          <div *ngIf="showErrorRecord" class="alert alert-danger text-center" role="alert">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Le nom de l'enregistrement ne peut pas être vide !
-          </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce son</button>
-        </div>
 
-        <div class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel" aria-labelledby="textPanel" tabindex="0">
-          <br>
-          <label for="text" class="form-label">Texte a faire apparaître</label>
-          <div class="row">
-            <div class="col-7 text-end textInput">
-              <input id="text"
-                     class="form-control inputRecordText"
-                     placeholder="Par exemple : Voiture" type="text" [value]="nameSound" (keyup)="getText($event)">
+          <div aria-labelledby="textPanel" class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel"
+               tabindex="0">
+            <br>
+            <label class="form-label" for="text">Texte à traduire</label>
+            <div class="row">
+              <div class="col-7 text-end textInput">
+                <input (keyup)="getText($event)"
+                       [value]="nameSound"
+                       class="form-control inputRecordText" id="text" placeholder="Par exemple : Voiture" type="text">
+              </div>
+              <div class="col-5 text-start">
+                <button (click)="listenText()" [class]="buttonAdd" [disabled]="disableAddSongButton" type="button">
+                  <i class="fa-solid fa-volume-high fa-xl"></i>
+                </button>
+              </div>
             </div>
-            <div class="col-5 text-start">
-              <button [class]="buttonAdd" type="button" (click)="listenText()" [disabled]="disableAddSongButton">
-                <i class="fa-solid fa-volume-high fa-xl"></i>
-              </button>
-            </div>
+            <br>
+            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
           </div>
-          <br>
-          <div *ngIf="showErrorText" class="alert alert-danger text-center" role="alert">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Le texte ne peut pas être vide !
+
+          <div aria-labelledby="phrasePanel" class="tab-pane fade text-center" id="phraseNavbarPanel" role="tabpanel"
+               tabindex="0">
+            <br>
+            <label class="form-label" for="phraseSelect">Choisir une phrase prédéfinie</label>
+            <select (change)="selectPredefinedPhrase($event)" class="form-select" id="phraseSelect">
+              <option value="Phrase 1">Phrase 1</option>
+              <option value="Phrase 2">Phrase 2</option>
+              <option value="Phrase 3">Phrase 3</option>
+              <!-- Options choix de phrase prédéfinies -->
+            </select>
+            <br>
+            <br>
+            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
           </div>
-          <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#audioTextFile" [disabled]="disableAddSongButton">Ajouter ce texte</button>
         </div>
+        <div class="col-3"></div>
       </div>
     </div>
-    <div class="col-3"></div>
   </div>
 </div>

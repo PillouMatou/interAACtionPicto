@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {AudioRecorderService} from 'src/app/services/audioRecorder/audio-recorder.service';
 
 @Component({
-  selector: 'app-bloc',
+  selector: 'app-audio-text-file',
   templateUrl: './audio-text-file.component.html',
   styleUrls: ['./audio-text-file.component.css']
 })
@@ -31,6 +31,9 @@ export class AudioTextFileComponent {
   showFileUpload: boolean = false;
   uploadFileProgress: string = "width: 0%";
   disableAddSongButton: boolean = true;
+
+  disableAddPhraseButton: boolean = true;
+  selectedPredefinedPhrase: string = '';
 
   // error message
   errorDropFile: string = "";
@@ -65,7 +68,7 @@ export class AudioTextFileComponent {
     this.evalJsonService.songToDisplay[index][1] = this.soundToListen;
     this.evalJsonService.songToDisplay[index][2] = this.soundToZip;
 
-    this.audioRecorderService.audioObservable.next("");
+    this.audioRecorderService.au  dioObservable.next("");
     this.reset();*/
   }
 
@@ -154,6 +157,23 @@ export class AudioTextFileComponent {
       this.errorDropFile = " Le fichier n'est pas un format que l'on accepte, mp3 ou wav seulement ! ";
       this.showErrorDropFile = true;
     }
+  }
+
+  updateButtonState() {
+    this.disableAddPhraseButton = this.selectedPredefinedPhrase === '';
+  }
+
+  selectPredefinedPhrase(event: any) {
+    this.selectedPredefinedPhrase = event.target.value;
+    this.updateButtonState(); // Appel de la fonction pour mettre à jour l'état du bouton Valider
+  }
+
+
+  addPredefinedPhrase() {
+    // Faites ce que vous voulez avec la phrase prédéfinie sélectionnée, par exemple, l'envoyer à un service ou l'afficher dans la console
+    console.log('Phrase prédéfinie sélectionnée :', this.selectedPredefinedPhrase);
+    // Réinitialiser la sélection de phrase après l'ajout
+    this.selectedPredefinedPhrase = '';
   }
 
   removeFile() {

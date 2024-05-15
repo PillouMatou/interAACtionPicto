@@ -26,7 +26,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/requirejs": "^2.1.33",
     "angular-responsive-carousel": "^2.1.2",
-    "bootstrap": "^5.1.1",
+    "bootstrap": "^5.3.3",
     "concurrently": "^6.3.0",
     "cors": "^2.8.5",
     "export-from-json": "^1.4.1",
