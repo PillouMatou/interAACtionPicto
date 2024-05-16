@@ -72,7 +72,7 @@
               <i class="fa-solid fa-triangle-exclamation"></i>
               {{errorDropFile}}
             </div>
-            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+            <button (click)="addSong('file')" [class]="buttonAdd" [disabled]="disableAddSongButton"
                     data-bs-target="#audioTextFile"
                     data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
             </button>
@@ -110,7 +110,7 @@
               <i class="fa-solid fa-triangle-exclamation"></i>
               Le nom de l'enregistrement ne peut pas être vide !
             </div>
-            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+            <button (click)="addSong('record')" [class]="buttonAdd" [disabled]="disableAddSongButton"
                     data-bs-target="#audioTextFile"
                     data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
             </button>
@@ -119,12 +119,12 @@
           <div aria-labelledby="textPanel" class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel"
                tabindex="0">
             <br>
-            <label class="form-label" for="text">Texte à traduire</label>
+            <label class="form-label" for="inputText">Texte à traduire</label>
             <div class="row">
               <div class="col-7 text-end textInput">
                 <input (keyup)="getText($event)"
                        [value]="nameSound"
-                       class="form-control inputRecordText" id="text" placeholder="Par exemple : Voiture" type="text">
+                       class="form-control inputRecordText" id="inputText" placeholder="Par exemple : Voiture" type="text">
               </div>
               <div class="col-5 text-start">
                 <button (click)="listenText()" [class]="buttonAdd" [disabled]="disableAddSongButton" type="button">
@@ -133,7 +133,7 @@
               </div>
             </div>
             <br>
-            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+            <button (click)="addSong('input')" [class]="buttonAdd" [disabled]="disableAddSongButton"
                     data-bs-target="#audioTextFile"
                     data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
             </button>
@@ -145,13 +145,13 @@
             <label class="form-label" for="phraseSelect">Choisir une phrase prédéfinie</label>
             <select (change)="selectPredefinedPhrase($event)" class="form-select" id="phraseSelect">
               <option value="Phrase 1">Phrase 1</option>
-              <option value="Phrase 2">Phrase 2</option>
+              <option value="Bonjour j'aimerais acheter une pomme">Bonjour j'aimerais acheter une pomme</option>
               <option value="Phrase 3">Phrase 3</option>
               <!-- Options choix de phrase prédéfinies -->
             </select>
             <br>
             <br>
-            <button (click)="addSong()" [class]="buttonAdd" [disabled]="disableAddSongButton"
+            <button (click)="addSong('selection')" [class]="buttonAdd" [disabled]="disableAddPhraseButton"
                     data-bs-target="#audioTextFile"
                     data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
             </button>
