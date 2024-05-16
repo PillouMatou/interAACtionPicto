@@ -2,6 +2,9 @@
 import {Component} from '@angular/core';
 import {AudioRecorderService} from 'src/app/services/audioRecorder/audio-recorder.service';
 
+declare var getLemmaText:any;
+declare var lemmaText:any;
+
 @Component({
   selector: 'app-audio-text-file',
   templateUrl: './audio-text-file.component.html',
@@ -35,10 +38,15 @@ export class AudioTextFileComponent {
   disableAddPhraseButton: boolean = true;
   selectedPredefinedPhrase: string = '';
 
+  // Lemmatisation
+  textToLemmatise: string = "";
+  lemmatisedText: string[] = [""];
+
   // error message
   errorDropFile: string = "";
   showErrorRecord: boolean = false;
   showErrorText: boolean = false;
+
 
 
   isActive: boolean = false;
@@ -57,20 +65,68 @@ export class AudioTextFileComponent {
     return this.acceptedFile.includes(getExtension[getExtension.length - 1]);
   }
 
-  addSong() {
-    /*
-    this.showErrorDropFile = false;
-    this.showErrorRecord = false;
-    this.showErrorText = false;
+  async addSong(method: string) {
 
-    const index = this.evalJsonService.index;
-    this.evalJsonService.songToDisplay[index][0] = this.nameSound;
-    this.evalJsonService.songToDisplay[index][1] = this.soundToListen;
-    this.evalJsonService.songToDisplay[index][2] = this.soundToZip;
+    if (method == "file" || method == "record") {
 
-    this.audioRecorderService.au  dioObservable.next("");
-    this.reset();*/
+      // Whisper
+
+      // Lemmatisation
+
+    }else{
+
+      // Lemmatisation
+      await(this.lemmatiseText(method));
+      console.log("Lemmatisation 1 : ", this.lemmatisedText);
+
+
+    }
+
   }
+
+  async lemmatiseText(method: string, text?: string) {
+
+    if (method == "selection") {
+      this.textToLemmatise = this.selectedPredefinedPhrase;
+    }
+
+
+    let textLemma: string[] = [""];
+    lemmaText(this.textToLemmatise);
+    let lemmaTextInterval = setInterval(() => {
+      if (textLemma[0] == ""){
+        textLemma = getLemmaText();
+        this.lemmatisedText = textLemma;
+        console.log("Lemmatisation 2 : ", this.lemmatisedText);
+      }else {
+        clearInterval(lemmaTextInterval);
+      }
+    }, 200);
+
+    console.log("Texte à lemmatiser : ", this.textToLemmatise);
+
+
+  }
+
+  convertTextToString(text: any){
+    text = text.replace("[", "");
+    text = text.replace("]", "");
+    text = text.replaceAll("'", "");
+    text = text.replaceAll(',', "");
+    text = this.getTextWhitoutChariot(text);
+    return text;
+  }
+
+  getTextWhitoutChariot(text: string){
+    if (text.includes("\r") || text.includes("\n")){
+      text = text.replace(/\n|\r/g,'');
+      return text;
+    }else {
+      return text;
+    }
+  }
+
+
 
   recording() {
     if (this.isRecording) {
@@ -160,6 +216,7 @@ export class AudioTextFileComponent {
   }
 
   updateButtonState() {
+    console.log('Phrase prédéfinie sélectionnée :', this.selectedPredefinedPhrase);
     this.disableAddPhraseButton = this.selectedPredefinedPhrase === '';
   }
 
