@@ -122,9 +122,8 @@
             <label class="form-label" for="inputText">Texte à traduire</label>
             <div class="row">
               <div class="col-7 text-end textInput">
-                <input (keyup)="getText($event)"
-                       [value]="nameSound"
-                       class="form-control inputRecordText" id="inputText" placeholder="Par exemple : Voiture" type="text">
+                <input (keyup)="getText($event)" [(ngModel)]="inputText" class="form-control inputRecordText" id="inputText" placeholder="Par exemple : Voiture" type="text">
+
               </div>
               <div class="col-5 text-start">
                 <button (click)="listenText()" [class]="buttonAdd" [disabled]="disableAddSongButton" type="button">
@@ -145,7 +144,7 @@
             <label class="form-label" for="phraseSelect">Choisir une phrase prédéfinie</label>
             <select (change)="selectPredefinedPhrase($event)" class="form-select" id="phraseSelect">
               <option value="Phrase 1">Phrase 1</option>
-              <option value="Bonjour j'aimerais acheter une pomme">Bonjour j'aimerais acheter une pomme</option>
+              <option value="Bonjour, j'aimerais acheter une pomme">Bonjour j'aimerais acheter une pomme</option>
               <option value="Phrase 3">Phrase 3</option>
               <!-- Options choix de phrase prédéfinies -->
             </select>

@@ -1,6 +1,7 @@
 // bloc-component.ts
 import {Component} from '@angular/core';
 import {AudioRecorderService} from 'src/app/services/audioRecorder/audio-recorder.service';
+import {AudioTextFileShareService} from "../../services/AudioTextFileShare/audio-text-file-share.service";
 
 declare var getLemmaText:any;
 declare var lemmaText:any;
@@ -41,6 +42,7 @@ export class AudioTextFileComponent {
   // Lemmatisation
   textToLemmatise: string = "";
   lemmatisedText: string[] = [""];
+  inputText: string = "";
 
   // error message
   errorDropFile: string = "";
@@ -52,7 +54,8 @@ export class AudioTextFileComponent {
   isActive: boolean = false;
 
 
-  constructor(private audioRecorderService: AudioRecorderService) {
+  constructor(private audioRecorderService: AudioRecorderService,
+              private audioTextFileShareService: AudioTextFileShareService,) {
   }
 
   toggleBlock() {
@@ -65,45 +68,43 @@ export class AudioTextFileComponent {
     return this.acceptedFile.includes(getExtension[getExtension.length - 1]);
   }
 
-  async addSong(method: string) {
+  addSong(method: string) {
 
     if (method == "file" || method == "record") {
-
       // Whisper
-
       // Lemmatisation
 
     }else{
 
       // Lemmatisation
-      await(this.lemmatiseText(method));
-      console.log("Lemmatisation 1 : ", this.lemmatisedText);
-
+      this.lemmatiseText(method);
 
     }
 
   }
 
-  async lemmatiseText(method: string, text?: string) {
+  lemmatiseText(method: string) {
 
     if (method == "selection") {
       this.textToLemmatise = this.selectedPredefinedPhrase;
     }
 
+    if (method == "input") {
+      this.textToLemmatise = this.inputText;
+    }
 
     let textLemma: string[] = [""];
-    lemmaText(this.textToLemmatise);
+    lemmaText(this.convertTextToString(this.textToLemmatise));
     let lemmaTextInterval = setInterval(() => {
       if (textLemma[0] == ""){
         textLemma = getLemmaText();
         this.lemmatisedText = textLemma;
-        console.log("Lemmatisation 2 : ", this.lemmatisedText);
+        this.audioTextFileShareService.setLemmatisedText(this.lemmatisedText);
       }else {
         clearInterval(lemmaTextInterval);
       }
     }, 200);
 
-    console.log("Texte à lemmatiser : ", this.textToLemmatise);
 
 
   }
@@ -111,7 +112,6 @@ export class AudioTextFileComponent {
   convertTextToString(text: any){
     text = text.replace("[", "");
     text = text.replace("]", "");
-    text = text.replaceAll("'", "");
     text = text.replaceAll(',', "");
     text = this.getTextWhitoutChariot(text);
     return text;
@@ -216,21 +216,12 @@ export class AudioTextFileComponent {
   }
 
   updateButtonState() {
-    console.log('Phrase prédéfinie sélectionnée :', this.selectedPredefinedPhrase);
     this.disableAddPhraseButton = this.selectedPredefinedPhrase === '';
   }
 
   selectPredefinedPhrase(event: any) {
     this.selectedPredefinedPhrase = event.target.value;
     this.updateButtonState(); // Appel de la fonction pour mettre à jour l'état du bouton Valider
-  }
-
-
-  addPredefinedPhrase() {
-    // Faites ce que vous voulez avec la phrase prédéfinie sélectionnée, par exemple, l'envoyer à un service ou l'afficher dans la console
-    console.log('Phrase prédéfinie sélectionnée :', this.selectedPredefinedPhrase);
-    // Réinitialiser la sélection de phrase après l'ajout
-    this.selectedPredefinedPhrase = '';
   }
 
   removeFile() {
