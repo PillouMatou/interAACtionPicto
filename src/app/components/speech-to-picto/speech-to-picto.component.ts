@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AudioRecorderService } from 'src/app/services/audioRecorder/audio-recorder.service';
+import { AudioTextFileShareService } from "../../services/AudioTextFileShare/audio-text-file-share.service";
 
 @Component({
   selector: 'app-speech-to-picto',
@@ -8,20 +8,22 @@ import { AudioRecorderService } from 'src/app/services/audioRecorder/audio-recor
 })
 export class SpeechToPictoComponent implements OnInit {
 
-  isRecording: boolean = false;
-  soundToListen: any = "";
-  recordedSongToListen: any = "";
+  lemmatisedText: string[] = [];
 
-
-
-  constructor(private audioRecorderService: AudioRecorderService,
-              /*public sanitizer: DomSanitizer*/) { }
+  constructor(private audioTextFileShareService: AudioTextFileShareService) { }
 
   ngOnInit(): void {
+    this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
+      this.lemmatisedText = text;
+    });
   }
 
-
-
-
+  afficherTexteLemmatise() : string {
+    let texte: string = "";
+    for (let i = 0; i < this.lemmatisedText.length; i++) {
+      texte += this.lemmatisedText[i].valueOf();
+    }
+    return texte;
+  }
 
 }
