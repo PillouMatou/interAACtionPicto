@@ -25,7 +25,7 @@ def get_sequence_of_pictos(sentence, lexicon_file):  # récupère la séquence d
   lexicon = read_lexicon(lexicon_file)
   sentence_to_map = process_output_trad(sentence)
   id_pictograms = [get_id_picto_from_predicted_lemma(lexicon, lemma) for lemma in sentence_to_map]
-  print(id_pictograms, file=sys.stderr)
+  # print(id_pictograms, file=sys.stderr) # Print pour vérifier le bon fonctionnement du script.
   return id_pictograms
 
 
