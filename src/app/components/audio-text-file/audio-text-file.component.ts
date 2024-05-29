@@ -91,6 +91,7 @@ export class AudioTextFileComponent {
 
     if (method == "input") {
       this.textToLemmatise = this.inputText;
+
     }
 
     let textLemma: string[] = [""];
