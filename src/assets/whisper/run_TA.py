@@ -6,6 +6,7 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import numpy as np
+import sys
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 # ------------ Paramètres ------------ #
@@ -28,6 +29,7 @@ def generate(sentence, tokenizer, model): # puis on génère la traduction
   inputs = tokenizer("" + sentence, return_tensors="pt").input_ids
   outputs = model.generate(inputs.to("cuda:0"), max_new_tokens=40, do_sample=True, top_k=30, top_p=0.95)
   pred = tokenizer.decode(outputs[0], skip_special_tokens=True)
+  # print(pred, file=sys.stderr) # Print pour vérifier le bon fonctionnement du script.
   return pred.strip()
 
 
