@@ -1,7 +1,7 @@
 // bloc-component.ts
 import {Component} from '@angular/core';
 import {AudioRecorderService} from 'src/app/services/audioRecorder/audio-recorder.service';
-import {AudioTextFileShareService} from "../../services/AudioTextFileShare/audio-text-file-share.service";
+import {AudioTextFileShareService} from "../../services/audioTextFileShare/audio-text-file-share.service";
 
 declare var getLemmaText:any;
 declare var lemmaText:any;
@@ -136,6 +136,9 @@ export class AudioTextFileComponent {
       this.startRecord();
     }
   }
+
+
+
 
   startRecord() {
     this.isRecording = true;

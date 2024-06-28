@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AudioTextFileShareService } from "../../services/AudioTextFileShare/audio-text-file-share.service";
+import { AudioTextFileShareService } from "../../services/audioTextFileShare/audio-text-file-share.service";
 
 @Component({
   selector: 'app-speech-to-picto',
