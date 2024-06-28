@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <h1>Speech to Picto</h1>
+</nav>
+
+<div class="container">
+  <div class="explanation">
+    <h2>Explications sur le fonctionnement de la page</h2>
+    <p>Bienvenue sur notre outil Speech2Picto, qui propose de traduire votre parole en une suite de pictogrammes ARASAAC correspondants. Pour cela, il suffit d'enregistrer votre voix en appuyant sur le micro ci-contre, et plusieurs propositions de traduction vous seront présentées</p>
+  </div>
+  <div class="addSong">
+    <button data-bs-target="#audioTextFile" data-bs-toggle="offcanvas" class="btn imgAndSound" type="button" mat-raised-button color="primary">
+      Traduire une phrase
+    </button>
+  </div>
+  <div class="result">
+    <br>
+    <p>Texte lemmatisé :  {{afficherTexteLemmatise()}}</p>
+
+  </div>
+</div>
+<app-audio-text-file></app-audio-text-file>

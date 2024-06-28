@@ -1,0 +1,163 @@
+<div class="offcanvas offcanvas-center" aria-labelledby="audioTextFileTitle" data-bs-scroll="true" id="audioTextFile"
+     tabindex="-1">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="optionsTitle">Traduction Audio/Phrase écrite</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="row">
+      <div class="col">
+        <nav>
+          <div [class]="navTabs" class="nav nav-tabs" id="audioTextFileNavbar" role="tablist">
+            <button (click)="reset()" [class]="navbarButton" aria-controls="audioTab" aria-selected="true"
+                    class="nav-link active" data-bs-target="#audioNavbarPanel" data-bs-toggle="tab" id="audioNavbarTab"
+                    role="tab" type="button">
+              Ajouter un son
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="recorderTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#recorderNavbarPanel" data-bs-toggle="tab" id="recordNavbarTab"
+                    role="tab" type="button">
+              Enregistrer un son
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="textTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#textNavbarPanel" data-bs-toggle="tab" id="textNavbarTab"
+                    role="tab" type="button">
+              Ecrire un texte
+            </button>
+            <button (click)="reset()" [class]="navbarButton" aria-controls="phraseTab" aria-selected="false"
+                    class="nav-link" data-bs-target="#phraseNavbarPanel" data-bs-toggle="tab" id="phraseNavbarTab"
+                    role="tab" type="button">
+              Choisir une phrase prédéfinie
+            </button>
+          </div>
+        </nav>
+        <div [class]="text" class="tab-content" id="nav-tabContent">
+
+          <div aria-labelledby="audioPanel" class="tab-pane fade show text-center active" id="audioNavbarPanel"
+               role="tabpanel" tabindex="0">
+            <br>
+            <ngx-dropzone (change)="dropFile($event)">
+              <ngx-dropzone-label>
+                <i class="fa-solid fa-file-export"></i>
+                <br>
+                Déposer votre fichier ici
+                <br>
+                ou
+                <br>
+                Cliquer pour ouvrir l'explorateur de fichier
+              </ngx-dropzone-label>
+              <ngx-dropzone-preview (removed)="removeFile()" *ngIf="showFile" [removable]="true">
+                <ngx-dropzone-label>
+                  <i class="fa-solid fa-file-audio"></i>
+                  <br>
+                  {{nameSound}}
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+              <ngx-dropzone-preview *ngIf="showFileUpload">
+                <ngx-dropzone-label class="progressBar">
+                  <div class="progress">
+                    <div [style]="uploadFileProgress" aria-label="Animated striped example"
+                         aria-valuemax="100" aria-valuemin="0"
+                         class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar"></div>
+                  </div>
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+            <br>
+            <audio [src]="soundToListen" controls></audio>
+            <br>
+            <br>
+            <div *ngIf="showErrorDropFile" class="alert alert-danger text-center" role="alert">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              {{errorDropFile}}
+            </div>
+            <button (click)="addSong('file')" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
+          </div>
+
+          <div aria-labelledby="recorderPanel" class="tab-pane fade text-center" id="recorderNavbarPanel"
+               role="tabpanel"
+               tabindex="0">
+            <br>
+            <div>
+              <button (click)="recording()" *ngIf="isRecording" [class]="buttonAdd" type="button">
+                <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+              </button>
+              <button (click)="recording()" *ngIf="!isRecording" [class]="buttonAdd" type="button">
+                <i class="fa-solid fa-microphone-slash fa-2xl"></i>
+              </button>
+              <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
+              <span *ngIf="isRecording">
+              Enregistrement en cours
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden"></span>
+              </div>
+            </span>
+            </div>
+            <br>
+            <label class="form-label" for="nameRecord">Nom de mon enregistrement</label>
+            <input (keyup)="getNameRecord($event)"
+                   class="form-control inputRecord"
+                   id="nameRecord" placeholder="Par exemple : MonEnregistrement" type="text">
+            <br>
+            <audio [src]="recordedSongToListen" controls></audio>
+            <br>
+            <br>
+            <div *ngIf="showErrorRecord" class="alert alert-danger text-center" role="alert">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Le nom de l'enregistrement ne peut pas être vide !
+            </div>
+            <button (click)="addSong('record')" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
+          </div>
+
+          <div aria-labelledby="textPanel" class="tab-pane fade text-center" id="textNavbarPanel" role="tabpanel"
+               tabindex="0">
+            <br>
+            <label class="form-label" for="inputText">Texte à traduire</label>
+            <div class="row">
+              <div class="col-7 text-end textInput">
+                <input (keyup)="getText($event)" [(ngModel)]="inputText" class="form-control inputRecordText" id="inputText" placeholder="Par exemple : Voiture" type="text">
+
+              </div>
+              <div class="col-5 text-start">
+                <button (click)="listenText()" [class]="buttonAdd" [disabled]="disableAddSongButton" type="button">
+                  <i class="fa-solid fa-volume-high fa-xl"></i>
+                </button>
+              </div>
+            </div>
+            <br>
+            <button (click)="addSong('input')" [class]="buttonAdd" [disabled]="disableAddSongButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
+          </div>
+
+          <div aria-labelledby="phrasePanel" class="tab-pane fade text-center" id="phraseNavbarPanel" role="tabpanel"
+               tabindex="0">
+            <br>
+            <label class="form-label" for="phraseSelect">Choisir une phrase prédéfinie</label>
+            <select (change)="selectPredefinedPhrase($event)" class="form-select" id="phraseSelect">
+              <option value="Phrase 1">Phrase 1</option>
+              <option value="Bonjour, j'aimerais acheter une pomme">Bonjour j'aimerais acheter une pomme</option>
+              <option value="Phrase 3">Phrase 3</option>
+              <!-- Options choix de phrase prédéfinies -->
+            </select>
+            <br>
+            <br>
+            <button (click)="addSong('selection')" [class]="buttonAdd" [disabled]="disableAddPhraseButton"
+                    data-bs-target="#audioTextFile"
+                    data-bs-toggle="offcanvas" type="button" mat-raised-button color="primary">Valider
+            </button>
+          </div>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
