@@ -1,0 +1,58 @@
+/* Navbar styles */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+.navbar h1 {
+  margin: 0;
+}
+
+.container {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+/* CSS Explications */
+.explanation {
+  margin-bottom: 20px;
+}
+
+/* Boutons */
+.btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Button hover styles */
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Offcanvas styles (if needed) */
+.offcanvas {
+  /* Your offcanvas styles here */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+  }
+}

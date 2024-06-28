@@ -407,6 +407,13 @@ function pictograms(synsets, callback, error) {
   }
 }
 
+function restartServers() {
+  let path = ['restartScripts'];
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://lig-interaactionpicto.imag.fr/api/' + path.join('/'));
+  xhr.send(null);
+}
+
 function resetResultPicto(callback,error){
   let path = ['reset'];
   this._phoneHome(path, callback, error);

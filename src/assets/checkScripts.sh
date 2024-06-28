@@ -1,13 +1,13 @@
 #!/bin/bash
 
-api="node"
-lemma="python3"
+api="startapi.js"
+lemma="serverLemma.py"
 
 while :
 do
-  if pgrep -x "$api" >/dev/null
+  if pgrep -f "$api" >/dev/null
   then
-    if pgrep -x "$lemma" >/dev/null
+    if pgrep -f "$lemma" >/dev/null
     then
       sleep 15m
     else
